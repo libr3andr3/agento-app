@@ -1,0 +1,50 @@
+# Ropa, calzado, accesorios: Gamarra, tiendas online por Instagram, stands en
+# galerías. El volumen es "¿sigue disponible?", "¿qué tallas tienes?", fotos.
+bundle: ropa
+version: 1
+extends: core
+defaults:
+  businessKind: products
+  walkInsAllowed: true
+fields:
+  variants:
+    type: "string"
+    ask_in_onboarding: true
+    question_es: "¿Manejan tallas y colores? ¿Cuáles suelen tener?"
+  wholesale:
+    type: "{minQty: int, note: string}"
+    ask_in_onboarding: true
+    question_es: "¿Venden también por mayor? ¿Desde cuántas unidades y con qué precio o descuento?"
+  shippingNotes:
+    type: "string"
+    ask_in_onboarding: true
+    question_es: "¿Cómo envían? (motorizado en la ciudad, Shalom u Olva a provincias, recojo en el stand)"
+  pickupPoint:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿Dónde recogen? (galería, stand, referencia)"
+  exchangePolicy:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿Aceptan cambios? ¿En qué plazo y condiciones?"
+tools:
+  - collect_payment
+# D15: the stall's app — orders to pack, the photo catalog, the customers.
+ui:
+  home: pedidos
+  tabs:
+    - id: pedidos
+      label: Pedidos
+      icon: orders
+      intro: "Lo que ya pagaron y hay que empacar. Deslízalo cuando lo despaches."
+      blocks: [earnings, attention, orders_board]
+    - id: catalogo
+      label: Catálogo
+      icon: catalog
+      intro: "Sube fotos de tus modelos. Tu agente las manda por un enlace privado que dura minutos."
+      blocks: [catalog]
+    - id: clientes
+      label: Clientes
+      icon: chats
+      intro: "Quién te escribió, qué preguntó y qué compró."
+      blocks: [conversations, contacts]

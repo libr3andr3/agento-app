@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Step 1: business name + industry (+ optional RUC). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/reg_business_headline"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:text="@string/reg_business_sub"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reg_name_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:hintEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        android:hint="@string/reg_business_name_hint"
+        app:boxCornerRadiusTopStart="@dimen/corner_control"
+        app:boxCornerRadiusTopEnd="@dimen/corner_control"
+        app:boxCornerRadiusBottomStart="@dimen/corner_control"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reg_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:imeOptions="actionNext"
+            android:maxLength="80" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reg_industry_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:hintEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:hint="@string/reg_business_industry_hint"
+        app:helperText="@string/reg_business_industry_helper"
+        app:boxCornerRadiusTopStart="@dimen/corner_control"
+        app:boxCornerRadiusTopEnd="@dimen/corner_control"
+        app:boxCornerRadiusBottomStart="@dimen/corner_control"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reg_industry_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:imeOptions="actionNext"
+            android:maxLength="60" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Category: a fixed list (Categories.kt); prohibited ones stop the
+         registration on a neutral screen (docs/CREDITS.md § 4). -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reg_category_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:hint="@string/reg_category_hint"
+        app:boxCornerRadiusTopStart="@dimen/corner_control"
+        app:boxCornerRadiusTopEnd="@dimen/corner_control"
+        app:boxCornerRadiusBottomStart="@dimen/corner_control"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/reg_category_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Closed-loop credit terms (docs/CREDITS.md § 3): required to continue. -->
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/reg_terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/touch_min"
+        android:text="@string/reg_terms_label"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:id="@+id/reg_terms_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_terms_error"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="@color/agente_error"
+        android:visibility="gone" />
+
+    <!-- The internet of agents (D18): one switch, default on. Off = the agent
+         is neither listed nor reachable and earns nothing from the network. -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/reg_network_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:minHeight="@dimen/touch_min"
+        android:checked="true"
+        android:text="@string/reg_network_title"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:id="@+id/reg_network_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reg_network_sub"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?android:attr/textColorSecondary" />
+
+    <!-- RUC (optional): the last field before the CTA, so its Done submits.
+         Only a well-formed 11-digit RUC is sent; see RegistrationActivity. -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reg_ruc_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:hintEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:hint="@string/reg_business_ruc_hint"
+        app:helperText="@string/reg_business_ruc_helper">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reg_ruc_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:maxLength="11" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="@dimen/space_s" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reg_business_cta"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_height"
+            android:text="@string/reg_continue"
+            app:cornerRadius="@dimen/corner_control" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/reg_business_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/agente_on_primary"
+            app:indicatorSize="24dp"
+            app:trackThickness="3dp" />
+    </FrameLayout>
+</LinearLayout>

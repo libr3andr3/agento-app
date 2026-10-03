@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_audit">Audit</string>
+    <string name="audit_title">Audit</string>
+    <string name="audit_back">Back</string>
+    <string name="audit_subtitle">Everything your agent did, as a chain: each entry signed with this phone\'s identity and stamped with the server\'s clock. Nobody can edit or delete it — not even us.</string>
+    <string name="audit_verifying">Verifying the chain…</string>
+    <string name="audit_verify_ok">✓ %1$d entries intact · server stamp: %2$s · %3$d not yet stamped</string>
+    <string name="audit_verify_ok_unanchored">✓ %1$d entries intact · no server stamp yet</string>
+    <string name="audit_verify_broken">⚠️ The chain has %1$d problems. Contact support.</string>
+    <string name="audit_verify_offline">Could not verify right now.</string>
+    <string name="audit_agent_id">Identity: %1$s</string>
+    <string name="audit_anchor_now">Stamp now</string>
+    <string name="audit_anchored">Stamped with the server\'s clock ✓</string>
+    <string name="audit_anchor_failed">Could not stamp. Check your connection.</string>
+    <string name="audit_empty">No entries yet. They appear with the first conversation.</string>
+    <string name="audit_row_anchored">stamped ✓</string>
+    <string name="audit_row_pending">awaiting stamp</string>
+    <string name="audit_detail">%1$s\nActor: %2$s\nHash: %3$s\n\n%4$s</string>
+    <string name="audit_kind_customer_turn">Customer %1$s → replied: “%2$s”</string>
+    <string name="audit_kind_owner_turn">You → replied: “%1$s”</string>
+    <string name="audit_kind_tool_call">Action %1$s %2$s</string>
+    <string name="audit_kind_owner_cmd">From the web: %1$s (%2$s)</string>
+    <string name="audit_kind_payment">Payment %1$s %2$s</string>
+    <string name="audit_kind_status">%1$s → %2$s</string>
+    <string name="audit_kind_share">Private link with %1$d photos</string>
+    <string name="audit_kind_restore">Restored from a backup (%1$d rows)</string>
+    <string name="audit_kind_boot">Agent started v%1$s</string>
+</resources>

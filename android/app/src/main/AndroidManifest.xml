@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- agente: the receptionist for business owners. Reads chat-app
+     notifications, answers as the business, detects payments. Distributed
+     from agente.ceo (not Play: the notification-listener and self-update
+     permissions are what Play policy objects to). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- D17: "tus clientes se quedan contigo" — customers into the phone's Contacts,
+         appointments into its Calendar. Both off until the owner turns them on. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Voice onboarding: the owner talks to the setup interview. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Coarse only: a district is all "near me" needs. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Xiaomi/Huawei & friends kill background listeners; we ask the owner to
+         exempt agente so the notification listener survives. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- Android 11+ package visibility: Settings shows which supported chat
+         apps are actually installed, which needs an explicit allowlist to
+         query. Notification delivery itself never needed this. -->
+    <queries>
+        <!-- The read screen lists every app with a launcher icon, one switch
+             each (PhoneApps); the app has no
+             QUERY_ALL_PACKAGES. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <package android:name="com.whatsapp" />
+        <package android:name="com.whatsapp.w4b" />
+        <package android:name="com.instagram.android" />
+        <package android:name="com.facebook.orca" />
+        <package android:name="com.facebook.mlite" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="org.telegram.messenger" />
+        <package android:name="org.thoughtcrime.securesms" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.google.android.apps.messaging" />
+        <!-- Money apps (Wallets.kt): so the end-of-onboarding apps screen and
+             Cobros can tell which wallets are on THIS phone (the app has no
+             QUERY_ALL_PACKAGES). Detection itself never needs
+             this list — any app's notification reaches the local agent. -->
+        <package android:name="com.bcp.innovacxion.yapeapp" />
+        <package android:name="com.bcp.bank.bcp" />
+        <package android:name="pe.com.interbank.mobilebanking" />
+        <package android:name="com.bbva.nxt_peru" />
+        <package android:name="pe.com.scotiabank.blpm.android.client" />
+        <package android:name="pe.com.bn.bnmovil" />
+        <package android:name="com.bancomer.mbanking" />
+        <package android:name="com.banorte.movil" />
+        <package android:name="mx.com.santander.supermovil" />
+        <package android:name="com.banamex.mobile" />
+        <package android:name="com.oxxo.spin" />
+        <package android:name="com.nequi.MobileApp" />
+        <package android:name="com.davivienda.daviplataapp" />
+        <package android:name="com.todo1.mobile" />
+        <package android:name="com.bbva.bbvacolombia" />
+        <package android:name="co.movii" />
+        <package android:name="ar.com.uala" />
+        <package android:name="ar.com.modo" />
+        <package android:name="com.brubank" />
+        <package android:name="ar.com.bancoprovincia.cuentadni" />
+        <package android:name="com.naranja.nx" />
+        <package android:name="ar.com.personalpay" />
+        <package android:name="cl.bci.mach" />
+        <package android:name="cl.tenpo.app" />
+        <package android:name="cl.bancoestado.app" />
+        <package android:name="cl.bancochile.mobile" />
+        <package android:name="cl.santander.smartphone" />
+        <package android:name="com.nu.production" />
+        <package android:name="com.picpay" />
+        <package android:name="br.com.bb.android" />
+        <package android:name="com.itau" />
+        <package android:name="com.bradesco" />
+        <package android:name="br.gov.caixa.tem" />
+        <package android:name="br.com.intermedium" />
+        <package android:name="com.c6bank.app" />
+        <package android:name="com.santander.app" />
+        <package android:name="br.com.uol.ps.myaccount" />
+        <package android:name="com.pichincha.deuna" />
+        <package android:name="com.bancopichincha.bancamovil" />
+        <package android:name="com.bancoguayaquil.app" />
+        <package android:name="com.produbanco.app" />
+        <package android:name="bo.com.bnb.app" />
+        <package android:name="bo.com.bancounion.app" />
+        <package android:name="com.tigo.money.bo" />
+        <package android:name="uy.com.prex" />
+        <package android:name="uy.com.brou.app" />
+        <package android:name="uy.com.oca.app" />
+        <package android:name="py.com.tigo.money" />
+        <package android:name="py.com.personal.pay" />
+        <package android:name="py.com.ueno.app" />
+        <package android:name="py.com.zimple" />
+        <package android:name="com.banesco.banescomovil" />
+        <package android:name="com.mercantil.mercantilmovil" />
+        <package android:name="com.bdv.bdvapp" />
+        <package android:name="com.bbva.provinet" />
+        <package android:name="com.bi.bienlinea" />
+        <package android:name="com.banrural.app" />
+        <package android:name="com.bac.credomatic" />
+        <package android:name="cr.bncr.app" />
+        <package android:name="cr.bancobcr.app" />
+        <package android:name="com.bgeneral.yappy" />
+        <package android:name="com.bgeneral.app" />
+        <package android:name="com.bpd.app" />
+        <package android:name="com.banreservas.app" />
+        <package android:name="com.bancoagricola.app" />
+        <package android:name="com.tigo.money.hn" />
+        <package android:name="com.banpro.app" />
+        <package android:name="com.mercadopago.wallet" />
+        <package android:name="com.paypal.android.p2pmobile" />
+        <package android:name="com.venmo" />
+        <package android:name="com.squareup.cash" />
+        <package android:name="com.zellepay.zelle" />
+        <package android:name="com.chase.sig.android" />
+        <package android:name="com.infonow.bofa" />
+        <package android:name="com.wf.wellsfargomobile" />
+        <package android:name="es.lacaixa.mobile.android.newwapicon" />
+        <package android:name="com.bbva.bbvacontigo" />
+        <package android:name="es.bancosantander.apps" />
+        <package android:name="com.revolut.revolut" />
+        <package android:name="pt.sibs.android.mbway" />
+    </queries>
+
+    <!-- Cleartext is off in release and permitted only for debug builds (local
+         server over `adb reverse`); see res/xml/network_security_config.xml.
+         Backup is off because the device token and customer conversations live
+         in SharedPreferences — see res/xml/data_extraction_rules.xml. -->
+    <application
+        android:name=".AgenteApp"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:localeConfig="@xml/locales_config"
+        android:theme="@style/Theme.Agente">
+
+        <!-- Launcher: a router with no UI (see WelcomeActivity). -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Per-app language (Ajustes → Idioma) on Android 12 and below:
+             AppCompat stores the choice itself when this service is declared. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
+        <!-- Yaya ID: sign in / create account, before anything else. No guest mode. -->
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Step-by-step registration; portrait-locked like the chat so the
+             step state machine never fights a rotation mid-request. -->
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- The setup interview and, later, the manager chat. -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Home. -->
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+
+        <!-- Settings (gear on the dashboard). -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- Prohibited business category: the neutral stop. -->
+        <activity
+            android:name=".BlockedActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Credits: balance, prices, ledger. -->
+        <activity
+            android:name=".CreditsActivity"
+            android:exported="false" />
+
+        <!-- Last two onboarding steps (and Settings): which apps the agent
+             reads, then which of those it answers on. -->
+        <activity
+            android:name=".ReadAppsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ReplyAppsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".AuditActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CrmListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ConversationActivity"
+            android:exported="false" />
+
+        <!-- Cobros: where customers send money. -->
+        <activity
+            android:name=".PayoutActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- The house phone's till: agente://collector?key=… (YapeCollector). -->
+        <activity
+            android:name=".CollectorActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="agente" android:host="collector" />
+            </intent-filter>
+        </activity>
+
+        <!-- The heart of the app: reads chat notifications, replies inline. -->
+        <service
+            android:name=".AgenteNotificationListener"
+            android:label="@string/app_name"
+            android:exported="false"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Hands the camera app a writable cache file for the catalog-photo
+             capture (ACTION_IMAGE_CAPTURE + EXTRA_OUTPUT, no CAMERA perm). -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>

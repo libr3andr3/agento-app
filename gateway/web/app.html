@@ -1,0 +1,1428 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F3F2EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A120F" media="(prefers-color-scheme: dark)">
+<title>agento · tu panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400..700&display=swap">
+<style>
+  /* Layout: slim nav rail + wide working canvas; the one loud surface is the dark-green hero
+     where the agent sits in the middle of the business's channels. Same tokens as agento.ceo. */
+  :root {
+    --paper:#F3F2EC; --card:#FFFFFF; --variant:#ECEAE2; --outline:#E2E0D6; --line-strong:#D1CEC2;
+    --ink:#15201A; --ink-2:#39443E; --muted:#67716B; --field:#FFFFFF; --topbar:rgba(243,242,236,.9);
+    --primary:#0B7B5B; --primary-hover:#086A4E; --on-primary:#FFFFFF; --primary-c:#DDF3E7; --on-primary-c:#0A4632; --deep:#0A3D2C;
+    --amber:#9A5E08; --amber-c:#FCEED3; --on-amber:#FFFFFF; --error:#B3352B; --error-c:#FBE9E6; --on-error:#FFFFFF;
+    --blue:#2B55C8; --blue-c:#E5EBFC; --dim-bar:#CFE7DC;
+    --hero-a:#0F8A64; --hero-b:#052019; --hero-ink:#EAF7F0; --hero-muted:#A4CABA; --hero-line:rgba(234,247,240,.13);
+    --hero-glass:rgba(234,247,240,.08); --glow:#6CF5BF; --hero-warn:#F2B35A;
+    --shadow:0 1px 2px rgba(21,32,26,.05),0 14px 34px -14px rgba(21,32,26,.20);
+    --r:20px; --nav-h:64px;
+    --f-display:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;
+    --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --f-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#0A120F; --card:#101A16; --variant:#16221D; --outline:#1E2B25; --line-strong:#2B3A33;
+      --ink:#E3ECE7; --ink-2:#C2CEC7; --muted:#8B9B93; --field:#0C1512; --topbar:rgba(10,18,15,.88);
+      --primary:#37C58F; --primary-hover:#52D6A4; --on-primary:#03140D; --primary-c:#12352A; --on-primary-c:#A6EBCE; --deep:#0C6C4E;
+      --amber:#E6A94E; --amber-c:#33260F; --on-amber:#1E1404; --error:#F07F73; --error-c:#3A1A17; --on-error:#2A0B08;
+      --blue:#8DA8FF; --blue-c:#1A2444; --dim-bar:#1B3A2E;
+      --hero-a:#0C6C4E; --hero-b:#020A07; --hero-muted:#98C1B0; --hero-line:rgba(234,247,240,.11); --hero-glass:rgba(234,247,240,.07);
+      --shadow:0 1px 2px rgba(0,0,0,.35),0 16px 36px -14px rgba(0,0,0,.7);
+      color-scheme:dark;
+    }
+  }
+  * { box-sizing:border-box }
+  html { -webkit-text-size-adjust:100% }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased }
+  h1,h2,h3 { margin:0; letter-spacing:-.02em; text-wrap:balance; font-family:var(--f-display) }
+  h1 { font-size:1.75rem; font-weight:740 } h2 { font-size:1.1rem; font-weight:680 } h3 { font-size:1rem; font-weight:650 }
+  p { margin:.4rem 0; max-width:62ch } .muted { color:var(--muted) } .small { font-size:.85rem } .tiny { font-size:.75rem }
+  .num { text-align:right; font-variant-numeric:tabular-nums } .tabular { font-variant-numeric:tabular-nums }
+  .hidden { display:none !important } .grow { flex:1; min-width:0 }
+  a { color:var(--primary) }
+  :focus-visible { outline:2px solid var(--primary); outline-offset:2px }
+  button, .btn { font:inherit; font-weight:600; border:1px solid transparent; border-radius:12px; padding:.7rem 1.15rem; cursor:pointer; background:var(--primary); color:var(--on-primary); min-height:44px; display:inline-flex; align-items:center; gap:.5rem; justify-content:center; text-decoration:none; transition:background .15s,border-color .15s,transform .1s }
+  button:hover, .btn:hover { background:var(--primary-hover) }
+  button:active, .btn:active { transform:translateY(1px) }
+  button.secondary, .btn.secondary { background:var(--primary-c); color:var(--on-primary-c) }
+  button.secondary:hover, .btn.secondary:hover { background:var(--primary-c); border-color:var(--primary) }
+  button.ghost, .btn.ghost { background:transparent; color:var(--ink); border-color:var(--line-strong) }
+  button.ghost:hover, .btn.ghost:hover { background:var(--variant) }
+  button.text { background:transparent; color:var(--primary); padding:.45rem .7rem; min-height:36px }
+  button.text:hover { background:var(--variant) }
+  button.danger { background:var(--error-c); color:var(--error) }
+  button.sm, .btn.sm { padding:.4rem .85rem; min-height:36px; font-size:.88rem; border-radius:10px }
+  button:disabled { opacity:.5; cursor:default }
+  input, select, textarea { width:100%; padding:.75rem .95rem; border:1px solid var(--line-strong); border-radius:12px; background:var(--field); font:inherit; color:var(--ink) }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-c) }
+  textarea { min-height:8rem; font-family:var(--f-mono); font-size:.85rem }
+  label { display:block; font-size:.85rem; font-weight:600; margin:.9rem 0 .35rem; color:var(--ink-2) }
+  .card { background:var(--card); border:1px solid var(--outline); border-radius:var(--r); padding:1.15rem 1.25rem; margin-top:.9rem; min-width:0 }
+  .card.flat { background:transparent }
+  .row { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap }
+  .between { justify-content:space-between }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(17rem,100%),1fr)); gap:.9rem }
+  .tiles { display:grid; grid-template-columns:repeat(2,1fr); gap:.7rem; margin-top:.9rem }
+  @media (min-width:700px) { .tiles { grid-template-columns:repeat(4,1fr) } }
+  .tile { background:var(--card); border:1px solid var(--outline); border-radius:18px; padding:.9rem 1rem }
+  .tile .k { font:500 .68rem var(--f-mono); color:var(--muted); text-transform:uppercase; letter-spacing:.1em }
+  .tile .v { font:720 1.5rem/1.2 var(--f-display); font-variant-numeric:tabular-nums; margin-top:.2rem; letter-spacing:-.02em }
+  .tile .s { font-size:.78rem; color:var(--muted) }
+  .chip { display:inline-flex; align-items:center; gap:.35rem; padding:.18rem .6rem; border-radius:999px; font-size:.74rem; font-weight:600; background:var(--variant); color:var(--ink-2); white-space:nowrap; text-decoration:none }
+  .chip.ok { background:var(--primary-c); color:var(--on-primary-c) } .chip.warn { background:var(--amber-c); color:var(--amber) }
+  .chip.bad { background:var(--error-c); color:var(--error) } .chip.info { background:var(--blue-c); color:var(--blue) }
+  .chip:empty { display:none }
+  .dot { width:.6rem; height:.6rem; border-radius:50%; background:var(--muted); display:inline-block; flex:none }
+  .dot.on { background:#1FA97F; box-shadow:0 0 0 3px rgba(31,169,127,.2) } .dot.off { background:#8E8B80 }
+  .mark { width:34px; height:34px; flex:none; display:block }
+  .tbl { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -.4rem }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; min-width:28rem }
+  th { text-align:left; font:500 .68rem var(--f-mono); text-transform:uppercase; letter-spacing:.1em; color:var(--muted); padding:.55rem .4rem; border-bottom:1px solid var(--outline) }
+  td { padding:.6rem .4rem; border-bottom:1px solid var(--variant); vertical-align:top }
+  tr:last-child td { border-bottom:0 }
+  .err { color:var(--error); background:var(--error-c); padding:.7rem 1rem; border-radius:12px; font-size:.9rem }
+  .note { background:var(--amber-c); color:var(--amber); padding:.7rem 1rem; border-radius:12px; font-size:.9rem }
+  .okbox { background:var(--primary-c); color:var(--on-primary-c); padding:.7rem 1rem; border-radius:12px; font-size:.9rem }
+  .price { font:720 1.25rem var(--f-display); font-variant-numeric:tabular-nums; letter-spacing:-.01em }
+  code, .mono { font-family:var(--f-mono); font-size:.82rem }
+  pre { background:#0B1310; color:#E3F2EA; padding:.9rem 1rem; border-radius:12px; overflow:auto; font:.78rem/1.5 var(--f-mono); max-height:26rem; margin:.5rem 0 }
+  .live-dot { width:8px; height:8px; border-radius:50%; background:var(--glow); display:inline-block; flex:none; animation:live 2s infinite }
+  .live-dot.off { background:var(--hero-warn); animation:none }
+  @keyframes live { 0% { box-shadow:0 0 0 0 rgba(108,245,191,.6) } 70% { box-shadow:0 0 0 8px rgba(108,245,191,0) } 100% { box-shadow:0 0 0 0 rgba(108,245,191,0) } }
+  .ctile { --s:28px; display:inline-grid; place-items:center; flex:none; width:var(--s); height:var(--s); border-radius:calc(var(--s) * .3); background:var(--cc); box-shadow:inset 0 0 0 1px rgba(255,255,255,.14) }
+  .ctile svg { width:64%; height:64%; display:block }
+  .ctile[data-ch="instagram"] { background:linear-gradient(45deg,#F9A13A 0%,#E1306C 52%,#8A3AB9 100%) }
+
+  /* shell */
+  #shell { display:none; min-height:100dvh }
+  #shell.on { display:block }
+  .topbar { position:sticky; top:0; z-index:5; background:var(--topbar); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--outline); padding:.7rem 1rem; display:flex; align-items:center; gap:.7rem }
+  .topbar .mark { width:32px; height:32px }
+  .topbar .who { flex:1; min-width:0 } .topbar .who b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-family:var(--f-display); font-weight:680 }
+  main { max-width:78rem; margin:0 auto; padding:1.1rem 1rem calc(var(--nav-h) + 1.5rem) }
+  nav.tabs { position:fixed; bottom:0; left:0; right:0; height:calc(var(--nav-h) + env(safe-area-inset-bottom)); background:var(--card); border-top:1px solid var(--outline); display:flex; z-index:6; padding-bottom:env(safe-area-inset-bottom); overflow-x:auto; scrollbar-width:none }
+  nav.tabs::-webkit-scrollbar { display:none }
+  nav.tabs button { flex:1; background:none; color:var(--muted); border-radius:0; padding:.35rem .2rem; min-height:0; min-width:58px; flex-direction:column; gap:.1rem; font-size:.66rem; font-weight:600 }
+  nav.tabs button:hover { background:none; color:var(--ink) }
+  nav.tabs button svg { width:22px; height:22px } nav.tabs button.on { color:var(--primary) }
+  @media (min-width:900px) {
+    #shell.on { display:grid; grid-template-columns:15.5rem 1fr; grid-template-rows:auto 1fr; align-items:start }
+    nav.tabs { grid-row:1 / span 2; position:sticky; top:0; height:100dvh; flex-direction:column; border-top:0; border-right:1px solid var(--outline); padding:1.1rem .8rem; gap:.15rem; align-items:stretch; overflow-y:auto }
+    nav.tabs button { flex:0 0 auto; flex-direction:row; justify-content:flex-start; gap:.75rem; font-size:.93rem; font-weight:560; padding:.62rem .8rem; border-radius:12px; color:var(--ink-2) }
+    nav.tabs button:hover { background:var(--variant); color:var(--ink) }
+    nav.tabs button.on { background:var(--primary-c); color:var(--on-primary-c) }
+    nav.tabs button svg { width:19px; height:19px }
+    nav.tabs .navbrand { display:flex; align-items:center; gap:.6rem; padding:.2rem .5rem 1.1rem; font:750 1.3rem/1 var(--f-display); letter-spacing:-.02em }
+    .topbar { grid-column:2; padding:.75rem 1.75rem } main { grid-column:2; padding:1.4rem 1.75rem 2.5rem }
+  }
+  nav.tabs .navbrand { display:none } @media (min-width:900px) { nav.tabs .navbrand { display:flex } }
+  section.view { display:none } section.view.on { display:block; animation:fade .18s ease }
+  @keyframes fade { from { opacity:0; transform:translateY(4px) } to { opacity:1; transform:none } }
+  section.view > h1, section.view > .row > h1, section.view > .row > div > h1 { font-size:1.6rem !important; letter-spacing:-.025em }
+
+  /* home: the command centre */
+  .hero { position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); border-radius:28px; overflow:hidden; color:var(--hero-ink); background:radial-gradient(110% 150% at 88% 18%,var(--hero-a) 0%,var(--hero-b) 62%); isolation:isolate }
+  .hero::before { content:""; position:absolute; inset:0; z-index:-1; background-image:linear-gradient(var(--hero-line) 1px,transparent 1px),linear-gradient(90deg,var(--hero-line) 1px,transparent 1px); background-size:34px 34px; -webkit-mask-image:radial-gradient(70% 90% at 22% 30%,#000 0%,transparent 75%); mask-image:radial-gradient(70% 90% at 22% 30%,#000 0%,transparent 75%); opacity:.5 }
+  .hero-text { padding:28px 32px 24px; display:flex; flex-direction:column; gap:14px; min-width:0 }
+  .hero-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+  .hero-status { display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:99px; background:var(--hero-glass); border:1px solid var(--hero-line); font-size:.8rem; font-weight:600 }
+  .hero-date { font:500 .72rem var(--f-mono); letter-spacing:.06em; color:var(--hero-muted); text-transform:uppercase }
+  .hero-title { font:740 clamp(2rem,3.4vw,2.9rem)/1.02 var(--f-display) !important; letter-spacing:-.03em; margin:4px 0 0 }
+  .hero-sub { margin:0; color:var(--hero-muted); max-width:46ch; font-size:1rem }
+  .hero-sub b { color:var(--hero-ink) }
+  .hero-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:auto 0 0; border-top:1px solid var(--hero-line) }
+  .hero-stats > div { padding:14px 14px 4px 0; min-width:0 }
+  .hero-stats > div:nth-child(even) { padding-left:18px; border-left:1px solid var(--hero-line) }
+  .hero-stats > div:nth-child(n+3) { border-top:1px solid var(--hero-line); padding-top:14px }
+  .hero-stats dt { font:500 .68rem var(--f-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--hero-muted) }
+  .hero-stats dd { margin:4px 0 2px; font:700 clamp(1.5rem,2.3vw,2rem)/1.05 var(--f-display); letter-spacing:-.02em; font-variant-numeric:tabular-nums; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+  .hero-stats span { font-size:.78rem; color:var(--hero-muted) }
+  .hero-viz { position:relative; min-height:380px }
+  .hero-viz canvas { position:absolute; inset:0; width:100%; height:100%; display:block }
+  .viz-cap { position:absolute; top:18px; right:20px; display:flex; align-items:center; gap:8px; font:500 .68rem var(--f-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--hero-muted) }
+  @media (max-width:1100px) { .hero { grid-template-columns:1fr } .hero-viz { min-height:320px; border-top:1px solid var(--hero-line) } }
+  @media (max-width:640px) { .hero { border-radius:22px } .hero-text { padding:22px 20px 18px } .hero-stats > div:nth-child(even) { padding-left:14px } }
+  .phone-card { display:grid; grid-template-columns:auto 1fr auto; gap:.8rem; align-items:center }
+  .phone-card .stats { display:flex; gap:1.2rem; margin-top:.5rem; flex-wrap:wrap } .phone-card .stats b { font:700 1.05rem var(--f-display); font-variant-numeric:tabular-nums }
+  .phone-card .stats span { display:block; font:500 .66rem var(--f-mono); color:var(--muted); text-transform:uppercase; letter-spacing:.08em }
+  .banner { border-radius:var(--r); padding:1rem 1.15rem; margin-top:.9rem; display:flex; gap:.8rem; align-items:center; flex-wrap:wrap }
+  .banner.trial { background:linear-gradient(135deg,var(--hero-a),var(--hero-b)); color:var(--hero-ink) } .banner.trial .muted { color:var(--hero-muted) }
+  .banner.trial button, .banner.trial .btn { background:var(--hero-ink); color:var(--hero-b) }
+  .banner.expired { background:var(--error-c); color:var(--error) } .banner.expired button { background:var(--error); color:var(--on-error) }
+  .banner.credits { background:var(--amber-c); color:var(--amber) } .banner.credits button { background:var(--amber); color:var(--on-amber) }
+  .banner .grow { flex:1; min-width:12rem }
+
+  /* chat */
+  .chat { display:flex; flex-direction:column; height:calc(100dvh - var(--nav-h) - 8.5rem); min-height:22rem }
+  @media (min-width:900px) { .chat { height:calc(100dvh - 10rem) } }
+  .chat .log { flex:1; overflow-y:auto; padding:.6rem .2rem; display:flex; flex-direction:column; gap:.5rem }
+  .bubble { max-width:82%; padding:.65rem .95rem; border-radius:18px; font-size:.95rem; white-space:pre-wrap; word-wrap:break-word }
+  .bubble.me { align-self:flex-end; background:var(--primary); color:var(--on-primary); border-bottom-right-radius:6px }
+  .bubble.ai { align-self:flex-start; background:var(--card); border:1px solid var(--outline); border-bottom-left-radius:6px }
+  .bubble.sys { align-self:center; background:transparent; color:var(--muted); font-size:.8rem }
+  .tools { align-self:flex-start; display:flex; gap:.35rem; flex-wrap:wrap; margin:-.2rem 0 .2rem .3rem }
+  .tools .chip { font-size:.7rem; font-family:var(--f-mono); font-weight:500 }
+  .composer { display:flex; gap:.5rem; padding-top:.6rem; align-items:flex-end }
+  .composer textarea { min-height:46px; max-height:8rem; resize:none; font-family:inherit; font-size:1rem; border-radius:14px; padding:.7rem 1rem }
+  .composer button { width:46px; height:46px; padding:0; border-radius:14px; flex:none }
+  .suggest { display:flex; gap:.4rem; overflow-x:auto; padding:.3rem 0; scrollbar-width:none } .suggest::-webkit-scrollbar { display:none }
+  .suggest button { flex:none; font-size:.8rem; padding:.4rem .8rem; min-height:34px }
+  .typing { display:inline-flex; gap:3px } .typing i { width:6px; height:6px; border-radius:50%; background:var(--muted); animation:blink 1.2s infinite } .typing i:nth-child(2){animation-delay:.2s} .typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink { 0%,80%,100% { opacity:.2 } 40% { opacity:1 } }
+
+  /* charts */
+  .chart { width:100%; height:130px; display:block } .chart text { font-size:10px; fill:var(--muted); font-family:var(--f-mono) }
+  .chart rect { fill:var(--primary); rx:3 } .chart rect.dim { fill:var(--dim-bar) }
+  .legend { display:flex; gap:1rem; font-size:.78rem; color:var(--muted); margin-top:.3rem }
+
+  /* plans */
+  .tier { border:2px solid transparent } .tier.active { border-color:var(--primary) } .tier.best { position:relative }
+  .tier.best::after { content:"El más elegido"; position:absolute; top:-.7rem; right:1rem; background:var(--ink); color:var(--paper); font-size:.7rem; font-weight:700; padding:.2rem .6rem; border-radius:999px }
+  .recargas { display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; margin-top:.6rem }
+  .recargas button { flex-direction:column; gap:0; padding:.7rem .4rem; border-radius:14px; background:var(--primary-c); color:var(--on-primary-c) }
+  .recargas button:hover { background:var(--primary-c); border-color:var(--primary) }
+  .recargas button b { font:720 1.15rem var(--f-display) } .recargas button span { font-size:.72rem; font-weight:500; opacity:.85 }
+  .payref { font:600 1.6rem var(--f-mono); letter-spacing:.06em; background:var(--variant); padding:.4rem .8rem; border-radius:12px; display:inline-block }
+
+  /* devices */
+  .device { display:grid; grid-template-columns:auto 1fr auto; gap:.8rem; align-items:center }
+  .device select { width:auto; padding:.45rem .7rem; border-radius:10px; font-size:.9rem }
+
+  /* customers */
+  .convo { display:flex; align-items:center; gap:.8rem; padding:.65rem .2rem; border-bottom:1px solid var(--variant); cursor:pointer; border-radius:10px }
+  .convo:hover { background:var(--variant) }
+
+  /* sign in */
+  .signin { position:fixed; inset:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.12fr); background:var(--paper); overflow:auto; z-index:20 }
+  .si-panel { display:flex; flex-direction:column; padding:28px clamp(20px,5vw,72px); min-height:100% }
+  .brandrow { display:flex; align-items:center; gap:10px; font:750 1.35rem/1 var(--f-display); letter-spacing:-.02em }
+  .si-body { margin-block:auto; max-width:440px; width:100%; padding-block:36px; display:flex; flex-direction:column; gap:16px }
+  .eyebrow { font:500 .74rem var(--f-mono); letter-spacing:.12em; text-transform:uppercase; color:var(--primary) }
+  .si-title { font:760 clamp(2.2rem,4.2vw,3.4rem)/.98 var(--f-display) !important; letter-spacing:-.035em !important }
+  .si-title em { font-style:normal; color:var(--primary) }
+  .lede { margin:0; color:var(--ink-2); font-size:1rem; max-width:40ch }
+  .si-card { display:flex; flex-direction:column; gap:2px }
+  .si-card h2 { font-size:1.05rem }
+  .si-card label { margin-top:.75rem }
+  .si-card input { height:50px; font-size:1rem; border-radius:14px }
+  .si-card #code { font:600 1.5rem var(--f-mono); letter-spacing:.5em; text-align:center; height:60px }
+  .big { width:100%; height:50px; font-size:1rem; border-radius:14px }
+  .fine { margin:0; font-size:.82rem; color:var(--muted); display:flex; gap:8px; align-items:flex-start; max-width:none }
+  .fine svg { width:16px; height:16px; flex:none; margin-top:2px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round }
+  .si-foot { display:flex; justify-content:space-between; gap:12px; font:500 .74rem var(--f-mono); color:var(--muted); flex-wrap:wrap }
+  .si-foot a { color:inherit }
+  .si-art { position:relative; margin:14px; border-radius:30px; overflow:hidden; background:radial-gradient(120% 120% at 70% 30%,var(--hero-a) 0%,var(--hero-b) 64%); isolation:isolate; min-height:520px }
+  .si-art canvas { position:absolute; inset:0; width:100%; height:100%; display:block }
+  .float-card { position:absolute; display:flex; gap:10px; align-items:flex-start; background:var(--hero-glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--hero-line); border-radius:16px; padding:12px 14px; color:var(--hero-ink); font-size:.84rem; line-height:1.35; width:min(270px,44%); animation:bob 7s ease-in-out infinite }
+  .float-card b { display:block; font-weight:650; font-size:.8rem }
+  .float-card p { margin:2px 0 0; color:var(--hero-muted) }
+  .float-card .badge { width:26px; height:26px; border-radius:9px; display:grid; place-items:center; background:var(--glow); color:var(--hero-b); flex:none }
+  .float-card .badge svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round }
+  .fc1 { top:9%; left:7% } .fc2 { top:40%; right:6%; animation-delay:-2.3s } .fc3 { bottom:12%; left:10%; animation-delay:-4.6s }
+  @keyframes bob { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-8px) } }
+  .art-cap { position:absolute; right:20px; bottom:18px; display:flex; align-items:center; gap:8px; font:500 .72rem var(--f-mono); color:var(--hero-muted); letter-spacing:.04em }
+  @media (max-width:899px) {
+    .signin { grid-template-columns:1fr; grid-template-rows:auto 1fr }
+    .si-art { order:-1; min-height:0; height:230px; margin:12px 12px 0; border-radius:24px }
+    .float-card { display:none }
+    .si-panel { padding:18px 16px 24px }
+    .si-body { padding-block:20px }
+  }
+  .steps { counter-reset:s; padding:0; margin:.6rem 0 0; list-style:none } .steps li { counter-increment:s; display:flex; gap:.7rem; margin:.5rem 0; font-size:.9rem }
+  .steps li::before { content:counter(s); width:1.5rem; height:1.5rem; border-radius:50%; background:var(--primary-c); color:var(--on-primary-c); font:600 .76rem var(--f-mono); display:grid; place-items:center; flex:none }
+  .toast { position:fixed; left:50%; bottom:calc(var(--nav-h) + 1rem); transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:.65rem 1.05rem; border-radius:14px; font-size:.88rem; z-index:20; box-shadow:var(--shadow); opacity:0; transition:opacity .2s; pointer-events:none; max-width:calc(100% - 32px) }
+  .toast.on { opacity:1 }
+  details summary { cursor:pointer; font-weight:600 }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:.35rem .9rem; font-size:.9rem } .kv dt { color:var(--muted) } .kv dd { margin:0; overflow-wrap:anywhere }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important } }
+</style>
+</head>
+<body>
+
+<!-- ─────────────────────────── sign in ─────────────────────────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="mk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16A374"/><stop offset="1" stop-color="#063B2B"/></linearGradient></defs></svg>
+<div id="view-signin" class="signin">
+  <div class="si-panel">
+    <div class="brandrow"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg><span>agento</span></div>
+    <div class="si-body">
+      <span class="eyebrow">Panel del negocio</span>
+      <h1 class="si-title">Todos tus chats.<br>Un solo agente.<br><em>Tú al mando.</em></h1>
+      <p class="lede">WhatsApp, Instagram, Messenger y más en un solo lugar. Tu agente responde en segundos y te pasa solo lo que tú tienes que decidir.</p>
+      <div class="si-card">
+        <h2 id="signin-title">Entra a tu panel</h2>
+        <p class="muted small" style="margin:.2rem 0 0">Sin contraseña: te mandamos un código de 6 dígitos por WhatsApp. Es la misma cuenta que usas en la app agento.</p>
+        <form id="signin-form">
+          <label for="phone">Tu WhatsApp (con código de país)</label><input id="phone" type="tel" autocomplete="tel" placeholder="+51 999 888 777" inputmode="tel">
+          <label for="email">Correo <span class="muted" style="font-weight:400">(opcional)</span></label><input id="email" type="email" autocomplete="email" placeholder="tu@correo.com">
+          <label for="name">Tu nombre <span class="muted" style="font-weight:400">(si es tu primera vez)</span></label><input id="name" autocomplete="name" placeholder="Como te llaman">
+          <div id="signin-err" class="err hidden" style="margin-top:.8rem"></div>
+          <button id="signin-btn" type="submit" class="big" style="margin-top:1.1rem">Enviarme el código</button>
+        </form>
+        <form id="code-form" class="hidden">
+          <p id="code-sent" class="okbox"></p>
+          <label for="code">Código de 6 dígitos</label><input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>
+          <div id="code-err" class="err hidden" style="margin-top:.8rem"></div>
+          <button id="code-btn" type="submit" class="big" style="margin-top:1.1rem">Entrar a mi panel</button>
+          <div class="row" style="margin-top:.4rem;gap:.2rem"><button id="code-resend" type="button" class="text">Reenviar</button><button id="code-back" type="button" class="text">Cambiar datos</button></div>
+        </form>
+      </div>
+      <a class="btn ghost big" href="/app/demo">Ver la demo del panel</a>
+      <p class="fine"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 16 21H8a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 8 3zM11 18h2"/></svg><span>¿Todavía no tienes la app? Descarga <a href="https://agento.ceo/#descargar">agento business</a> en el celular del negocio y entra con este mismo WhatsApp. En 5 minutos atiende solo.</span></p>
+    </div>
+    <div class="si-foot"><span>Yaya Tech PBC</span><a href="https://agento.ceo/">agento.ceo</a></div>
+  </div>
+  <div class="si-art" aria-hidden="true">
+    <canvas id="signin-canvas"></canvas>
+    <div class="float-card fc1"><span class="ctile" data-ch="instagram" style="--cc:#D62E78;--s:26px" id="fc-ig"></span><div><b>@andrea.eats · Instagram</b><p>¿Cuánto cuesta la torta de tres leches grande?</p></div></div>
+    <div class="float-card fc2"><span class="badge"><svg viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span><div><b>Tu agente respondió en 3 s</b><p>S/ 95, para 16 porciones. ¿Para qué día la necesitas?</p></div></div>
+    <div class="float-card fc3"><span class="badge"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Yape recibido · S/ 180.00</b><p>María F. Quispe · pedido confirmado</p></div></div>
+    <div class="art-cap"><span class="live-dot"></span>Un día de ejemplo en Pastelería Rosita</div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── the console ─────────────────────────── -->
+<div id="shell">
+  <nav class="tabs" id="tabs">
+    <div class="navbrand"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg>agento</div>
+    <button data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
+    <button data-view="agent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg>Agente</button>
+    <button data-view="sales"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16V9M11 16V4M16 16v-6M21 16v-3"/></svg>Ventas</button>
+    <button data-view="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-5-6.7"/></svg>Clientes</button>
+    <button data-view="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>Equipo</button>
+    <button data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M2 10h20M6 15h4"/></svg>Plan</button>
+    <button id="ops-link" class="hidden" onclick="location.href='/support/admin'" title="Panel de operaciones de agento">🛠️ Ops</button>
+    <button data-view="market"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9h18v11H3zM3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M9 20v-6h6v6"/></svg>Mercado</button>
+    <button data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+    <button data-view="dev" class="hidden" id="tab-dev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg>Dev</button>
+  </nav>
+
+  <div class="topbar">
+    <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg>
+    <div class="who"><b id="top-name">—</b><div class="small muted" id="top-line">—</div></div>
+    <span class="chip" id="top-plan">—</span>
+    <span class="chip ok" id="top-credits" title="Créditos">S/ 0</span>
+  </div>
+
+  <main>
+  <!-- HOME -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <div class="hero-text">
+        <div class="hero-top"><span class="hero-status"><span class="live-dot off" id="hero-dot"></span><span id="hero-status">Conectando con tu teléfono…</span></span><span class="hero-date" id="hero-date"></span></div>
+        <h1 class="hero-title" id="hello-title">Hola.</h1>
+        <p class="hero-sub" id="hello-sub">—</p>
+        <dl class="hero-stats" id="home-tiles"></dl>
+      </div>
+      <div class="hero-viz"><canvas id="hero-canvas" role="img" aria-label="Tus canales alrededor de tu agente"></canvas><div class="viz-cap"><span class="live-dot off" id="viz-dot"></span><span id="viz-cap">Tus canales</span></div></div>
+    </div>
+    <div id="home-banner"></div>
+    <div id="home-phones"></div>
+    <div class="grid">
+      <div class="card"><div class="row between"><h2>Hoy en la agenda</h2><span class="chip" id="agenda-count"></span></div><div id="home-agenda" class="small" style="margin-top:.5rem"></div></div>
+      <div class="card"><div class="row between"><h2>Tu agente necesita ayuda</h2><span class="chip warn" id="gaps-count"></span></div><p class="muted small">Preguntas de clientes que no supo responder. Contéstalas aquí y las aprende al instante.</p><div id="home-gaps"></div></div>
+    </div>
+    <div id="home-snapshot-note" class="small muted" style="margin-top:.8rem"></div>
+  </section>
+
+  <!-- AGENT CHAT -->
+  <section class="view" id="view-agent">
+    <div class="row between"><div><h1 style="font-size:1.3rem">Tu agente</h1><div class="small muted" id="agent-sub">Habla con el gerente de tu negocio: cambia precios, horarios, pausa reservas, pregúntale cómo va el día.</div></div><span class="chip" id="agent-status"><span class="dot off"></span>—</span></div>
+    <div class="chat">
+      <div class="log" id="chat-log"></div>
+      <div class="suggest" id="chat-suggest"></div>
+      <form class="composer" id="chat-form">
+        <textarea id="chat-input" rows="1" placeholder="Escríbele a tu agente…" autocomplete="off"></textarea>
+        <button type="submit" aria-label="Enviar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SALES -->
+  <section class="view" id="view-sales">
+    <h1 style="font-size:1.3rem">Ventas y movimiento</h1>
+    <div class="tiles" id="sales-tiles"></div>
+    <div class="grid">
+      <div class="card"><div class="row between"><h2>Cobrado por día</h2><span class="small muted">últimos 30 días</span></div><svg class="chart" id="ch-collected"></svg></div>
+      <div class="card"><div class="row between"><h2>Mensajes atendidos</h2><span class="small muted">últimos 30 días</span></div><svg class="chart" id="ch-messages"></svg></div>
+      <div class="card"><div class="row between"><h2>Citas y pedidos</h2><span class="small muted">últimos 30 días</span></div><svg class="chart" id="ch-tx"></svg></div>
+      <div class="card"><div class="row between"><h2>Clientes por día</h2><span class="small muted">últimos 30 días</span></div><svg class="chart" id="ch-customers"></svg></div>
+    </div>
+    <div class="card"><h2>Pagos recibidos</h2><div class="tbl"><table id="tb-pays"><thead><tr><th>Fecha</th><th>De</th><th>Vía</th><th class="num">Monto</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="card"><h2>Pedidos</h2><div class="tbl"><table id="tb-orders"><thead><tr><th>Fecha</th><th>Cliente</th><th>Pedido</th><th>Estado</th><th class="num">Total</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="card"><h2>Citas</h2><div class="tbl"><table id="tb-appts"><thead><tr><th>Cuándo</th><th>Cliente</th><th>Servicio</th><th>Estado</th><th class="num">Precio</th></tr></thead><tbody></tbody></table></div></div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section class="view" id="view-customers">
+    <div class="row between"><h1 style="font-size:1.3rem">Clientes</h1><span class="chip" id="convo-count"></span></div>
+    <div class="card" id="convo-list-card"><div id="convo-list"></div></div>
+    <div class="card hidden" id="convo-detail-card"><div class="row between"><button class="text" id="convo-back">← Todos</button><b id="convo-peer"></b><span></span></div><div id="convo-items" style="margin-top:.6rem"></div></div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="view" id="view-team">
+    <h1 style="font-size:1.3rem">Tu equipo</h1>
+    <p class="muted small">Cada teléfono con agente es un agente con su rol. Uno vende, otro atiende soporte, otro toma reservas — todos bajo tu cuenta y tu plan.</p>
+    <div id="team-list"></div>
+    <div class="card" id="campaigns-card">
+      <div class="row between"><h2>Campañas de WhatsApp</h2><span class="chip" id="node-chip">sin nodo</span></div>
+      <p class="small muted" id="campaigns-sub">Un <b>nodo</b> es agento corriendo en una computadora con un número de WhatsApp propio: escribe primero, atiende las respuestas y llama. Todo bajo tu cuenta, con tu agente.</p>
+      <div id="campaigns-list"></div>
+      <details id="campaign-new" style="margin-top:.6rem"><summary>Nueva campaña</summary>
+        <label>Nombre</label><input id="cmp-name" placeholder="Peluquerías Lima — agosto">
+        <label>Objetivo (lo que el agente busca en cada conversación)</label><textarea id="cmp-goal" style="font-family:inherit;min-height:4.5rem" placeholder="Que el negocio pruebe agento 14 días gratis: explicar en una línea qué hace, mandar el enlace agento.ceo y ofrecer ayuda para instalarlo."></textarea>
+        <label>Primer mensaje (usa {name} para el nombre)</label><textarea id="cmp-opener" style="font-family:inherit;min-height:4.5rem" placeholder="Hola {name} 👋 soy el asistente de agento. ¿Atiendes clientes por WhatsApp? Tenemos algo que responde por ti 24/7…"></textarea>
+        <label>Contactos (uno por línea: número, nombre)</label><textarea id="cmp-contacts" placeholder="+51999888777, Tito&#10;+51988777666"></textarea>
+        <div class="row"><label style="margin:0">Por día</label><input id="cmp-cap" type="number" value="80" min="1" max="1000" style="width:6rem"><label style="margin:0">Segundos entre envíos</label><input id="cmp-pace" type="number" value="90" min="20" max="3600" style="width:6rem"></div>
+        <div class="row" style="margin-top:.8rem"><button id="cmp-create" class="sm">Crear y arrancar</button><span id="cmp-msg" class="small muted"></span></div>
+      </details>
+    </div>
+    <div class="card flat">
+      <h3>Sumar un nodo (computadora con WhatsApp propio)</h3>
+      <p class="small muted">Genera un código de vinculación y pégalo en el nodo. Vale 10 minutos y se usa una sola vez.</p>
+      <div class="row"><button class="sm secondary" id="link-token-btn">Generar código de vinculación</button></div>
+      <pre id="link-token-out" class="hidden" style="white-space:pre-wrap"></pre>
+    </div>
+    <div class="card flat">
+      <h3>Sumar otro teléfono</h3>
+      <ol class="steps">
+        <li>Instala agento business en el nuevo celular (<a href="https://agento.ceo/#descargar">descargar</a>).</li>
+        <li>En la app, entra con <b>esta misma cuenta</b> (<span id="team-account"></span>).</li>
+        <li>Vuelve aquí y dale su rol. Listo: aparece como un agente más.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="view" id="view-plan">
+    <h1 style="font-size:1.3rem">Plan</h1>
+    <div id="plan-state"></div>
+    <div id="sub-state"></div>
+    <div class="card hidden" id="credits-card">
+      <div class="row between"><h2>Saldo de créditos</h2><span class="price" id="credits-balance"></span></div>
+      <p class="small muted" id="credits-line"></p>
+      <h3 style="margin-top:.6rem">Recarga</h3>
+      <p class="small muted">Sin plan, tu agente responde con tu saldo: <b id="credits-permsg"></b>. También paga cada cliente nuevo que te llega por la red.</p>
+      <div class="recargas" id="recargas"></div>
+    </div>
+    <div id="pay" class="card hidden">
+      <h2>Paga por Yape o Plin</h2>
+      <p>Envía <b>exactamente</b> <span class="price" id="pay-amount"></span> a <b id="pay-payee"></b> y escribe esta referencia en el mensaje:</p>
+      <div class="payref" id="pay-ref"></div>
+      <p class="small" id="pay-channels"></p>
+      <div class="row" style="margin-top:.6rem"><button id="pay-check" class="secondary">Ya pagué — verificar</button><span id="pay-status" class="small muted"></span></div>
+    </div>
+    <div class="card">
+      <div class="row between"><h2>Planes</h2><div class="row" style="gap:.3rem"><button id="period-month" class="sm">Mensual</button><button id="period-year" class="sm secondary">Anual</button></div></div>
+      <p class="small muted" id="period-note"></p>
+      <div class="grid" id="tiers" style="margin-top:.8rem"></div>
+    </div>
+    <div class="card"><h2>Movimientos</h2><div class="tbl"><table id="ledger"><thead><tr><th>Fecha</th><th>Qué</th><th class="num">Monto</th></tr></thead><tbody></tbody></table></div></div>
+  </section>
+
+  <!-- MERCADO -->
+  <section class="view" id="view-market">
+    <h1 style="font-size:1.3rem">Mercado y billetera</h1>
+    <div id="mk-bonus"></div>
+    <div class="card">
+      <div class="row between"><h2>Billetera</h2><span class="price" id="w-balance"></span></div>
+      <p class="small muted" id="w-line"></p>
+      <div class="row" style="gap:.4rem;flex-wrap:wrap;margin-top:.5rem"><button class="sm" data-go="plan">Recargar</button><button class="sm secondary" id="w-transfer-btn">Enviar saldo a otra cuenta</button></div>
+      <div id="w-transfer" class="hidden" style="margin-top:.6rem">
+        <p class="small muted" id="w-transfer-note"></p>
+        <div class="row" style="gap:.4rem;flex-wrap:wrap"><input id="w-to" placeholder="correo, id de cuenta o agent:…" style="flex:1;min-width:12rem"><input id="w-amt" type="number" min="1" step="0.5" placeholder="S/" style="width:6rem"><button class="sm" id="w-send">Enviar</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Consultas pagadas</h2>
+      <p class="small muted">Ponle precio a cada pregunta que otro agente le haga al tuyo por la red — lo que tu negocio sabe (tendencias, qué se vende, cómo se hace) vale. El que pregunta paga con su saldo; tú recibes el precio menos la comisión (<span id="ask-fee"></span>). Tus clientes de WhatsApp no pagan nada.</p>
+      <div class="row" style="gap:.4rem;align-items:center;margin-top:.5rem;flex-wrap:wrap"><span>S/</span><input id="ask-price" type="number" min="0" step="0.5" style="width:6rem"><button class="sm" id="ask-save">Publicar precio</button><span id="ask-msg" class="small muted"></span></div>
+    </div>
+    <div class="card">
+      <div class="row between"><h2>Catálogo</h2><input id="mk-q" placeholder="Buscar…" style="max-width:11rem"></div>
+      <p class="small muted">Packs por rubro (preguntas de personalización + habilidad que tu agente monta al instante), manuales y notas de otros negocios. Se pagan con saldo.</p>
+      <div id="mk-list" style="margin-top:.6rem"></div>
+    </div>
+    <div class="card"><h2>Mis compras</h2><div id="mk-mine" class="small">—</div></div>
+    <div class="card">
+      <h2>Vender</h2>
+      <p class="small muted">Un archivo (PDF, guía), una nota (texto) o un pack (JSON con <code>fields</code>, <code>defaults</code>, <code>skill</code>). Recibes el precio menos la comisión del mercado (<span id="mk-fee"></span>).</p>
+      <div class="row" style="gap:.4rem;flex-wrap:wrap;margin-top:.5rem">
+        <select id="sl-kind"><option value="file">Archivo</option><option value="note">Nota</option><option value="bundle">Pack</option></select>
+        <input id="sl-title" placeholder="Título" style="flex:1;min-width:10rem"><input id="sl-price" type="number" min="0" step="0.5" placeholder="Precio S/" style="width:6.5rem"><input id="sl-niche" placeholder="Rubro (peluqueria-PE)" style="width:11rem">
+      </div>
+      <textarea id="sl-desc" placeholder="Descripción: qué recibe quien lo compra" rows="2" style="width:100%;margin-top:.4rem"></textarea>
+      <textarea id="sl-content" placeholder="Nota: el texto. Pack: JSON {&quot;fields&quot;:{…},&quot;defaults&quot;:{…},&quot;skill&quot;:&quot;…&quot;}" rows="5" style="width:100%;margin-top:.4rem" class="hidden"></textarea>
+      <div class="row" style="gap:.4rem;margin-top:.4rem;align-items:center;flex-wrap:wrap"><input type="file" id="sl-file"><button class="sm" id="sl-publish">Publicar</button><span id="sl-msg" class="small muted"></span></div>
+      <div id="sl-mine" style="margin-top:.6rem" class="small"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="view" id="view-settings">
+    <h1 style="font-size:1.3rem">Ajustes</h1>
+    <div class="card"><h2>Tu cuenta</h2><dl class="kv" id="acct-kv"></dl><div class="row" style="margin-top:.8rem"><button id="logout" class="ghost sm">Cerrar sesión</button><a class="chip info" id="support-link" href="/support">Soporte</a><a class="chip ok" id="support-wa" href="#" target="_blank" rel="noopener">WhatsApp soporte</a></div></div>
+    <div class="card"><div class="row between"><h2>Copias de seguridad</h2><span class="chip" id="backups-chip"></span></div><p class="small muted">Tu teléfono guarda una copia cifrada cada 6 horas. Si el teléfono está apagado, el panel muestra la última copia.</p><div class="tbl"><table id="backups"><thead><tr><th>Fecha</th><th>Dispositivo</th><th class="num">Tamaño</th><th></th></tr></thead><tbody></tbody></table></div></div>
+    <div class="card"><h2>Esta consola</h2><p class="small muted">El navegador tiene su propia llave y habla con tu teléfono cifrado de extremo a extremo: ni el servidor de agento puede leer lo que le dices a tu agente.</p><dl class="kv" id="console-kv"></dl><div class="row" style="margin-top:.6rem"><button id="console-reset" class="ghost sm">Olvidar llave de este navegador</button></div></div>
+    <p class="tiny muted" style="margin-top:1.6rem;text-align:center">agento es un producto de <span id="credits-tap" style="cursor:pointer;user-select:none">yaya.tech</span> · Yaya Tech PBC · <a href="https://agento.ceo/privacidad">Privacidad</a> · <a href="https://agento.ceo/terminos">Términos</a></p>
+  </section>
+
+  <!-- DEV -->
+  <section class="view" id="view-dev">
+    <div class="row between"><h1 style="font-size:1.3rem">Modo desarrollador</h1><span class="chip info">admin</span></div>
+    <div class="card">
+      <div class="row between"><h2>Harness</h2><div class="row"><button class="sm secondary" id="dev-export">Exportar</button><button class="sm ghost" id="dev-import-btn">Importar</button><input type="file" id="dev-import" accept="application/json" class="hidden"></div></div>
+      <p class="small muted">Lo que tu agente es: valores compuestos (núcleo ⊕ rubro ⊕ tu parche ⊕ aprendizajes a prueba), herramientas montadas, skill del rubro. Edita el <b>parche</b> y aplícalo al teléfono.</p>
+      <label>Valores (parche del negocio, JSON) — se fusionan con lo actual</label>
+      <textarea id="dev-values" spellcheck="false"></textarea>
+      <label>Herramientas apagadas</label>
+      <div class="row" id="dev-tools"></div>
+      <label>Rol y nombre del agente</label>
+      <div class="row"><select id="dev-role" style="width:auto"><option value="">(recepcionista general)</option><option value="ventas">ventas</option><option value="soporte">soporte</option><option value="recepcion">recepción</option><option value="gerente">gerente</option></select><input id="dev-agentname" placeholder="Nombre del agente (opcional)" style="max-width:16rem"></div>
+      <div class="row" style="margin-top:.8rem"><button id="dev-apply">Aplicar al teléfono</button><button class="ghost" id="dev-reload">Recargar del teléfono</button><span id="dev-msg" class="small muted"></span></div>
+    </div>
+    <div class="card"><div class="row between"><h2>Kernel</h2><button class="sm ghost" id="dev-kernel-btn">Inspeccionar</button></div><pre id="dev-kernel" class="hidden"></pre></div>
+    <div class="card"><div class="row between"><h2>Traza de herramientas</h2><button class="sm ghost" id="dev-trace-btn">Últimas 60</button></div><div id="dev-trace"></div></div>
+    <div class="card"><div class="row between"><h2>Snapshot en bruto</h2><button class="sm ghost" id="dev-raw-btn">Ver</button></div><pre id="dev-raw" class="hidden"></pre></div>
+    <div class="card">
+      <h2>Yaya admin</h2>
+      <p class="small muted">Con la ADMIN_KEY del gateway: métricas, cuentas, pagos pendientes, planes y créditos.</p>
+      <div class="row"><input id="admin-key" type="password" placeholder="ADMIN_KEY" style="max-width:20rem" autocomplete="off"><button class="sm secondary" id="admin-load">Cargar</button><button class="sm ghost" id="admin-forget">Olvidar</button></div>
+      <div id="admin-body" class="hidden" style="margin-top:.8rem">
+        <div class="tiles" id="admin-tiles"></div>
+        <h3 style="margin-top:.8rem">Pagos pendientes</h3><div class="tbl"><table id="admin-pending"><thead><tr><th>Ref</th><th>Cuenta</th><th>Qué</th><th class="num">Monto</th><th></th></tr></thead><tbody></tbody></table></div>
+        <h3 style="margin-top:.8rem">Acciones</h3>
+        <div class="row"><input id="admin-email" placeholder="correo de la cuenta" style="max-width:16rem"><select id="admin-plan" style="width:auto"><option value="pro">pro</option><option value="max">max</option><option value="enterprise">enterprise</option><option value="trial">trial</option><option value="free">free</option></select><input id="admin-months" type="number" value="1" min="1" max="12" style="width:5rem"><button class="sm" id="admin-setplan">Dar plan</button></div>
+        <div class="row" style="margin-top:.5rem"><input id="admin-credits" type="number" placeholder="céntimos (2000 = S/ 20)" style="max-width:14rem"><button class="sm" id="admin-grant">Dar créditos</button><span id="admin-msg" class="small muted"></span></div>
+        <h3 style="margin-top:.8rem">Cuentas</h3><div class="tbl"><table id="admin-rows"><thead><tr><th>Cuenta</th><th>Plan</th><th>Vence</th><th class="num">Créditos</th><th class="num">Tel.</th><th>Alta</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+  </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = (n, cur) => (cur === 'PEN' || !cur ? 'S/ ' : cur + ' ') + (Number(n) || 0).toLocaleString('es-PE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const minor = (m, cur) => money((Number(m) || 0) / 100, cur);
+const when = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? String(s).slice(0, 16).replace('T', ' ') : d.toLocaleString('es-PE', { dateStyle: 'medium', timeStyle: 'short' }); };
+const day = (s) => { if (!s) return ''; const d = new Date(s); return isNaN(d) ? String(s).slice(0, 10) : d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' }); };
+const ago = (s) => { if (!s) return 'nunca'; const m = (Date.now() - new Date(s)) / 60000; if (m < 1.5) return 'ahora'; if (m < 60) return `hace ${Math.round(m)} min`; if (m < 36 * 60) return `hace ${Math.round(m / 60)} h`; return `hace ${Math.round(m / 1440)} d`; };
+const tierName = { free: 'Gratis', trial: 'Prueba', pro: 'Pro', max: 'Max', custom: 'Agentes a medida', enterprise: 'Enterprise', credits: 'Créditos', expired: 'Vencido' };
+const roleName = { ventas: 'Ventas', soporte: 'Soporte', recepcion: 'Recepción', gerente: 'Gerente' };
+let toastT; const toast = (m) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); };
+const hex = (b) => Array.from(new Uint8Array(b), (x) => x.toString(16).padStart(2, '0')).join('');
+const unhex = (h) => new Uint8Array((h.match(/../g) || []).map((x) => parseInt(x, 16)));
+const utf8 = (s) => new TextEncoder().encode(s);
+const sha256hex = async (bytes) => hex(await crypto.subtle.digest('SHA-256', bytes));
+// Canonical JSON: sorted keys, compact — what the core signs (serde_json BTreeMap).
+const canonical = (v) => JSON.stringify(sortKeys(v));
+const sortKeys = (v) => Array.isArray(v) ? v.map(sortKeys) : (v && typeof v === 'object') ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, sortKeys(v[k])])) : v;
+
+/* ── constellation: the agent in the middle, every channel around it ──
+   Shared by the landing (agento.ceo), the panel (/app) and the demo (/app/demo). */
+const VIZ_REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const vizRand = (a, b) => a + Math.random() * (b - a);
+const hexA = (hex, a) => { const h = String(hex).replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map((x) => x + x).join('') : h, 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+const GLYPH = {
+  wa: [{ d: 'M12 3.6a8.4 8.4 0 0 0-7.2 12.7L3.6 20.4l4.2-1.1A8.4 8.4 0 1 0 12 3.6z' }, { f: 1, d: 'M9.3 8.3c.2-.3.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.5c.1.2 0 .4-.1.6l-.4.5c-.1.1-.1.3 0 .5.6 1 1.4 1.8 2.4 2.4.2.1.4.1.5 0l.5-.5c.2-.2.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3-.1.5-.4.7-.5.4-1.3.6-2 .4-2.4-.7-4.3-2.6-5-5-.2-.7 0-1.5.4-2z' }],
+  ig: [{ d: 'M8.5 4h7A4.5 4.5 0 0 1 20 8.5v7a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 15.5v-7A4.5 4.5 0 0 1 8.5 4z' }, { d: 'M12 8.3a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 1 1 0-7.4z' }, { f: 1, d: 'M16.6 6.4a1 1 0 1 1 0 2 1 1 0 1 1 0-2z' }],
+  ms: [{ d: 'M12 3.6c-4.7 0-8.4 3.5-8.4 8 0 2.4 1 4.5 2.7 6v2.8l2.6-1.4c1 .3 2 .4 3.1.4 4.7 0 8.4-3.5 8.4-7.9s-3.7-7.9-8.4-7.9z' }, { f: 1, d: 'M7.4 13.9l3.1-3.3 1.8 1.8 3.3-1.9-3.1 3.3-1.8-1.8z' }],
+  fb: [{ f: 1, d: 'M13.4 20.5v-7h2.4l.4-2.8h-2.8V8.9c0-.8.3-1.4 1.4-1.4h1.5V5c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.6v2.2H8.4v2.8h2.3v7z' }],
+  tt: [{ d: 'M14.2 3.8v10.1a3.4 3.4 0 1 1-3.4-3.4' }, { d: 'M14.2 3.8c.4 2.3 2 3.8 4.3 4' }],
+  tg: [{ d: 'M20.3 4.4L3.9 10.8c-.8.3-.7 1.3 0 1.5l4 1.2 1.6 4.8c.2.6 1 .8 1.4.3l2.3-2.2 4.1 3c.6.4 1.3.1 1.5-.6l2.6-13.3c.1-.7-.5-1.3-1.1-1.1z' }, { d: 'M8 13.4l9.2-6-7 7.2' }],
+  sms: [{ d: 'M5.5 5h13a1.9 1.9 0 0 1 1.9 1.9v8.2a1.9 1.9 0 0 1-1.9 1.9H10l-4.4 3.3V17h-.1a1.9 1.9 0 0 1-1.9-1.9V6.9A1.9 1.9 0 0 1 5.5 5z' }, { f: 1, d: 'M8.4 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2zM12 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2zM15.6 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2z' }],
+  sg: [{ d: 'M12 3.8a8 8 0 0 0-6.9 12l-1.1 4.2 4.2-1.1A8 8 0 1 0 12 3.8z', dash: 1 }],
+  net: [{ d: 'M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z' }]
+};
+/* Mirrors android Channel.kt: two packages can be one channel (WhatsApp + WhatsApp Business). */
+const CHAN = {
+  whatsapp: { label: 'WhatsApp', color: '#1DA851', g: 'wa' },
+  instagram: { label: 'Instagram', color: '#D62E78', g: 'ig' },
+  messenger: { label: 'Messenger', color: '#0866FF', g: 'ms' },
+  tiktok: { label: 'TikTok', color: '#17191E', spark: '#3FF2EC', g: 'tt' },
+  facebook: { label: 'Facebook', color: '#1877F2', g: 'fb' },
+  telegram: { label: 'Telegram', color: '#229ED9', g: 'tg' },
+  sms: { label: 'SMS', color: '#5B6B82', g: 'sms' },
+  signal: { label: 'Signal', color: '#3A76F0', g: 'sg' },
+  red: { label: 'Red agento', color: '#0B7B5B', g: 'net' },
+  other: { label: 'Otras apps', color: '#6B7A8F', g: 'sms' }
+};
+const CHAN_MAIN = ['whatsapp', 'instagram', 'messenger', 'tiktok', 'facebook', 'telegram', 'sms'];
+const glyphSvg = (g) => `<svg viewBox="0 0 24 24" aria-hidden="true">${GLYPH[g].map((p) => p.f
+  ? `<path d="${p.d}" fill="#fff"/>`
+  : `<path d="${p.d}" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"${p.dash ? ' stroke-dasharray="2.4 1.7"' : ''}/>`).join('')}</svg>`;
+const tileHtml = (k, s = 28) => `<span class="ctile"${k === 'instagram' ? ' data-ch="instagram"' : ''} style="--cc:${CHAN[k].color};--s:${s}px" title="${CHAN[k].label}">${glyphSvg(CHAN[k].g)}</span>`;
+const P2D = {};
+const glyphPaths = (g) => P2D[g] || (P2D[g] = GLYPH[g].map((p) => ({ p: new Path2D(p.d), f: p.f, dash: p.dash })));
+function drawGlyph(x, g, cx, cy, size) {
+  x.save(); x.translate(cx - size / 2, cy - size / 2); x.scale(size / 24, size / 24);
+  x.fillStyle = '#fff'; x.strokeStyle = '#fff'; x.lineWidth = 1.9; x.lineCap = 'round'; x.lineJoin = 'round';
+  for (const p of glyphPaths(g)) { if (p.dash) x.setLineDash([2.4, 1.7]); p.f ? x.fill(p.p) : x.stroke(p.p); x.setLineDash([]); }
+  x.restore();
+}
+class Constellation {
+  constructor(cv, o = {}) {
+    this.cv = cv; this.x = cv.getContext('2d'); this.o = Object.assign({ cx: .5, labels: true, spin: 1, scale: 1 }, o);
+    this.nodes = []; this.parts = []; this.pulse = 0; this.paused = false; this.vis = true; this.raf = 0; this.rot = 0; this.last = 0; this.w = 0;
+    this.readColors();
+    this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(cv);
+    this.io = new IntersectionObserver((e) => { this.vis = e[0].isIntersecting; this.kick(); }); this.io.observe(cv);
+    matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { this.readColors(); this.draw(performance.now()); });
+    document.addEventListener('visibilitychange', () => this.kick());
+  }
+  readColors() {
+    const cs = getComputedStyle(document.documentElement), g = (k, d) => cs.getPropertyValue(k).trim() || d;
+    this.col = { ink: g('--hero-ink', '#EAF7F0'), muted: g('--hero-muted', '#A4CABA'), line: g('--hero-line', 'rgba(234,247,240,.13)'), glow: g('--glow', '#6CF5BF'), warn: g('--hero-warn', '#F2B35A'), deep: g('--hero-b', '#052019') };
+  }
+  setNodes(list) {
+    const old = new Map(this.nodes.map((n) => [n.id, n]));
+    this.nodes = list.map((n) => Object.assign(old.get(n.id) || { glow: 0 }, n));
+    this.layout(); this.draw(performance.now());
+  }
+  resize() {
+    const r = this.cv.getBoundingClientRect(); if (r.width < 10 || r.height < 10) return;
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    this.w = r.width; this.h = r.height; this.cv.width = Math.round(r.width * d); this.cv.height = Math.round(r.height * d);
+    this.x.setTransform(d, 0, 0, d, 0, 0); this.layout(); this.draw(performance.now()); this.kick();
+  }
+  layout() {
+    if (!this.w) return;
+    this.cx = this.w * this.o.cx; this.cy = this.h * .5 + (this.o.labels ? 10 : 0);
+    this.rx = Math.min(this.w * .39, 290) * this.o.scale; this.ry = Math.min(this.h * .29, 160) * this.o.scale;
+    const mx = Math.max(1, ...this.nodes.map((n) => n.value || 0)), N = this.nodes.length;
+    this.nodes.forEach((n, i) => { n.a0 = -Math.PI / 2 + i * 2 * Math.PI / N; n.r = n.value != null ? 12 + 9 * Math.sqrt((n.value || 0) / mx) : 17; });
+  }
+  pos(n) { const a = n.a0 + this.rot; return [this.cx + Math.cos(a) * this.rx, this.cy + Math.sin(a) * this.ry]; }
+  bez(n, p) {
+    const [sx, sy] = this.pos(n), ex = this.cx, ey = this.cy, dx = ex - sx, dy = ey - sy;
+    const qx = (sx + ex) / 2 - dy * .2, qy = (sy + ey) / 2 + dx * .2, u = 1 - p;
+    return [u * u * sx + 2 * u * p * qx + p * p * ex, u * u * sy + 2 * u * p * qy + p * p * ey, qx, qy, sx, sy];
+  }
+  emit(id, back = false) {
+    if (VIZ_REDUCED || !this.vis || document.hidden) return;
+    const n = this.nodes.find((k) => k.id === id); if (!n) return;
+    this.parts.push({ n, back, t0: performance.now(), dur: vizRand(1100, 1600), color: back ? this.col.glow : (n.spark || n.color) });
+    this.kick();
+  }
+  kick() {
+    if (this.raf || !this.vis || document.hidden || !this.w) return;
+    if (VIZ_REDUCED) { this.draw(performance.now()); return; }
+    this.last = performance.now(); this.raf = requestAnimationFrame((t) => this.loop(t));
+  }
+  loop(t) {
+    this.raf = 0; if (!this.vis || document.hidden) return;
+    const dt = Math.min(64, t - this.last); this.last = t;
+    this.rot += dt * .000035 * this.o.spin; this.pulse = Math.max(0, this.pulse - dt / 700);
+    this.draw(t); this.raf = requestAnimationFrame((tt) => this.loop(tt));
+  }
+  draw(t) {
+    const x = this.x, c = this.col; if (!this.w) return;
+    x.clearRect(0, 0, this.w, this.h);
+    x.lineWidth = 1; x.strokeStyle = c.line;
+    for (const k of [.36, .68, 1]) { x.beginPath(); x.ellipse(this.cx, this.cy, this.rx * k, this.ry * k, 0, 0, Math.PI * 2); x.stroke(); }
+    if (!VIZ_REDUCED && !this.paused && x.createConicGradient) {
+      const sw = x.createConicGradient(t * .0005, this.cx, this.cy);
+      sw.addColorStop(0, hexA(c.glow, .15)); sw.addColorStop(.1, hexA(c.glow, 0)); sw.addColorStop(1, hexA(c.glow, 0));
+      x.fillStyle = sw; x.beginPath(); x.ellipse(this.cx, this.cy, this.rx * 1.06, this.ry * 1.06, 0, 0, Math.PI * 2); x.fill();
+    }
+    for (const n of this.nodes) {
+      const [, , qx, qy, sx, sy] = this.bez(n, 0);
+      x.beginPath(); x.moveTo(sx, sy); x.quadraticCurveTo(qx, qy, this.cx, this.cy);
+      x.strokeStyle = c.line; x.lineWidth = 1; if (n.dim) x.setLineDash([3, 5]); x.stroke(); x.setLineDash([]);
+    }
+    this.parts = this.parts.filter((pt) => {
+      let p = (t - pt.t0) / pt.dur;
+      if (p >= 1) { if (pt.back) pt.n.glow = 1; else this.pulse = 1; return false; }
+      p = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const q = pt.back ? 1 - p : p;
+      for (let k = 7; k >= 1; k--) {
+        const qq = pt.back ? Math.min(1, q + k * .016) : Math.max(0, q - k * .016);
+        const [px, py] = this.bez(pt.n, qq);
+        x.beginPath(); x.arc(px, py, 2.8 * (1 - k / 9), 0, Math.PI * 2); x.fillStyle = hexA(pt.color, .55 * (1 - k / 8)); x.fill();
+      }
+      const [hx, hy] = this.bez(pt.n, q);
+      const gr = x.createRadialGradient(hx, hy, 0, hx, hy, 13); gr.addColorStop(0, hexA(pt.color, .6)); gr.addColorStop(1, hexA(pt.color, 0));
+      x.fillStyle = gr; x.beginPath(); x.arc(hx, hy, 13, 0, Math.PI * 2); x.fill();
+      x.beginPath(); x.arc(hx, hy, 3.4, 0, Math.PI * 2); x.fillStyle = hexA(pt.color, 1); x.fill();
+      return true;
+    });
+    const R = 25 * this.o.scale, oc = this.paused ? c.warn : c.glow, halo = R * 3.1 + this.pulse * 16;
+    const og = x.createRadialGradient(this.cx, this.cy, 0, this.cx, this.cy, halo);
+    og.addColorStop(0, hexA(oc, .45)); og.addColorStop(.35, hexA(oc, .12)); og.addColorStop(1, hexA(oc, 0));
+    x.fillStyle = og; x.beginPath(); x.arc(this.cx, this.cy, halo, 0, Math.PI * 2); x.fill();
+    x.save(); x.setLineDash([2, 6]); x.lineDashOffset = -t * .012; x.strokeStyle = hexA(oc, .55); x.lineWidth = 1.4;
+    x.beginPath(); x.arc(this.cx, this.cy, R + 11 + this.pulse * 3, 0, Math.PI * 2); x.stroke(); x.restore();
+    x.beginPath(); x.arc(this.cx, this.cy, R + this.pulse * 2.5, 0, Math.PI * 2); x.fillStyle = oc; x.fill();
+    x.beginPath(); x.arc(this.cx, this.cy, R * .44, 0, Math.PI * 2); x.strokeStyle = c.deep; x.lineWidth = R * .17; x.stroke();
+    const oa = VIZ_REDUCED ? -.8 : t * .0018;
+    x.beginPath(); x.arc(this.cx + Math.cos(oa) * R * .72, this.cy + Math.sin(oa) * R * .72, R * .14, 0, Math.PI * 2); x.fillStyle = c.deep; x.fill();
+    if (this.o.labels && this.o.orbLabel !== false) {
+      x.font = '500 10.5px "Geist Mono", ui-monospace, monospace'; x.textAlign = 'center'; x.fillStyle = c.muted;
+      x.fillText(this.paused ? (this.o.pausedLabel || 'EN PAUSA') : (this.o.orbText || 'TU AGENTE'), this.cx, this.cy + R + 30);
+    }
+    for (const n of this.nodes) {
+      const [nx, ny] = this.pos(n);
+      if (n.glow > 0) {
+        const hg = x.createRadialGradient(nx, ny, n.r * .6, nx, ny, n.r * 2.4); hg.addColorStop(0, hexA(c.glow, .35 * n.glow)); hg.addColorStop(1, hexA(c.glow, 0));
+        x.fillStyle = hg; x.beginPath(); x.arc(nx, ny, n.r * 2.4, 0, Math.PI * 2); x.fill(); n.glow = Math.max(0, n.glow - .025);
+      }
+      x.globalAlpha = n.dim ? .62 : 1;
+      x.beginPath(); x.arc(nx, ny, n.r, 0, Math.PI * 2); x.fillStyle = n.color; x.fill();
+      x.lineWidth = 1.5; x.strokeStyle = hexA(c.ink, .28); if (n.dim) x.setLineDash([3, 3]); x.stroke(); x.setLineDash([]);
+      drawGlyph(x, n.g, nx, ny, n.r * 1.12);
+      x.globalAlpha = 1;
+      if (this.o.labels) {
+        x.textAlign = 'center';
+        x.font = '600 12px "Instrument Sans", system-ui, sans-serif'; x.fillStyle = c.ink; x.fillText(n.label, nx, ny + n.r + 16);
+        if (n.value != null) { x.font = '500 10.5px "Geist Mono", ui-monospace, monospace'; x.fillStyle = c.muted; x.fillText(n.sub || String(n.value), nx, ny + n.r + 30); }
+      }
+    }
+  }
+}
+
+const pickW = (ws) => { let r = Math.random() * ws.reduce((a, w) => a + w[1], 0); for (const [k, w] of ws) { r -= w; if (r <= 0) return k; } return ws[0][0]; };
+// Conversations are keyed "<android package>:<name>" (Channel.kt legacyPeer); network peers are "agent:…".
+const PKG = { 'com.whatsapp': 'whatsapp', 'com.whatsapp.w4b': 'whatsapp', 'com.instagram.android': 'instagram', 'com.facebook.orca': 'messenger', 'com.facebook.mlite': 'messenger', 'com.facebook.katana': 'facebook', 'org.telegram.messenger': 'telegram', 'org.telegram.plus': 'telegram', 'org.telegram.messenger.web': 'telegram', 'org.thoughtcrime.securesms': 'signal', 'com.zhiliaoapp.musically': 'tiktok', 'com.ss.android.ugc.trill': 'tiktok', 'com.google.android.apps.messaging': 'sms' };
+const channelOf = (peer) => { const m = /^([^:]+):/.exec(String(peer || '')); if (!m) return 'other'; return m[1] === 'agent' ? 'red' : (PKG[m[1]] || 'other'); };
+
+// ───────────────────────── gateway api (session bearer)
+const api = {
+  session: localStorage.getItem('yaya_session') || '',
+  async call(method, path, body, raw) {
+    const h = { accept: 'application/json' };
+    if (this.session) h.authorization = 'Bearer ' + this.session;
+    if (body !== undefined) h['content-type'] = 'application/json';
+    const r = await fetch(path, { method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) });
+    if (raw) return r;
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error((j.error && j.error.message) || j.error || r.statusText), { status: r.status, body: j });
+    return j;
+  },
+};
+
+// ───────────────────────── the console's own identity (WebCrypto only)
+// An Ed25519 key is this browser's agent id on the network; the same seed
+// gives its X25519 key for the sealed boxes. Keys live in IndexedDB as
+// non-extractable CryptoKeys: the seed is discarded once derived.
+const ID = {
+  db: null, id: null, ed: null, x: null,
+  async open() {
+    return new Promise((res, rej) => {
+      const r = indexedDB.open('agente-console', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kv');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+  },
+  async get(k) { const db = this.db || (this.db = await this.open()); return new Promise((res, rej) => { const t = db.transaction('kv').objectStore('kv').get(k); t.onsuccess = () => res(t.result); t.onerror = () => rej(t.error); }); },
+  async put(k, v) { const db = this.db || (this.db = await this.open()); return new Promise((res, rej) => { const t = db.transaction('kv', 'readwrite').objectStore('kv').put(v, k); t.onsuccess = () => res(); t.onerror = () => rej(t.error); }); },
+  async clear() { const db = this.db || (this.db = await this.open()); return new Promise((res, rej) => { const t = db.transaction('kv', 'readwrite').objectStore('kv').clear(); t.onsuccess = () => res(); t.onerror = () => rej(t.error); }); },
+  async load() {
+    const saved = await this.get('identity').catch(() => null);
+    if (saved && saved.ed && saved.x && saved.id) { this.ed = saved.ed; this.x = saved.x; this.id = saved.id; return this.id; }
+    return this.create();
+  },
+  async create() {
+    // Ed25519, extractable only for the moment it takes to derive X25519.
+    const kp = await crypto.subtle.generateKey({ name: 'Ed25519' }, true, ['sign', 'verify']);
+    const pkcs8 = new Uint8Array(await crypto.subtle.exportKey('pkcs8', kp.privateKey));
+    const seed = pkcs8.slice(pkcs8.length - 32);
+    const pub = new Uint8Array(await crypto.subtle.exportKey('raw', kp.publicKey));
+    // X25519 scalar = SHA-512(seed)[0..32] (clamped by X25519 itself) — the
+    // birational map the core uses, so it derives our X25519 key from our id.
+    const h = new Uint8Array(await crypto.subtle.digest('SHA-512', seed));
+    const scalar = h.slice(0, 32);
+    const xPkcs8 = new Uint8Array(48); xPkcs8.set([0x30, 0x2e, 0x02, 0x01, 0x00, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x6e, 0x04, 0x22, 0x04, 0x20]); xPkcs8.set(scalar, 16);
+    const x = await crypto.subtle.importKey('pkcs8', xPkcs8, { name: 'X25519' }, false, ['deriveBits']);
+    const ed = await crypto.subtle.importKey('pkcs8', pkcs8, { name: 'Ed25519' }, false, ['sign']);
+    seed.fill(0); pkcs8.fill(0); scalar.fill(0); xPkcs8.fill(0); h.fill(0);
+    this.ed = ed; this.x = x; this.id = 'agent:' + hex(pub);
+    await this.put('identity', { ed, x, id: this.id, createdAt: new Date().toISOString() });
+    return this.id;
+  },
+  async sign(bytes) { return hex(await crypto.subtle.sign({ name: 'Ed25519' }, this.ed, bytes)); },
+  // X-Agent-Auth: proof of possession over what the request does.
+  async authHeaders(method, pathq, body) {
+    const ts = Math.floor(Date.now() / 1000), nonce = hex(crypto.getRandomValues(new Uint8Array(16)));
+    const bodyHash = body === undefined ? '-' : await sha256hex(body);
+    const msg = utf8(`yaya-reqsig-v1\n${method.toUpperCase()}\n${pathq}\n${ts}\n${nonce}\n${bodyHash}`);
+    return { authorization: 'Bearer ' + this.id, 'x-agent-auth': `v1.${ts}.${nonce}.${await this.sign(msg)}` };
+  },
+  async envelope(payload) { return { payload, agent: this.id, sig: await this.sign(utf8(canonical(payload))), alg: 'ed25519' }; },
+  async call(method, pathq, body) {
+    const bytes = body === undefined ? undefined : utf8(JSON.stringify(body));
+    const h = Object.assign({ accept: 'application/json' }, await this.authHeaders(method, pathq, bytes));
+    if (bytes) h['content-type'] = 'application/json';
+    const r = await fetch(pathq, { method, headers: h, body: bytes });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error((j.error && j.error.message) || r.statusText), { status: r.status, body: j });
+    return j;
+  },
+};
+
+// ───────────────────────── sealed boxes (X25519 + HKDF-SHA256 + AES-256-GCM)
+const P = (1n << 255n) - 19n;
+const modpow = (b, e, m) => { let r = 1n; b %= m; while (e > 0n) { if (e & 1n) r = r * b % m; b = b * b % m; e >>= 1n; } return r; };
+// Ed25519 public key → X25519 public key: u = (1 + y) / (1 − y) mod p.
+function edToX(edPub) {
+  const b = new Uint8Array(edPub); b[31] &= 0x7f;
+  let y = 0n; for (let i = 31; i >= 0; i--) y = (y << 8n) | BigInt(b[i]);
+  const u = (1n + y) * modpow((P + 1n - y) % P, P - 2n, P) % P;
+  const out = new Uint8Array(32); let t = u; for (let i = 0; i < 32; i++) { out[i] = Number(t & 0xffn); t >>= 8n; }
+  return out;
+}
+const E2E = {
+  keys: new Map(),
+  async keyFor(from, to, theirId) {
+    const k = from + '|' + to; if (this.keys.has(k)) return this.keys.get(k);
+    const theirPub = await crypto.subtle.importKey('raw', edToX(unhex(theirId.slice(6))), { name: 'X25519' }, false, []);
+    const shared = await crypto.subtle.deriveBits({ name: 'X25519', public: theirPub }, ID.x, 256);
+    const ikm = await crypto.subtle.importKey('raw', shared, 'HKDF', false, ['deriveBits']);
+    const okm = await crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt: utf8('yaya-e2e-v1'), info: utf8(k) }, ikm, 256);
+    const key = await crypto.subtle.importKey('raw', okm, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+    this.keys.set(k, key); return key;
+  },
+  async seal(to, obj) {
+    const from = ID.id, key = await this.keyFor(from, to, to);
+    const nonce = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: nonce, additionalData: utf8(from + '|' + to) }, key, utf8(JSON.stringify(obj)));
+    return { alg: 'x25519-hkdf-sha256-aes256gcm', from, to, nonce: hex(nonce), ct: hex(ct) };
+  },
+  async open(box) {
+    if (box.alg !== 'x25519-hkdf-sha256-aes256gcm' || box.to !== ID.id) throw new Error('caja no legible');
+    const key = await this.keyFor(box.from, box.to, box.from);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unhex(box.nonce), additionalData: utf8(box.from + '|' + box.to) }, key, unhex(box.ct));
+    return JSON.parse(new TextDecoder().decode(pt));
+  },
+};
+
+// ───────────────────────── talking to the phone through the relay
+const Phone = {
+  target: null, pending: new Map(), polling: false, online: false, lastReply: 0,
+  async link() {
+    // This browser's key joins the account as a "web" device, once.
+    const key = 'yaya_console_linked:' + ID.id;
+    if (localStorage.getItem(key) === (me && me.account.id)) return;
+    await ID.call('POST', '/v1/account/agents', { session: api.session, label: 'Consola web', kind: 'web' });
+    localStorage.setItem(key, me.account.id);
+  },
+  async call(cmd, args = {}, timeoutMs = 90000) {
+    if (!this.target) throw new Error('No hay un teléfono con agente en tu cuenta todavía.');
+    const id = hex(crypto.getRandomValues(new Uint8Array(8)));
+    const box = await E2E.seal(this.target, Object.assign({ scope: 'owner', id, cmd }, args));
+    const env = await ID.envelope(box);
+    await ID.call('POST', `/v1/agents/${this.target}/inbox`, env);
+    this.poll();
+    return new Promise((res, rej) => {
+      const t = setTimeout(() => { this.pending.delete(id); rej(new Error('El teléfono no respondió. ¿Está encendido y con internet?')); }, timeoutMs);
+      this.pending.set(id, { res, rej, t });
+    });
+  },
+  async poll() {
+    if (this.polling) return; this.polling = true;
+    try {
+      while (this.pending.size > 0 || document.visibilityState === 'visible') {
+        let r;
+        try { r = await ID.call('GET', '/v1/inbox?wait=25'); } catch (e) { await new Promise((s) => setTimeout(s, 3000)); continue; }
+        for (const m of (r.messages || [])) {
+          let msg; try { msg = await E2E.open(m.box); } catch { continue; }
+          if (msg.scope !== 'owner') continue;
+          this.online = true; this.lastReply = Date.now();
+          const p = this.pending.get(msg.inReplyTo);
+          if (p) { clearTimeout(p.t); this.pending.delete(msg.inReplyTo); msg.error ? p.rej(new Error(msg.error)) : p.res(msg); }
+        }
+        if (this.pending.size === 0 && document.visibilityState !== 'visible') break;
+      }
+    } finally { this.polling = false; }
+  },
+};
+
+// ───────────────────────── state
+let me = null, snap = null, backupKey = null, snapshotFrom = 'none', devMode = localStorage.getItem('yaya_dev') === '1';
+// Business runtimes the console can drive: phones and nodes. The consumer app on a
+// handset links as 'android' / 'ios' and has no business behind it.
+const phones = () => (me ? me.agents.filter((a) => (a.kind === 'phone' || a.kind === 'node') && !a.revoked) : []);
+const cur = () => (me && me.prices && me.prices.currency) || 'PEN';
+
+// ───────────────────────── navigation
+const VIEWS = ['home', 'agent', 'sales', 'customers', 'team', 'plan', 'market', 'settings', 'dev'];
+function show(v) {
+  if (!VIEWS.includes(v)) v = 'home';
+  VIEWS.forEach((s) => $('#view-' + s).classList.toggle('on', s === v));
+  $$('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.view === v));
+  location.hash = v; window.scrollTo(0, 0);
+  if (v === 'agent') loadChat();
+  if (v === 'market') renderMarket().catch((e) => toast(e.message));
+}
+$$('#tabs button').forEach((b) => b.onclick = () => show(b.dataset.view));
+function gate(on) { $('#view-signin').classList.toggle('hidden', on); $('#shell').classList.toggle('on', on); signinArt(!on); }
+// The sign-in art: an example day, every channel flowing into the agent.
+let signViz = null, signT = 0;
+function signinArt(on) {
+  clearInterval(signT);
+  if (!on) return;
+  if (!signViz) {
+    signViz = new Constellation($('#signin-canvas'), { labels: false, scale: 1.12, spin: 2.2 });
+    signViz.setNodes(CHAN_MAIN.map((k) => Object.assign({ id: k, value: null }, CHAN[k])));
+    $('#fc-ig').innerHTML = glyphSvg('ig');
+  }
+  signT = setInterval(() => { const k = CHAN_MAIN[Math.floor(Math.random() * CHAN_MAIN.length)]; signViz.emit(k); setTimeout(() => signViz.emit(k, true), 1300); }, 700);
+}
+// The home hero: the business's real channels (sized by conversations), alive while the phone answers.
+let heroViz = null, heroT = 0;
+function renderHero() {
+  const by = {};
+  for (const c of ((snap && snap.conversations) || [])) { const k = channelOf(c.peer); const b = by[k] || (by[k] = { n: 0, m: 0 }); b.n++; b.m += Number(c.messages) || 1; }
+  const ids = Object.keys(by).sort((a, b) => by[b].n - by[a].n).slice(0, 9), live = snapshotFrom === 'live';
+  if (!heroViz) heroViz = new Constellation($('#hero-canvas'), { labels: true, pausedLabel: 'SIN CONEXIÓN' });
+  heroViz.paused = !live;
+  heroViz.setNodes(ids.length
+    ? ids.map((k) => Object.assign({ id: k, value: by[k].n, sub: by[k].n + (by[k].n === 1 ? ' chat' : ' chats') }, CHAN[k]))
+    : CHAN_MAIN.map((k) => Object.assign({ id: k, value: null, dim: true }, CHAN[k])));
+  $('#viz-cap').textContent = !ids.length ? 'Tus canales aparecen cuando te escriban' : live ? 'En vivo · tus canales' : 'Tus canales · última copia';
+  $('#viz-dot').classList.toggle('off', !live);
+  clearInterval(heroT);
+  const ws = ids.map((k) => [k, by[k].m]);
+  if (live && ws.length) heroT = setInterval(() => { if (!$('#view-home').classList.contains('on')) return; const k = pickW(ws); heroViz.emit(k); setTimeout(() => heroViz.emit(k, true), vizRand(1100, 1800)); }, 1100);
+}
+
+// ───────────────────────── sign in
+let pending = null;
+$('#signin-form').onsubmit = async (e) => {
+  e.preventDefault();
+  const btn = $('#signin-btn'); btn.disabled = true; $('#signin-err').classList.add('hidden');
+  try {
+    const body = { email: $('#email').value.trim() || undefined, phone: $('#phone').value.trim() || undefined, name: $('#name').value.trim() || undefined };
+    if (!body.email && !body.phone) throw new Error('Pon tu WhatsApp o tu correo.');
+    const r = await api.call('POST', '/v1/accounts/otp/start', body);
+    pending = { ...body, email: r.email || body.email, phone: r.phone || body.phone };
+    const via = [r.sent.whatsapp && 'WhatsApp', r.sent.email && 'correo'].filter(Boolean).join(' y ');
+    $('#code-sent').textContent = `Te enviamos el código por ${via}. Vale 10 minutos.`;
+    $('#signin-form').classList.add('hidden'); $('#code-form').classList.remove('hidden'); $('#code').focus();
+  } catch (err) {
+    $('#signin-err').textContent = err.status === 429 ? 'Demasiados intentos. Espera un momento.' : err.status === 503 ? 'No pudimos enviar el código ahora. Inténtalo en un minuto.' : err.message;
+    $('#signin-err').classList.remove('hidden');
+  } finally { btn.disabled = false; }
+};
+$('#code-form').onsubmit = async (e) => {
+  e.preventDefault();
+  const btn = $('#code-btn'); btn.disabled = true; $('#code-err').classList.add('hidden');
+  try {
+    const r = await api.call('POST', '/v1/accounts/otp/check', { ...pending, code: $('#code').value.trim() });
+    api.session = r.session; localStorage.setItem('yaya_session', r.session);
+    $('#code-form').classList.add('hidden'); $('#signin-form').classList.remove('hidden'); $('#code').value = '';
+    await boot();
+  } catch (err) {
+    $('#code-err').textContent = err.status === 401 ? 'Código incorrecto.' : err.status === 410 ? 'El código venció. Pide otro.' : err.message;
+    $('#code-err').classList.remove('hidden');
+  } finally { btn.disabled = false; }
+};
+$('#code-resend').onclick = async () => { try { await api.call('POST', '/v1/accounts/otp/start', pending); $('#code-sent').textContent = 'Código reenviado.'; } catch (err) { $('#code-err').textContent = err.message; $('#code-err').classList.remove('hidden'); } };
+$('#code-back').onclick = () => { $('#code-form').classList.add('hidden'); $('#signin-form').classList.remove('hidden'); };
+$('#code').oninput = () => { if ($('#code').value.length === 6) $('#code-form').requestSubmit(); };
+$('#logout').onclick = async () => { try { await api.call('POST', '/v1/accounts/logout', {}); } catch {} api.session = ''; localStorage.removeItem('yaya_session'); me = snap = null; backupKey = null; gate(false); };
+
+// ───────────────────────── account + snapshot
+async function loadAccount() {
+  me = await api.call('GET', '/v1/account');
+  // D14: no credits any more — older gateways may still send them; newer ones don't.
+  me.credits = me.credits || { balance: 0, messagesLeft: 0, leads: 0, spentToday: 0, callPrice: 0, callsPerMessage: 1, recargas: [], ledger: [] };
+  me.wallet = me.wallet || { balance: 0 }; me.economics = me.economics || {};
+  const p = me.plan, c = me.credits;
+  $('#top-name').textContent = me.account.name || me.account.email;
+  $('#top-line').textContent = phones().length ? `${phones().length} teléfono${phones().length === 1 ? '' : 's'} · ${phones().filter((a) => a.online).length} en línea` : 'sin teléfono vinculado';
+  const chip = $('#top-plan'); chip.textContent = p.state === 'trial' ? `Prueba · ${p.daysLeft} d` : tierName[p.state === 'active' ? p.name : p.state] || p.name;
+  chip.className = 'chip ' + (p.state === 'active' ? 'ok' : p.state === 'trial' ? 'info' : p.state === 'free' ? 'warn' : 'bad');
+  $('#top-credits').style.display = 'none';
+  $('#team-account').textContent = me.account.phone ? '+' + me.account.phone : me.account.email;
+  $('#support-link').href = (me.support && me.support.url) || '/support';
+  // The support WhatsApp comes from the server, so ops can switch the line.
+  if (me.support && me.support.whatsapp) { $('#support-wa').href = me.support.whatsapp; $('#support-wa').classList.remove('hidden'); } else { $('#support-wa').classList.add('hidden'); }
+  // D14: a seller account (the agente team) also runs the ops console — same login.
+  $('#ops-link').classList.toggle('hidden', !me.seller);
+  const online = phones().find((a) => a.online), any = phones()[0];
+  Phone.target = (online || any || {}).agent || null;
+  renderPlan(); renderTeam(); renderSettings();
+}
+
+async function loadSnapshot() {
+  snapshotFrom = 'none'; snap = null;
+  if (Phone.target && ID.id) {
+    try { snap = await Phone.call('snapshot', {}, 45000); snapshotFrom = 'live'; }
+    catch (e) { console.warn('live snapshot failed', e); }
+  }
+  if (!snap && me.backups.length) {
+    try { snap = await snapshotFromBackup(me.backups[0].id); snapshotFrom = 'backup'; } catch (e) { console.warn('backup snapshot failed', e); }
+  }
+  renderHome(); renderSales(); renderCustomers(); if (me) renderCampaigns();
+}
+
+async function accountKey() {
+  if (backupKey) return backupKey;
+  const r = await api.call('GET', '/v1/account/backup-key');
+  backupKey = await crypto.subtle.importKey('raw', unhex(r.key), { name: 'AES-GCM' }, false, ['decrypt']);
+  return backupKey;
+}
+async function snapshotFromBackup(id) {
+  const r = await api.call('GET', '/v1/backup/' + id, undefined, true);
+  if (!r.ok) throw new Error('sin copia');
+  const meta = JSON.parse(r.headers.get('x-backup-meta') || '{}');
+  const buf = new Uint8Array(await r.arrayBuffer());
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf.slice(0, 12) }, await accountKey(), buf.slice(12));
+  const s = JSON.parse(new TextDecoder().decode(plain));
+  const rows = (t) => { const x = s.tables[t]; return x ? x.rows.map((r) => Object.fromEntries(x.columns.map((c, i) => [c, r[i]]))) : []; };
+  const biz = rows('businesses')[0] || {};
+  const appts = rows('appointments').filter((a) => a.status !== 'cancelled'), orders = rows('orders').filter((o) => o.status !== 'cancelled');
+  const pays = rows('payments'), msgs = rows('messages').filter((m) => m.agent_type === 'customer');
+  const today = new Date().toISOString().slice(0, 10), month = today.slice(0, 7);
+  const sum = (arr, f) => arr.reduce((s, x) => s + (Number(f(x)) || 0), 0);
+  const byDay = (arr, f, amt) => { const m = {}; for (const x of arr) { const d = String(f(x)).slice(0, 10); if (!d) continue; m[d] = m[d] || { day: d, n: 0, amount: 0 }; m[d].n++; m[d].amount += amt ? Number(amt(x)) || 0 : 0; } return Object.values(m).sort((a, b) => a.day.localeCompare(b.day)).slice(-30); };
+  const convos = {}; for (const m of msgs) { const c = convos[m.peer] || (convos[m.peer] = { peer: m.peer, messages: 0, lastAt: '', lastText: '', lastRole: '' }); c.messages++; if (String(m.created_at) > c.lastAt) { c.lastAt = m.created_at; c.lastText = m.content; c.lastRole = m.role; } }
+  return {
+    fromBackup: true, backupAt: meta.createdAt, business: { name: biz.name, industry: biz.industry, country: biz.country, onboarded: !!biz.onboarded },
+    dashboard: {
+      businessName: biz.name, onboarded: !!biz.onboarded, plan: {}, openGaps: [],
+      earnings: { today: sum(pays.filter((p) => String(p.received_at).startsWith(today)), (p) => p.amount), week: 0, month: sum(pays.filter((p) => String(p.received_at).startsWith(month)), (p) => p.amount) },
+      appointments: appts.filter((a) => String(a.starts_at) >= today).sort((a, b) => String(a.starts_at).localeCompare(String(b.starts_at))).slice(0, 100).map((a) => ({ id: a.id, customer: a.customer_name, phone: a.phone, specialist: a.specialist, service: a.service, date: String(a.starts_at).slice(0, 10), time: String(a.starts_at).slice(11, 16), status: a.status, paid: !!a.paid, price: a.price })),
+      orders: orders.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at))).slice(0, 50).map((o) => ({ id: o.id, customer: o.customer_name, items: typeof o.items === 'string' ? JSON.parse(o.items || '[]') : o.items, total: o.total, status: o.status, paid: !!o.paid, date: String(o.created_at).slice(0, 10), time: String(o.created_at).slice(11, 16) })),
+    },
+    payments: pays.sort((a, b) => String(b.received_at).localeCompare(String(a.received_at))).slice(0, 50).map((p) => ({ at: p.received_at, payer: p.payer || p.payer_phone, source: p.source, amount: p.amount, currency: p.currency })),
+    conversations: Object.values(convos).sort((a, b) => b.lastAt.localeCompare(a.lastAt)),
+    series: { payments: byDay(pays, (p) => p.received_at, (p) => p.amount), orders: byDay(orders, (o) => o.created_at, (o) => (o.paid ? o.total : 0)), appointments: byDay(appts, (a) => a.starts_at, (a) => (a.paid ? a.price : 0)), messages: byDay(msgs.filter((m) => m.role === 'user'), (m) => m.created_at), customers: [] },
+    totals: { customers: Object.keys(convos).length, messages: msgs.filter((m) => m.role === 'user').length, transactions: appts.length + orders.length, collected: sum(pays, (p) => p.amount) },
+  };
+}
+
+// ───────────────────────── home
+function greeting() { const h = new Date().getHours(); return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches'; }
+function renderHome() {
+  const name = (me.account.name || '').split(' ')[0];
+  $('#hello-title').textContent = `${greeting()}${name ? ', ' + name : ''}.`;
+  const d = snap && snap.dashboard, e = d && d.earnings || {};
+  $('#hello-sub').textContent = !phones().length ? 'Instala agento en el celular de tu negocio para empezar.'
+    : snapshotFrom === 'live' ? `Hoy tu agente atendió ${(d.plan && d.plan.messagesUsed) || 0} mensajes de ${(d.plan && d.plan.customersUsed) || 0} clientes y cobraste ${money(e.today || 0, cur())}.${d.plan && d.plan.limitReached ? ' Llegó al límite de hoy.' : ''}`
+    : snapshotFrom === 'backup' ? `Tu teléfono no responde ahora — mostrando la última copia (${when(snap.backupAt)}).` : 'No pudimos hablar con tu teléfono. ¿Está encendido y con internet?';
+  // plan banner
+  const p = me.plan, c = me.credits, b = $('#home-banner');
+  if (p.state === 'trial') b.innerHTML = `<div class="banner trial"><div class="grow"><b>Te quedan ${p.daysLeft} día${p.daysLeft === 1 ? '' : 's'} de prueba con todo lo de Pro.</b><div class="small muted">Después, tu agente sigue con 30 conversaciones al mes. Pro son 1 000; Max, 3 000 y hasta 3 teléfonos.</div></div><button class="sm" data-go="plan">Ver planes</button></div>`;
+  else if (p.state === 'free') b.innerHTML = `<div class="banner trial"><div class="grow"><b>Plan gratis: 30 conversaciones al mes.</b><div class="small muted">Una conversación es un cliente que tu agente atendió en el mes. Con Pro son 1 000; con Max, 3 000 y hasta 3 teléfonos.</div></div><a class="btn sm" href="https://wa.me/51913879819?text=Estoy%20listo%20para%20vender%20en%20autom%C3%A1tico%2C%20estoy%20listo%20para%20subir%20a%20pro!" target="_blank" rel="noopener">Subir a Pro</a></div>`;
+  else if (p.state === 'expired') b.innerHTML = `<div class="banner expired"><div class="grow"><b>Tu agente está en pausa.</b><div class="small">Tu prueba terminó y no tienes saldo. Una recarga de ${minor(c.recargas[0], cur())} lo pone a responder otra vez en un minuto.</div></div><button class="sm" data-go="plan">Recargar</button></div>`;
+  else if (p.state === 'credits') b.innerHTML = `<div class="banner credits"><div class="grow"><b>Respondiendo con tu saldo: ${minor(c.balance, cur())} ≈ ${c.messagesLeft} mensajes.</b><div class="small">Un plan Pro cuesta lo mismo que 5 recargas y trae 1 000 mensajes al día.</div></div><button class="sm" data-go="plan">Ver planes</button></div>`;
+  else b.innerHTML = '';
+  $$('[data-go]', b).forEach((x) => x.onclick = () => show(x.dataset.go));
+  // phones
+  const ph = phones();
+  $('#home-phones').innerHTML = ph.length ? ph.map((a) => {
+    const isTarget = a.agent === Phone.target, live = isTarget && snapshotFrom === 'live';
+    return `<div class="card phone-card"><span class="dot ${a.online ? 'on' : 'off'}" title="${a.online ? 'en línea' : 'sin conexión'}"></span>
+      <div><div class="row" style="gap:.4rem"><b>${esc(a.businessName || a.label || 'Tu negocio')}</b>${a.role ? `<span class="chip">${esc(roleName[a.role] || a.role)}</span>` : ''}${a.hardwareVerified ? '<span class="chip ok" title="teléfono verificado por hardware">✓ verificado</span>' : ''}</div>
+      <div class="small muted">${a.kind === 'node' ? '🖥 nodo · ' : ''}${esc(a.label || 'agente')} · ${a.online ? 'en línea' : 'visto ' + ago(a.lastSeenAt)}</div>
+      ${live ? `<div class="stats"><div><b>${d.plan.messagesUsed ?? 0}</b><span>mensajes hoy</span></div><div><b>${d.plan.customersUsed ?? 0}</b><span>clientes hoy</span></div><div><b>${money(e.today || 0, cur())}</b><span>cobrado hoy</span></div>${d.plan.messagesCap ? `<div><b>${Math.round(100 * (d.plan.messagesUsed || 0) / d.plan.messagesCap)}%</b><span>del cupo diario</span></div>` : ''}</div>` : ''}</div>
+      <button class="sm secondary" data-go="agent" data-target="${a.agent}">Hablar</button></div>`;
+  }).join('') : `<div class="card"><h2>Tu primer agente</h2><p class="muted small">Instala <b>agento business</b> en el celular del negocio y entra con esta cuenta. En 5 minutos está respondiendo a tus clientes.</p><div class="row"><a class="btn sm" href="https://agento.ceo/#descargar">Descargar la app</a><a class="btn sm ghost" href="/app/demo">Ver la demo del panel</a></div></div>`;
+  $$('#home-phones [data-go]').forEach((x) => x.onclick = () => { if (x.dataset.target) Phone.target = x.dataset.target; show(x.dataset.go); });
+  // tiles
+  const t = snap && snap.totals || {};
+  $('#home-tiles').innerHTML = [
+    ['Hoy cobrado', snap ? money(e.today || 0, cur()) : '—', 'citas y pedidos pagados'],
+    ['Este mes', snap ? money(e.month || 0, cur()) : '—', 'cobrado'],
+    ['Clientes', snap ? (t.customers ?? '—') : '—', 'conversaciones totales'],
+    ['Mensajes', snap ? (t.messages ?? '—') : '—', 'atendidos por tu agente'],
+  ].map(([k, v, s]) => `<div><dt>${k}</dt><dd>${v}</dd><span>${s}</span></div>`).join('');
+  const limit = !!(d && d.plan && d.plan.limitReached), live = snapshotFrom === 'live';
+  const [stText, stOn] = !phones().length ? ['Sin teléfono vinculado', false] : live ? [limit ? 'Llegó al límite de hoy' : 'Tu agente está atendiendo', !limit] : snapshotFrom === 'backup' ? ['Mostrando la última copia', false] : ['Sin conexión con tu teléfono', false];
+  $('#hero-status').textContent = stText; $('#hero-dot').classList.toggle('off', !stOn);
+  const today0 = new Date().toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' });
+  $('#hero-date').textContent = today0.charAt(0).toUpperCase() + today0.slice(1);
+  renderHero();
+  // agenda
+  const today = new Date().toLocaleDateString('en-CA');
+  const todays = d ? (d.appointments || []).filter((a) => a.date === today) : [];
+  $('#agenda-count').textContent = todays.length ? `${todays.length} cita${todays.length === 1 ? '' : 's'}` : '';
+  $('#home-agenda').innerHTML = todays.length ? todays.map((a) => `<div class="row between" style="padding:.35rem 0;border-bottom:1px solid var(--variant)"><span><b class="tabular">${esc(a.time)}</b> · ${esc(a.customer)}${a.service ? ' · ' + esc(a.service) : ''}</span>${chipFor(a.status, a.paid)}</div>`).join('') : '<p class="muted">Nada agendado para hoy.</p>';
+  // gaps
+  const gaps = d ? (d.openGaps || []) : [];
+  $('#gaps-count').textContent = gaps.length || '';
+  $('#home-gaps').innerHTML = gaps.length ? gaps.map((g) => `<div style="padding:.5rem 0;border-bottom:1px solid var(--variant)"><div class="small"><b>${esc(g.customer || 'un cliente')}</b> preguntó: “${esc(g.question)}”</div><form class="row" data-gap="${esc(g.id)}" style="margin-top:.3rem"><input placeholder="Tu respuesta…" style="flex:1;min-width:10rem;padding:.55rem .8rem"><button class="sm" type="submit">Enseñar</button></form></div>`).join('') : `<p class="muted small">${snapshotFrom === 'live' ? 'Todo respondido. 🎉' : '—'}</p>`;
+  $$('#home-gaps form').forEach((f) => f.onsubmit = async (ev) => { ev.preventDefault(); const inp = $('input', f); if (!inp.value.trim()) return; f.querySelector('button').disabled = true; try { await Phone.call('answer_gap', { gapId: f.dataset.gap, answer: inp.value.trim() }); toast('Tu agente ya lo sabe.'); f.remove(); } catch (e) { toast(e.message); f.querySelector('button').disabled = false; } });
+  $('#home-snapshot-note').textContent = snapshotFrom === 'live' ? `Datos en vivo de tu teléfono · core ${snap.version || ''}` : snapshotFrom === 'backup' ? 'Datos de la última copia de seguridad.' : '';
+}
+const chipFor = (s, paid) => `<span class="chip ${s === 'cancelled' ? 'bad' : (paid || s === 'confirmed' || s === 'paid') ? 'ok' : 'warn'}">${s === 'pending_payment' ? 'por pagar' : s === 'confirmed' ? 'confirmada' : s === 'cancelled' ? 'cancelada' : esc(s || '')}${paid && s !== 'paid' ? ' · pagada' : ''}</span>`;
+
+// ───────────────────────── agent chat
+let chatLoaded = false, chatBusy = false;
+const SUGGEST = ['¿Cómo va el día?', '¿Qué citas hay mañana?', 'Sube el precio de …', 'Cambia el horario del sábado a 10-14', 'Pausa las reservas por hoy', 'Activa el delivery', '¿Qué preguntan más los clientes?'];
+function bubble(kind, html) { const el = document.createElement('div'); el.className = 'bubble ' + kind; el.innerHTML = html; $('#chat-log').appendChild(el); $('#chat-log').scrollTop = 1e9; return el; }
+function traceChips(trace) { if (!trace || !trace.length) return; const el = document.createElement('div'); el.className = 'tools'; el.innerHTML = trace.map((t) => `<span class="chip ${t.result && t.result.error ? 'bad' : 'ok'}" title="${esc(JSON.stringify(t.args)).slice(0, 300)}">⚙ ${esc(t.tool)}</span>`).join(''); $('#chat-log').appendChild(el); }
+async function loadChat() {
+  const st = $('#agent-status'); const ph = phones().find((a) => a.agent === Phone.target);
+  st.innerHTML = `<span class="dot ${ph && ph.online ? 'on' : 'off'}"></span>${ph ? esc(ph.businessName || ph.label || 'teléfono') : 'sin teléfono'}`;
+  $('#chat-suggest').innerHTML = SUGGEST.map((s) => `<button type="button" class="secondary">${esc(s)}</button>`).join('');
+  $$('#chat-suggest button').forEach((b) => b.onclick = () => { $('#chat-input').value = b.textContent; $('#chat-input').focus(); });
+  if (chatLoaded || !Phone.target) return; chatLoaded = true;
+  $('#chat-log').innerHTML = ''; const w = bubble('sys', 'Cargando la conversación…');
+  try { const h = await Phone.call('history', { limit: 40 }, 30000); w.remove(); (h.messages || []).forEach((m) => bubble(m.role === 'user' ? 'me' : 'ai', esc(m.text))); if (!h.messages || !h.messages.length) bubble('ai', 'Hola, soy el gerente de tu negocio. Dime qué cambiar o pregúntame lo que quieras: precios, horarios, citas, cómo va el día.'); }
+  catch (e) { w.textContent = e.message; chatLoaded = false; }
+}
+$('#chat-form').onsubmit = async (e) => {
+  e.preventDefault(); const inp = $('#chat-input'); const text = inp.value.trim(); if (!text || chatBusy) return;
+  chatBusy = true; inp.value = ''; inp.style.height = ''; bubble('me', esc(text));
+  const w = bubble('ai', '<span class="typing"><i></i><i></i><i></i></span>');
+  try { const r = await Phone.call('chat', { text }); w.remove(); traceChips(r.trace); bubble('ai', esc(r.text)); if (r.trace && r.trace.length) loadSnapshot(); }
+  catch (err) { w.className = 'bubble sys'; w.textContent = err.message; }
+  finally { chatBusy = false; }
+};
+$('#chat-input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#chat-form').requestSubmit(); } });
+$('#chat-input').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 128) + 'px'; });
+
+// ───────────────────────── sales
+function barChart(svg, series, key, fmt) {
+  const W = 600, H = 130, m = { l: 34, r: 6, t: 8, b: 20 };
+  const days = []; for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d.toLocaleDateString('en-CA')); }
+  const map = Object.fromEntries((series || []).map((s) => [s.day, s]));
+  const vals = days.map((d) => (map[d] ? Number(map[d][key]) || 0 : 0));
+  const max = Math.max(1, ...vals); const bw = (W - m.l - m.r) / 30;
+  const y = (v) => m.t + (H - m.t - m.b) * (1 - v / max);
+  const bars = vals.map((v, i) => `<rect x="${(m.l + i * bw + 1).toFixed(1)}" y="${y(v).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${(H - m.b - y(v)).toFixed(1)}" class="${v ? '' : 'dim'}"><title>${days[i]}: ${fmt(v)}</title></rect>`).join('');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio', 'none');
+  svg.innerHTML = `<text x="${m.l - 4}" y="${m.t + 8}" text-anchor="end">${fmt(max)}</text><text x="${m.l - 4}" y="${H - m.b}" text-anchor="end">0</text>${bars}<text x="${m.l}" y="${H - 4}">${day(days[0])}</text><text x="${W - m.r}" y="${H - 4}" text-anchor="end">hoy</text>`;
+}
+function renderSales() {
+  if (!snap) { $('#sales-tiles').innerHTML = '<div class="tile"><div class="k">Sin datos</div><div class="s">Conecta tu teléfono para ver tus ventas.</div></div>'; return; }
+  const d = snap.dashboard, t = snap.totals, s = snap.series;
+  $('#sales-tiles').innerHTML = [
+    ['Cobrado este mes', money(d.earnings.month, cur()), 'citas y pedidos pagados'],
+    ['Cobrado total', money(t.collected, cur()), 'pagos detectados en el teléfono'],
+    ['Citas + pedidos', t.transactions, 'registrados por tu agente'],
+    ['Conversaciones', t.customers, 'clientes distintos'],
+  ].map(([k, v, x]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${x}</div></div>`).join('');
+  barChart($('#ch-collected'), s.payments, 'amount', (v) => money(v, cur()));
+  barChart($('#ch-messages'), s.messages, 'n', (v) => v + ' msg');
+  const tx = {}; for (const x of [...(s.orders || []), ...(s.appointments || [])]) { tx[x.day] = tx[x.day] || { day: x.day, n: 0 }; tx[x.day].n += x.n; }
+  barChart($('#ch-tx'), Object.values(tx), 'n', (v) => v);
+  barChart($('#ch-customers'), s.customers, 'n', (v) => v + ' clientes');
+  const fill = (sel, rows, cols) => { const tb = $(sel + ' tbody'); tb.innerHTML = rows.length ? rows.map((r) => `<tr>${r.map((c, i) => `<td class="${cols && cols[i] === 'num' ? 'num' : ''}">${c}</td>`).join('')}</tr>`).join('') : '<tr><td colspan="5" class="muted">Nada por aquí todavía.</td></tr>'; };
+  const items = (v) => { try { const a = typeof v === 'string' ? JSON.parse(v) : v; return Array.isArray(a) ? esc(a.map((i) => (i.qty || i.quantity || 1) + '× ' + (i.name || i.product || '')).join(', ')) : esc(String(v)); } catch { return esc(String(v)); } };
+  fill('#tb-pays', (snap.payments || []).map((p) => [when(p.at), esc(p.payer || '—'), esc(p.source || ''), money(p.amount, p.currency || cur())]), [, , , 'num']);
+  fill('#tb-orders', (d.orders || []).map((o) => [esc(o.date + ' ' + o.time), esc(o.customer), items(o.items), chipFor(o.status, o.paid), o.total != null ? money(o.total, cur()) : '']), [, , , , 'num']);
+  fill('#tb-appts', (d.appointments || []).map((a) => [esc(a.date + ' ' + a.time), esc(a.customer), esc([a.service, a.specialist].filter(Boolean).join(' · ')), chipFor(a.status, a.paid), a.price != null ? money(a.price, cur()) : '']), [, , , , 'num']);
+}
+
+// ───────────────────────── customers
+function renderCustomers() {
+  const list = snap ? (snap.conversations || []) : [];
+  $('#convo-count').textContent = list.length ? `${list.length}` : '';
+  $('#convo-list').innerHTML = list.length ? list.map((c) => `<div class="convo" data-peer="${esc(c.peer)}">${tileHtml(channelOf(c.peer), 34)}<div style="min-width:0;flex:1"><b>${esc((c.contact && c.contact.name) || c.peer.replace(/^com\.\w+[^:]*:/, ''))}</b><div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.lastRole === 'assistant' ? '↩ ' : ''}${esc(c.lastText || '')}</div></div><div class="small muted" style="text-align:right;flex:none">${ago(c.lastAt)}<br>${c.messages} msg</div></div>`).join('') : '<p class="muted">Cuando tus clientes escriban, aparecen aquí.</p>';
+  $$('#convo-list [data-peer]').forEach((x) => x.onclick = () => openConvo(x.dataset.peer));
+}
+async function openConvo(peer) {
+  $('#convo-list-card').classList.add('hidden'); $('#convo-detail-card').classList.remove('hidden');
+  $('#convo-peer').textContent = peer.replace(/^com\.\w+[^:]*:/, ''); $('#convo-items').innerHTML = '<p class="muted small">Cargando…</p>';
+  try {
+    const r = await Phone.call('conversation', { peer }, 30000);
+    $('#convo-items').innerHTML = (r.items || []).map((it) => it.kind === 'message' ? `<div class="bubble ${it.role === 'user' ? 'ai' : 'me'}" style="margin:.25rem 0;max-width:90%">${esc(it.text)}<div class="tiny ${it.role === 'user' ? 'muted' : ''}" style="opacity:.7">${when(it.at)}</div></div>` : `<div class="tools" style="margin:.1rem 0"><span class="chip ${it.ok ? 'ok' : 'bad'}" title="${esc(it.summary || '')}">⚙ ${esc(it.label || it.tool)}</span></div>`).join('') || '<p class="muted">Sin mensajes.</p>';
+  } catch (e) { $('#convo-items').innerHTML = `<p class="err">${esc(e.message)}${snapshotFrom === 'backup' ? ' (el detalle solo está disponible con el teléfono en línea)' : ''}</p>`; }
+}
+$('#convo-back').onclick = () => { $('#convo-detail-card').classList.add('hidden'); $('#convo-list-card').classList.remove('hidden'); };
+
+// ───────────────────────── team
+function renderTeam() {
+  const ph = phones(), web = me.agents.filter((a) => a.kind === 'web' && !a.revoked);
+  $('#team-list').innerHTML = (ph.length ? ph.map((a) => `<div class="card device" data-agent="${a.agent}">
+      <span class="dot ${a.online ? 'on' : 'off'}"></span>
+      <div><div class="row" style="gap:.4rem"><b>${esc(a.businessName || a.label || 'Teléfono')}</b>${a.hardwareVerified ? '<span class="chip ok">✓ verificado</span>' : ''}${a.agent === Phone.target ? '<span class="chip info">consola</span>' : ''}</div>
+        <div class="small muted">${esc(a.label || 'agente')} · ${a.industry ? esc(a.industry) + ' · ' : ''}${a.online ? 'en línea' : 'visto ' + ago(a.lastSeenAt)} · <span class="mono">${a.agent.slice(6, 14)}…</span></div>
+        <div class="row" style="margin-top:.4rem;gap:.4rem"><select data-role>${['', 'ventas', 'soporte', 'recepcion', 'gerente'].map((r) => `<option value="${r}" ${(a.role || '') === r ? 'selected' : ''}>${r ? roleName[r] : 'Recepcionista (todo)'}</option>`).join('')}</select><button class="text sm" data-rename>Renombrar</button></div></div>
+      <button class="text sm" data-revoke style="color:var(--error)">Retirar</button></div>`).join('')
+    : '<div class="card"><p class="muted">Todavía no hay ningún teléfono en tu cuenta.</p></div>')
+    + (web.length ? `<div class="card flat"><h3>Consolas web</h3>${web.map((w) => `<div class="row between small" style="padding:.3rem 0"><span>${esc(w.label || 'navegador')} <span class="mono muted">${w.agent.slice(6, 14)}…</span>${w.agent === ID.id ? ' <span class="chip info">este navegador</span>' : ''}</span><span class="muted">${when(w.linkedAt).slice(0, 12)}</span>${w.agent !== ID.id ? `<button class="text sm" data-unlink="${w.agent}">Quitar</button>` : ''}</div>`).join('')}</div>` : '');
+  $$('#team-list [data-agent]').forEach((card) => {
+    const id = card.dataset.agent, a = ph.find((x) => x.agent === id);
+    $('[data-role]', card).onchange = async (ev) => {
+      const role = ev.target.value;
+      try {
+        await api.call('PATCH', `/v1/account/agents/${id}`, { role: role || ' ' });
+        try { await Phone.call('apply', { patch: { values: { agentRole: role || null } } }, 30000, id); toast(`Rol aplicado: ${role ? roleName[role] : 'recepcionista'}.`); }
+        catch (e) { toast('Rol guardado; el teléfono lo tomará cuando esté en línea.'); }
+        a.role = role;
+      } catch (e) { toast(e.message); }
+    };
+    $('[data-rename]', card).onclick = async () => { const label = prompt('Nombre para este teléfono', a.label || ''); if (label == null) return; try { await api.call('PATCH', `/v1/account/agents/${id}`, { label }); a.label = label; renderTeam(); } catch (e) { toast(e.message); } };
+    $('[data-revoke]', card).onclick = async () => {
+      if (!confirm('¿Retirar este teléfono? Su llave deja de valer en la red. Úsalo si lo perdiste.')) return;
+      const succ = ph.find((x) => x.agent !== id);
+      try { await api.call('POST', `/v1/account/agents/${id}/revoke`, { successor: succ ? succ.agent : undefined }); await loadAccount(); } catch (e) { toast(e.message); }
+    };
+  });
+  $$('#team-list [data-unlink]').forEach((b) => b.onclick = async () => { try { await api.call('DELETE', `/v1/account/agents/${b.dataset.unlink}`); await loadAccount(); } catch (e) { toast(e.message); } });
+  renderCampaigns();
+}
+function renderCampaigns() {
+  const nodes = me.agents.filter((a) => a.kind === 'node' && !a.revoked);
+  const chip = $('#node-chip');
+  const st = snap && snap.node;
+  if (!nodes.length) { chip.textContent = 'sin nodo'; chip.className = 'chip'; $('#campaigns-list').innerHTML = '<p class="muted small">Todavía no tienes un nodo. Súmalo abajo y las campañas aparecen aquí.</p>'; $('#campaign-new').classList.add('hidden'); return; }
+  $('#campaign-new').classList.remove('hidden');
+  if (st) { chip.textContent = st.connected ? `WhatsApp conectado · +${st.number || ''}` : st.pairCode ? `vincular: código ${st.pairCode}` : st.paired ? 'WhatsApp desconectado' : 'sin número vinculado'; chip.className = 'chip ' + (st.connected ? 'ok' : 'warn'); }
+  else { chip.textContent = Phone.target && nodes.some((n) => n.agent === Phone.target) ? 'nodo sin respuesta' : 'nodo (elige "Hablar" en su tarjeta para verlo)'; chip.className = 'chip'; }
+  const c = snap && snap.campaigns;
+  $('#campaigns-list').innerHTML = c && c.campaigns && c.campaigns.length ? `<div class="small muted" style="margin:.4rem 0">Hoy enviados: <b>${c.sentToday}</b> · bajas totales: ${c.optOuts}</div>` + c.campaigns.map((k) => `<div class="row between" style="padding:.5rem 0;border-bottom:1px solid var(--variant)"><div style="min-width:0"><b>${esc(k.name)}</b> <span class="chip ${k.status === 'active' ? 'ok' : k.status === 'paused' ? 'warn' : ''}">${k.status}</span><div class="small muted">${k.sent} enviados · ${k.replied} respondieron · ${k.pending} pendientes · ${k.optedOut} bajas · ${k.failed} fallidos</div></div><div class="row" style="gap:.3rem">${k.status === 'active' ? `<button class="text sm" data-cmp="${k.id}" data-st="paused">Pausar</button>` : k.status === 'paused' ? `<button class="text sm" data-cmp="${k.id}" data-st="active">Reanudar</button>` : ''}<button class="text sm" data-cmp="${k.id}" data-st="done" style="color:var(--error)">Terminar</button></div></div>`).join('') : '<p class="muted small">Sin campañas. Crea una abajo o dile a tu agente: "escríbele a esta lista…".</p>';
+  $$('#campaigns-list [data-cmp]').forEach((b) => b.onclick = async () => { try { await Phone.call('campaign', { action: 'set', campaign: b.dataset.cmp, status: b.dataset.st }, 30000); toast('Listo.'); await loadSnapshot(); renderTeam(); } catch (e) { toast(e.message); } });
+}
+$('#cmp-create').onclick = async () => {
+  const contacts = $('#cmp-contacts').value.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => { const [phone, ...rest] = l.split(/[,;\t]/); return { phone: phone.trim(), name: rest.join(',').trim() || undefined }; });
+  const body = { action: 'create', name: $('#cmp-name').value, goal: $('#cmp-goal').value, opener: $('#cmp-opener').value, contacts, dailyCap: Number($('#cmp-cap').value) || 80, paceSecs: Number($('#cmp-pace').value) || 90 };
+  if (!body.name.trim() || !body.goal.trim() || !body.opener.trim() || !contacts.length) return toast('Completa nombre, objetivo, primer mensaje y contactos.');
+  if (!confirm(`¿Crear la campaña "${body.name}" para ${contacts.length} contacto(s)? El nodo empieza a escribir de inmediato dentro del horario.`)) return;
+  $('#cmp-create').disabled = true; $('#cmp-msg').textContent = 'Creando…';
+  try { const r = await Phone.call('campaign', body, 60000); $('#cmp-msg').textContent = `Creada: ${r.added} contactos (${r.skipped} omitidos).`; $('#cmp-contacts').value = ''; await loadSnapshot(); renderTeam(); }
+  catch (e) { $('#cmp-msg').textContent = e.message; } finally { $('#cmp-create').disabled = false; }
+};
+$('#link-token-btn').onclick = async () => {
+  try {
+    const r = await api.call('POST', '/v1/account/link-tokens', { label: 'nodo' });
+    const out = $('#link-token-out'); out.classList.remove('hidden');
+    out.textContent = `Código: ${r.token}\nVence: ${when(r.expiresAt)}\n\nEn el nodo (con agente corriendo):\ncurl -s -X POST http://127.0.0.1:8127/api/account/adopt -H "x-app-key: $APP_KEY" -H "content-type: application/json" -d '{"token":"${r.token}"}'`;
+  } catch (e) { toast(e.message); }
+};
+// Phone.call with an explicit target (a sibling phone).
+const _call = Phone.call.bind(Phone);
+Phone.call = (cmd, args, timeout, target) => { if (!target) return _call(cmd, args, timeout); const prev = Phone.target; Phone.target = target; const p = _call(cmd, args, timeout); Phone.target = prev; return p; };
+
+// ───────────────────────── plan & credits
+let period = localStorage.getItem('yaya_period') === 'year' ? 'year' : 'month', pendingRef = '';
+function renderPlan() {
+  const p = me.plan, c = me.credits, cu = cur();
+  const renews = ((me.billing && me.billing.subscriptions) || []).find((x) => x.status === 'active' && x.plan === p.name && x.nextChargeOn);
+  const convs = (p.caps && p.caps.conversationsPerMonth) ? p.caps.conversationsPerMonth.toLocaleString('es-PE') + ' conversaciones al mes' : 'conversaciones sin límite';
+  $('#plan-state').innerHTML = p.state === 'trial' ? `<div class="banner trial"><div class="grow"><b>Prueba gratis: ${p.daysLeft} día${p.daysLeft === 1 ? '' : 's'} más</b><div class="small muted">Hasta ${when(p.expiresAt).slice(0, 12)} tienes todo lo de Pro: 1 000 conversaciones al mes. Una conversación es un cliente que tu agente atendió en el mes.</div></div></div>`
+    : p.state === 'active' ? `<div class="okbox" style="margin-top:.9rem"><b>Plan ${tierName[p.name] || 'Max'}</b> ${renews ? 'activo · se renueva el ' + fmtDay(renews.nextChargeOn) : 'activo hasta ' + when(p.expiresAt).slice(0, 12)} · ${convs}${p.caps && p.caps.agents !== 1 ? ` · hasta ${p.caps.agents || 3} teléfonos` : ''}.</div>`
+    : p.state === 'free' ? `<div class="note" style="margin-top:.9rem"><b>Plan gratis:</b> 30 conversaciones al mes. Tus clientes de siempre siguen atendidos; los nuevos, al subir de plan.</div>`
+    : p.state === 'credits' ? `<div class="note" style="margin-top:.9rem"><b>Sin plan — respondiendo con saldo.</b> Te quedan ≈ ${c.messagesLeft} mensajes. Con Pro pagas menos por mensaje y recibes ${minor(c.balance ? 5000 : 5000, cu)} de saldo cada mes.</div>`
+    : `<div class="err" style="margin-top:.9rem"><b>Tu agente está en pausa.</b> No tienes plan ni saldo: no responde a nadie. Una recarga lo reactiva al instante; un plan lo deja tranquilo todo el mes.</div>`;
+  $('#credits-balance').textContent = minor(c.balance, cu);
+  $('#credits-line').textContent = `≈ ${c.messagesLeft} mensajes de respaldo · ${c.leads} cliente${c.leads === 1 ? '' : 's'} llegaron por la red · gastado hoy ${minor(c.spentToday, cu)}`;
+  $('#credits-permsg').textContent = `${minor(c.callPrice * c.callsPerMessage, cu)} por mensaje (${minor(c.recargas[0], cu)} ≈ ${Math.floor(c.recargas[0] / (c.callPrice * c.callsPerMessage))} mensajes, un día movido)`;
+  const lb = me.wallet && me.wallet.launchBonus;
+  $('#recargas').innerHTML = c.recargas.map((r) => `<button data-recarga="${r}"><b>${minor(r, cu)}</b><span>${lb ? 'recibes ' + minor(r + Math.floor(r * lb.percent / 100), cu) : '≈ ' + Math.floor(r / (c.callPrice * c.callsPerMessage)) + ' mensajes'}</span></button>`).join('');
+  if (lb) $('#credits-line').textContent += ` · Lanzamiento: +${lb.percent}% de saldo en cada recarga hasta el ${when(lb.until).slice(0, 12)}${me.wallet.pricesRiseOn ? ' — los precios suben el ' + me.wallet.pricesRiseOn : ''}.`;
+  renderTiers(); renderPay(me.pendingRequest); renderSubs();
+  $('#ledger tbody').innerHTML = (c.ledger || []).length ? c.ledger.map((l) => `<tr><td>${when(l.at)}</td><td>${{ starter: 'Bienvenida', grant: 'Regalo del plan', lead: 'Cliente por la red', adjust: 'Ajuste', topup: 'Recarga', call: 'Uso del agente' }[l.kind] || esc(l.kind)}<div class="small muted">${esc(l.note || '')}</div></td><td class="num" style="color:${l.delta < 0 ? 'var(--error)' : 'var(--primary)'}">${l.delta < 0 ? '−' : '+'}${minor(Math.abs(l.delta), cu)}</td></tr>`).join('') : '<tr><td colspan="3" class="muted">Sin movimientos.</td></tr>';
+}
+function renderTiers() {
+  const p = me.plan, cu = cur(), charged = (me.prices && me.prices.annualMonthsCharged) || 10;
+  $('#period-month').className = 'sm ' + (period === 'month' ? '' : 'secondary'); $('#period-year').className = 'sm ' + (period === 'year' ? '' : 'secondary');
+  $('#period-note').textContent = period === 'year' ? `Pagando el año ahorras ${12 - charged} meses.` : 'Mes a mes, sin permanencia.';
+  // D18: a plan is bought in one place — agento.ceo/checkout — by card (a
+  // subscription) or Yape/Plin, with a factura (RUC) or a boleta (DNI).
+  const buy = (t) => 'https://agento.ceo/checkout?plan=' + t + (period === 'year' ? '&anual=1' : '');
+  $('#tiers').innerHTML = ['pro', 'max'].map((t) => {
+    const tier = (me.tiers || []).find((x) => x.name === t) || {};
+    const desc = t === 'pro' ? '1 000 conversaciones al mes. Un teléfono. Copias de seguridad, este panel y boletas electrónicas emitidas automáticamente desde tu agente.' : '3 000 conversaciones al mes. Hasta 3 teléfonos o números en una sola cuenta. Emite boletas electrónicas automáticamente desde tu agente.';
+    const price = period === 'year' ? `${money(tier.priceYear, cu)}<span class="small muted"> / año</span><div class="small muted">${money(tier.price, cu)} / mes</div>` : `${money(tier.price, cu)}<span class="small muted"> / mes</span>`;
+    const active = (p.name === t || (t === 'max' && (p.name === 'custom' || p.name === 'enterprise'))) && p.state === 'active';
+    return `<div class="card tier ${active ? 'active' : ''} ${t === 'pro' ? 'best' : ''}" style="margin-top:.4rem"><div class="row between" style="align-items:flex-start"><h3>${tierName[t]}</h3><span class="price" style="text-align:right">${price}</span></div><p class="small muted">${desc}</p><div class="row" style="gap:.4rem;flex-wrap:wrap">${active ? '<span class="chip ok" style="margin-top:.4rem">Activo</span>' : `<a class="btn sm ${t === 'pro' ? '' : 'secondary'}" style="margin-top:.4rem" href="${buy(t)}" target="_blank" rel="noopener">Contratar ${tierName[t]}</a>`}</div></div>`;
+  }).join('') + `<p class="small muted" style="margin-top:.8rem">Una conversación es un cliente que tu agente atendió en el mes. Contratas en agento.ceo/checkout: con tarjeta el plan se activa al instante y se renueva solo cada mes (o año) hasta que lo canceles aquí. Pro y Max emiten tu comprobante —factura con RUC, boleta con DNI— al correo que dejes al contratar. ¿Prefieres Yape o Plin? <a href="https://wa.me/51913879819" target="_blank" rel="noopener">Escríbenos</a>.</p>`;
+}
+// Card subscriptions (Izipay): what renews, when, and the way out.
+const fmtDay = (d) => { const x = new Date(String(d).slice(0, 10) + 'T12:00:00Z'); return isNaN(x) ? String(d) : x.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric' }); };
+function renderSubs() {
+  const all = (me.billing && me.billing.subscriptions) || [], s = all.find((x) => x.status !== 'cancelled'), box = $('#sub-state');
+  if (!s) { box.innerHTML = ''; return; }
+  const per = s.interval === 'year' ? 'al año' : 'al mes';
+  const chip = s.status === 'active' ? '<span class="chip ok">activa</span>' : s.status === 'error' ? '<span class="chip warn">sin renovación automática</span>' : '<span class="chip warn">programándose</span>';
+  box.innerHTML = `<div class="card" style="margin-top:.9rem"><div class="row between"><h2>Suscripción con tarjeta</h2>${chip}</div>`
+    + `<p class="small">Plan ${tierName[s.plan] || esc(s.plan)} · ${money(s.amount, s.currency)} ${per}${s.nextChargeOn && s.status === 'active' ? ' · próximo cobro el ' + fmtDay(s.nextChargeOn) : ''}.</p>`
+    + (s.status === 'error' ? '<p class="small muted">No pudimos programar la renovación automática; tu plan sigue activo por el periodo pagado. Escríbenos y lo resolvemos.</p>' : '')
+    + `<div class="row" style="gap:.4rem;flex-wrap:wrap;margin-top:.4rem"><button class="sm secondary" id="sub-cancel">Cancelar suscripción</button></div>`
+    + '<p class="small muted" style="margin-top:.4rem">Si cancelas no se vuelve a cobrar, y tu plan sigue hasta el fin del periodo ya pagado.</p></div>';
+  $('#sub-cancel').onclick = async (ev) => {
+    if (!confirm('¿Cancelar la suscripción? No se cobrará más y tu plan sigue hasta el fin del periodo pagado.')) return;
+    ev.target.disabled = true;
+    try { await api.call('POST', '/v1/account/billing/subscription/cancel'); toast('Suscripción cancelada. No se cobrará más.'); await loadAccount(); }
+    catch (e) { ev.target.disabled = false; toast(e.message); }
+  };
+}
+$('#period-month').onclick = () => { period = 'month'; localStorage.setItem('yaya_period', period); renderTiers(); };
+$('#period-year').onclick = () => { period = 'year'; localStorage.setItem('yaya_period', period); renderTiers(); };
+function renderPay(r) {
+  $('#pay').classList.toggle('hidden', !r || r.status === 'paid'); if (!r) return; pendingRef = r.ref;
+  $('#pay-amount').textContent = money(r.amount, r.currency); $('#pay-payee').textContent = (r.pay && r.pay.payee) || 'Yaya Tech'; $('#pay-ref').textContent = r.ref;
+  const ch = []; if (r.pay && r.pay.yape) ch.push('Yape: <b>' + esc(r.pay.yape) + '</b>'); if (r.pay && r.pay.plin) ch.push('Plin: <b>' + esc(r.pay.plin) + '</b>');
+  if (r.pay && r.pay.salesWhatsapp) ch.push(`<a href="https://wa.me/${String(r.pay.salesWhatsapp).replace(/\D/g, '')}?text=${encodeURIComponent('Hola, pagué ' + (r.plan === 'credits' ? 'una recarga' : 'el plan ' + r.plan) + ' ref ' + r.ref)}">¿Dudas? Escríbenos</a>`);
+  $('#pay-channels').innerHTML = ch.join(' · ') || 'Escríbenos por WhatsApp y te lo activamos al instante.';
+  $('#pay-status').textContent = (r.reused ? 'Tienes este pago pendiente. ' : '') + (r.plan === 'credits' ? `Recarga de ${minor(r.creditsMinor, r.currency)}.` : r.months >= 12 ? `Plan ${tierName[r.plan] || r.plan} por un año.` : `Plan ${tierName[r.plan] || r.plan} por un mes.`);
+  $('#pay').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+$('#pay-check').onclick = async () => {
+  try { const s = await api.call('GET', '/v1/account/plan/request/' + pendingRef); if (s.status === 'paid') { toast('¡Pago confirmado!'); await loadAccount(); $('#pay').classList.add('hidden'); if (Phone.target) Phone.call('plan', {}, 20000).catch(() => {}); } else $('#pay-status').textContent = 'Aún no vemos el pago. Suele confirmarse en menos de un minuto; si ya pagaste, escríbenos.'; }
+  catch (e) { toast(e.message); }
+};
+
+// ───────────────────────── mercado + billetera
+const kindName = { file: 'Archivo', note: 'Nota', bundle: 'Pack' };
+async function download(id, name) {
+  const r = await api.call('GET', `/v1/listings/${id}/download`, undefined, true);
+  if (!r.ok) throw new Error('No se pudo descargar (' + r.status + ')');
+  const url = URL.createObjectURL(await r.blob()); const a = document.createElement('a'); a.href = url; a.download = name || id; a.click(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+function listingCard(l, cu, mine) {
+  const price = l.priceMinor ? minor(l.priceMinor, cu) : 'Gratis';
+  const who = l.seller && (l.seller.platform ? 'Yaya' : (l.seller.name || 'un negocio de la red'));
+  const act = mine ? `<button class="sm secondary" data-hide="${l.id}">${l.status === 'hidden' ? 'Mostrar' : 'Ocultar'}</button>`
+    : l.unlocked && (l.purchasedAt || l.mine) ? (l.file ? `<button class="sm secondary" data-dl="${l.id}" data-name="${esc(l.file.name)}">Descargar</button>` : `<button class="sm secondary" data-open="${l.id}">Ver</button>`)
+    : `<button class="sm" data-buy="${l.id}" data-title="${esc(l.title)}" data-price="${l.priceMinor}">${l.priceMinor ? 'Comprar · ' + price : 'Obtener gratis'}</button>`;
+  return `<div class="card" style="margin-top:.5rem"><div class="row between" style="align-items:flex-start"><div class="grow"><b>${esc(l.title)}</b> <span class="chip">${kindName[l.kind] || l.kind}</span>${l.niche ? ` <span class="chip">${esc(l.niche)}</span>` : ''}<div class="small muted">${esc(l.description || '')}</div><div class="small muted">${who} · ${l.sales || 0} venta${l.sales === 1 ? '' : 's'}${l.status && l.status !== 'active' ? ' · ' + l.status : ''}</div></div><div style="text-align:right"><div class="price">${price}</div>${act}</div></div></div>`;
+}
+async function renderMarket() {
+  const w = me.wallet || {}, cu = cur(), eco = me.economics || {};
+  const lb = w.launchBonus;
+  $('#mk-bonus').innerHTML = lb ? `<div class="banner credits"><div class="grow"><b>Semana de lanzamiento: +${lb.percent}% de saldo en cada recarga</b><div class="small">Hasta el ${when(lb.until).slice(0, 12)}. ${w.pricesRiseOn ? 'Los precios suben el ' + w.pricesRiseOn + '.' : ''}</div></div><button class="sm" data-go="plan">Recargar</button></div>` : '';
+  $('#w-balance').textContent = minor(w.balance || 0, cu);
+  $('#w-line').textContent = `Ganado en 30 días ${minor(w.earned30d || 0, cu)} · gastado ${minor(w.spent30d || 0, cu)} · ${w.asksAnswered || 0} consulta${w.asksAnswered === 1 ? '' : 's'} pagada${w.asksAnswered === 1 ? '' : 's'} a tu agente · cada mensaje respondido ${minor(eco.message || 10, cu)} · cada muestra compartida te devuelve ${minor((eco.data && eco.data.perSample) || 0, cu)}`;
+  $('#ask-fee').textContent = (w.fees ? w.fees.askPercent : 10) + '%'; $('#mk-fee').textContent = (w.fees ? w.fees.marketPercent : 20) + '%';
+  $('#ask-price').value = ((w.askPrice || 0) / 100).toFixed(2);
+  const tr = w.transfers || {};
+  $('#w-transfer-note').textContent = tr.enabled ? `Sin comisión. Máximo ${minor(tr.max, cu)} por envío.` : 'Todavía no: los envíos entre cuentas se activan cuando tengamos la aprobación regulatoria. Mientras tanto tu saldo se gasta en la red (mensajes, clientes, consultas, packs, planes).';
+  $('#w-to').disabled = $('#w-amt').disabled = $('#w-send').disabled = !tr.enabled;
+  const [cat, mine, own] = await Promise.all([api.call('GET', '/v1/listings' + ($('#mk-q').value.trim().length > 2 ? '?q=' + encodeURIComponent($('#mk-q').value.trim()) : '')), api.call('GET', '/v1/purchases'), api.call('GET', '/v1/listings?mine=1')]);
+  $('#mk-list').innerHTML = cat.listings.length ? cat.listings.map((l) => listingCard(l, cu, false)).join('') : '<p class="muted small">Nada a la venta todavía.</p>';
+  $('#mk-mine').innerHTML = mine.purchases.length ? mine.purchases.map((l) => listingCard(l, cu, false)).join('') : 'Todavía no has comprado nada.';
+  $('#sl-mine').innerHTML = own.listings.length ? own.listings.map((l) => listingCard(l, cu, true)).join('') : '';
+  $$('#view-market button[data-buy]').forEach((b) => b.onclick = async () => {
+    const p = Number(b.dataset.price);
+    if (p && !confirm(`¿Comprar «${b.dataset.title}» por ${minor(p, cu)} con tu saldo?`)) return;
+    b.disabled = true;
+    try { const r = await api.call('POST', `/v1/listings/${b.dataset.buy}/buy`); toast(`Listo: «${r.title}». Saldo ${minor(r.balance, cu)}.`); if (r.kind === 'bundle' && Phone.target) Phone.call('sync_market', {}, 30000).then((x) => toast(`Pack montado en tu teléfono (${x.mounted}). Tu agente te hará las preguntas nuevas.`)).catch(() => toast('Compra hecha; el teléfono montará el pack cuando esté en línea.')); await loadAccount(); renderMarket(); }
+    catch (e) { toast(e.status === 402 ? `Saldo insuficiente: cuesta ${minor(e.body.error.priceMinor, cu)}, tienes ${minor(e.body.error.balanceMinor, cu)}. Recarga en Plan.` : e.message); b.disabled = false; }
+  });
+  $$('#view-market button[data-dl]').forEach((b) => b.onclick = () => download(b.dataset.dl, b.dataset.name).catch((e) => toast(e.message)));
+  $$('#view-market button[data-open]').forEach((b) => b.onclick = async () => { const l = await api.call('GET', `/v1/listings/${b.dataset.open}`); const c = typeof l.content === 'string' ? l.content : JSON.stringify(l.content, null, 2); const win = window.open('', '_blank'); if (win) { win.document.write('<pre style="white-space:pre-wrap;font:14px/1.5 system-ui;padding:1rem">' + esc(c) + '</pre>'); win.document.title = l.title; } else toast(c.slice(0, 300)); });
+  $$('#view-market button[data-hide]').forEach((b) => b.onclick = async () => { const l = own.listings.find((x) => x.id === b.dataset.hide); try { await api.call('PATCH', `/v1/listings/${b.dataset.hide}`, { status: l.status === 'hidden' ? 'active' : 'hidden' }); renderMarket(); } catch (e) { toast(e.message); } });
+}
+$('#mk-q').oninput = () => { clearTimeout(window._mkT); window._mkT = setTimeout(() => renderMarket().catch(() => {}), 400); };
+$('#w-transfer-btn').onclick = () => $('#w-transfer').classList.toggle('hidden');
+$('#w-send').onclick = async () => {
+  const amt = Math.round(Number($('#w-amt').value) * 100);
+  if (!amt || !$('#w-to').value.trim()) return toast('Indica destinatario y monto.');
+  if (!confirm(`¿Enviar ${minor(amt, cur())} a ${$('#w-to').value.trim()}?`)) return;
+  try { const r = await api.call('POST', '/v1/wallet/transfer', { to: $('#w-to').value.trim(), amountMinor: amt }); toast(`Enviado. Saldo ${minor(r.balance, cur())}`); await loadAccount(); renderMarket(); } catch (e) { toast(e.message); }
+};
+$('#ask-save').onclick = async () => {
+  const minorP = Math.round(Number($('#ask-price').value) * 100);
+  if (minorP < 0 || minorP > 50000) return toast('Entre S/ 0 y S/ 500.');
+  $('#ask-msg').textContent = 'Enviando al teléfono…';
+  try { await Phone.call('apply', { patch: { values: { askPrice: minorP } } }, 30000); $('#ask-msg').textContent = minorP ? `Publicado: ${minor(minorP, cur())} por consulta.` : 'Publicado: consultas gratis.'; }
+  catch (e) { $('#ask-msg').textContent = ''; toast(e.message); }
+};
+$('#sl-kind').onchange = () => { const k = $('#sl-kind').value; $('#sl-content').classList.toggle('hidden', k === 'file'); $('#sl-file').classList.toggle('hidden', k !== 'file'); };
+$('#sl-publish').onclick = async () => {
+  const kind = $('#sl-kind').value, title = $('#sl-title').value.trim(), price = Math.round(Number($('#sl-price').value || 0) * 100);
+  if (!title) return toast('Ponle un título.');
+  let content;
+  if (kind === 'note') content = $('#sl-content').value;
+  if (kind === 'bundle') { try { content = JSON.parse($('#sl-content').value); } catch { return toast('El pack debe ser JSON válido.'); } }
+  if (kind === 'file' && !$('#sl-file').files[0]) return toast('Elige el archivo.');
+  $('#sl-msg').textContent = 'Publicando…';
+  try {
+    const l = await api.call('POST', '/v1/listings', { kind, title, description: $('#sl-desc').value.trim(), priceMinor: price, niche: $('#sl-niche').value.trim() || undefined, content });
+    if (kind === 'file') {
+      const f = $('#sl-file').files[0];
+      const r = await fetch(`/v1/listings/${l.id}/file`, { method: 'PUT', headers: { authorization: 'Bearer ' + api.session, 'content-type': f.type || 'application/octet-stream', 'x-file-name': encodeURIComponent(f.name) }, body: f });
+      if (!r.ok) throw new Error('No se pudo subir el archivo (' + r.status + ')');
+    }
+    $('#sl-msg').textContent = 'Publicado.'; $('#sl-title').value = ''; $('#sl-desc').value = ''; $('#sl-content').value = ''; renderMarket();
+  } catch (e) { $('#sl-msg').textContent = ''; toast(e.message); }
+};
+
+// ───────────────────────── settings + dev mode
+function renderSettings() {
+  $('#acct-kv').innerHTML = [['Nombre', me.account.name], ['Correo', me.account.email], ['WhatsApp', me.account.phone && '+' + me.account.phone], ['Cuenta', me.account.id]].filter((x) => x[1]).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+  $('#backups-chip').textContent = me.plan.backups ? 'activas' : 'requiere plan'; $('#backups-chip').className = 'chip ' + (me.plan.backups ? 'ok' : 'warn');
+  $('#backups tbody').innerHTML = me.backups.length ? me.backups.map((b) => `<tr><td>${when(b.createdAt)}</td><td class="small">${esc(label(b.agent))}</td><td class="num">${(b.size / 1024).toFixed(0)} KB</td><td><button class="text sm" data-open="${b.id}">Abrir</button></td></tr>`).join('') : '<tr><td colspan="4" class="muted">Todavía no hay copias.</td></tr>';
+  $$('#backups [data-open]').forEach((b) => b.onclick = async () => { try { snap = await snapshotFromBackup(b.dataset.open); snapshotFrom = 'backup'; renderHome(); renderSales(); renderCustomers(); show('home'); toast('Mostrando esa copia.'); } catch (e) { toast(e.message); } });
+  $('#console-kv').innerHTML = ID.id ? `<dt>Llave</dt><dd class="mono">${ID.id.slice(0, 26)}…</dd><dt>Teléfono</dt><dd class="mono">${Phone.target ? Phone.target.slice(0, 26) + '…' : '—'}</dd><dt>Cifrado</dt><dd>X25519 + AES-256-GCM, extremo a extremo</dd>` : '<dt>Estado</dt><dd>Este navegador no soporta las llaves necesarias (Ed25519/X25519). Usa Chrome, Safari o Firefox actualizados.</dd>';
+  $('#tab-dev').classList.toggle('hidden', !devMode);
+}
+const label = (agent) => { const a = me && me.agents.find((x) => x.agent === agent); return a ? (a.label || a.businessName || agent.slice(6, 18)) : String(agent).slice(6, 18); };
+$('#console-reset').onclick = async () => { if (!confirm('¿Olvidar la llave de este navegador? Se creará una nueva la próxima vez.')) return; await ID.clear(); Object.keys(localStorage).filter((k) => k.startsWith('yaya_console_linked:')).forEach((k) => localStorage.removeItem(k)); location.reload(); };
+let taps = 0, tapT;
+$('#credits-tap').onclick = () => { taps++; clearTimeout(tapT); tapT = setTimeout(() => (taps = 0), 1500); if (taps >= 7) { taps = 0; devMode = !devMode; localStorage.setItem('yaya_dev', devMode ? '1' : '0'); toast(devMode ? '🛠 Modo desarrollador activado' : 'Modo desarrollador desactivado'); renderSettings(); if (devMode) { show('dev'); devReload(); } } else if (taps >= 4) toast(`${7 - taps} más…`); };
+
+const TOGGLABLE = ['check_availability', 'book_appointment', 'handle_cancellation', 'create_order', 'quote_delivery', 'collect_payment', 'schedule_reminder', 'report_gap'];
+let harness = null;
+async function devReload() {
+  $('#dev-msg').textContent = 'Leyendo del teléfono…';
+  try {
+    harness = await Phone.call('export', {}, 30000);
+    $('#dev-values').value = JSON.stringify(harness.patch || {}, null, 2);
+    const off = new Set(harness.disabledTools || []);
+    $('#dev-tools').innerHTML = TOGGLABLE.map((t) => `<label class="chip" style="cursor:pointer;margin:0"><input type="checkbox" value="${t}" ${off.has(t) ? 'checked' : ''} style="width:auto;margin:0 .3rem 0 0"> ${t}</label>`).join('');
+    $('#dev-role').value = (harness.values && harness.values.agentRole) || ''; $('#dev-agentname').value = (harness.values && harness.values.agentName) || '';
+    $('#dev-msg').textContent = `Harness ${harness.format} · core ${harness.agent.core} · rubro ${harness.business.bundle}`;
+  } catch (e) { $('#dev-msg').textContent = e.message; }
+}
+$('#dev-reload').onclick = devReload;
+$('#dev-apply').onclick = async () => {
+  let values; try { values = JSON.parse($('#dev-values').value || '{}'); } catch (e) { return toast('JSON inválido: ' + e.message); }
+  values.agentRole = $('#dev-role').value || null; values.agentName = $('#dev-agentname').value.trim() || null;
+  const disabledTools = $$('#dev-tools input:checked').map((i) => i.value);
+  $('#dev-apply').disabled = true; $('#dev-msg').textContent = 'Aplicando…';
+  try { const r = await Phone.call('apply', { patch: { values, disabledTools } }, 30000); $('#dev-msg').textContent = 'Aplicado: ' + (r.changed || []).join(' · '); toast('Harness aplicado.'); loadSnapshot(); }
+  catch (e) { $('#dev-msg').textContent = e.message; } finally { $('#dev-apply').disabled = false; }
+};
+$('#dev-export').onclick = async () => { try { const h = harness || await Phone.call('export', {}, 30000); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(h, null, 1)], { type: 'application/json' })); a.download = `agente-harness-${(h.business && h.business.name || 'negocio').replace(/\W+/g, '-').toLowerCase()}.json`; a.click(); } catch (e) { toast(e.message); } };
+$('#dev-import-btn').onclick = () => $('#dev-import').click();
+$('#dev-import').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; try { const h = JSON.parse(await f.text()); $('#dev-values').value = JSON.stringify(h.patch || h.values || h, null, 2); if (h.disabledTools) { const off = new Set(h.disabledTools); $$('#dev-tools input').forEach((i) => (i.checked = off.has(i.value))); } toast('Cargado. Revisa y aplica.'); } catch (err) { toast('No se pudo leer: ' + err.message); } };
+$('#dev-kernel-btn').onclick = async () => { try { const k = await Phone.call('kernel', {}, 20000); const pre = $('#dev-kernel'); pre.textContent = JSON.stringify(k.plugins ? { plugins: k.plugins, toolOrder: k.toolOrder, events: k.events } : k, null, 1); pre.classList.remove('hidden'); } catch (e) { toast(e.message); } };
+$('#dev-trace-btn').onclick = async () => { try { const t = await Phone.call('trace', { limit: 60 }, 20000); $('#dev-trace').innerHTML = (t.events || []).map((ev) => `<details style="padding:.3rem 0;border-bottom:1px solid var(--variant)"><summary class="small"><span class="chip ${ev.result && ev.result.error ? 'bad' : 'ok'}">${esc(ev.tool)}</span> ${esc(ev.agent)} · ${esc(ev.peer)} · ${ev.latencyMs} ms · ${when(ev.at)}</summary><pre>${esc(JSON.stringify({ args: ev.args, result: ev.result }, null, 1))}</pre></details>`).join('') || '<p class="muted small">Sin eventos.</p>'; } catch (e) { toast(e.message); } };
+$('#dev-raw-btn').onclick = () => { const pre = $('#dev-raw'); pre.textContent = JSON.stringify(snap, null, 1); pre.classList.toggle('hidden'); };
+
+// admin
+$('#admin-key').value = sessionStorage.getItem('yaya_admin_key') || '';
+const adminCall = async (method, path, body) => { const r = await fetch(path, { method, headers: { 'x-admin-key': $('#admin-key').value.trim(), 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error((j.error && j.error.message) || r.statusText); return j; };
+async function adminLoad() {
+  try {
+    const m = await adminCall('GET', '/admin/metrics'); sessionStorage.setItem('yaya_admin_key', $('#admin-key').value.trim()); $('#admin-body').classList.remove('hidden');
+    const cu = cur();
+    $('#admin-tiles').innerHTML = [['Cuentas', m.accounts.total, `+${m.accounts.last7d} en 7 días`], ['Teléfonos', m.accounts.phones, `${m.accounts.online} en línea`], ['Ingresos 30 d', money(m.revenue.last30d, cu), m.plans.map((p) => `${p.n} ${p.plan}`).join(' · ')], ['Recargas', minor(m.credits.soldMinor, cu), `gastado en llamadas ${minor(m.credits.spentOnCallsMinor, cu)}`]].map(([k, v, s]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${esc(String(s))}</div></div>`).join('');
+    $('#admin-pending tbody').innerHTML = m.pending.length ? m.pending.map((p) => `<tr><td class="mono">${esc(p.ref)}</td><td class="small">${esc(p.email || p.subject)}</td><td>${esc(p.plan)}</td><td class="num">${money(p.amount, cu)}</td><td><button class="text sm" data-confirm="${esc(p.ref)}">Confirmar</button></td></tr>`).join('') : '<tr><td colspan="5" class="muted">Sin pagos pendientes.</td></tr>';
+    $$('#admin-pending [data-confirm]').forEach((b) => b.onclick = async () => { if (!confirm(`¿Confirmar el pago ${b.dataset.confirm}?`)) return; try { await adminCall('POST', '/admin/plan', { ref: b.dataset.confirm }); toast('Confirmado.'); adminLoad(); } catch (e) { toast(e.message); } });
+    $('#admin-rows tbody').innerHTML = m.rows.map((r) => `<tr><td>${esc(r.name || '')}<div class="small muted">${esc(r.email)}${r.phone ? ' · +' + esc(r.phone) : ''}</div></td><td><span class="chip ${r.plan === 'expired' || r.plan === 'free' ? 'bad' : r.plan === 'trial' ? 'info' : 'ok'}">${esc(r.plan)}</span></td><td class="small">${r.expiresAt ? when(r.expiresAt).slice(0, 12) : '—'}</td><td class="num">${minor(r.credits, cu)}</td><td class="num">${r.phones}</td><td class="small">${when(r.createdAt).slice(0, 12)}</td></tr>`).join('');
+  } catch (e) { toast(e.message); }
+}
+$('#admin-load').onclick = adminLoad;
+$('#admin-forget').onclick = () => { sessionStorage.removeItem('yaya_admin_key'); $('#admin-key').value = ''; $('#admin-body').classList.add('hidden'); };
+$('#admin-setplan').onclick = async () => { try { const r = await adminCall('POST', '/admin/plan', { email: $('#admin-email').value.trim(), plan: $('#admin-plan').value, months: Number($('#admin-months').value) || 1 }); $('#admin-msg').textContent = `Plan ${r.plan} hasta ${r.expiresAt || '—'}`; adminLoad(); } catch (e) { $('#admin-msg').textContent = e.message; } };
+$('#admin-grant').onclick = async () => { try { const r = await adminCall('POST', '/admin/credits', { email: $('#admin-email').value.trim(), amountMinor: Number($('#admin-credits').value) }); $('#admin-msg').textContent = `Saldo: ${minor(r.balance, cur())}`; adminLoad(); } catch (e) { $('#admin-msg').textContent = e.message; } };
+
+// ───────────────────────── boot
+async function boot() {
+  if (!api.session) return gate(false);
+  try { await loadAccount(); } catch (e) { api.session = ''; localStorage.removeItem('yaya_session'); return gate(false); }
+  gate(true); show((location.hash || '#home').slice(1));
+  try { await ID.load(); await Phone.link(); Phone.poll(); } catch (e) { console.warn('console identity unavailable', e); ID.id = null; }
+  renderSettings(); renderHome();
+  await loadSnapshot();
+  chatLoaded = false; if (location.hash === '#agent') loadChat();
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && ID.id && me) { Phone.poll(); loadAccount().then(renderHome).catch(() => {}); } });
+window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (me && VIEWS.includes(v) && !$('#view-' + v).classList.contains('on')) show(v); });
+boot();
+})();
+</script>
+</body>
+</html>

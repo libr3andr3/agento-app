@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Celebration sheet: deep emerald gradient, big soft top corners. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="@color/agente_hero_grad_start"
+        android:endColor="@color/agente_hero_grad_end"
+        android:angle="270" />
+    <corners
+        android:topLeftRadius="@dimen/corner_sheet"
+        android:topRightRadius="@dimen/corner_sheet" />
+</shape>

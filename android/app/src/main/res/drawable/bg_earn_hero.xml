@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Earnings hero card: deep emerald gradient, card radius. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="@color/agente_hero_grad_start"
+        android:endColor="@color/agente_hero_grad_end"
+        android:angle="315" />
+    <corners android:radius="@dimen/corner_card" />
+</shape>

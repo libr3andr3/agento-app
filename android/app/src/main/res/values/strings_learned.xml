@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Learned chat apps (A5: UnknownAppObserver / ProfileStore). Spanish is the default locale. -->
+<resources>
+    <!-- Settings → Apps conectadas, sub-label under a learned app -->
+    <string name="settings_app_learned_observing">Aprendida · observando %1$d/%2$d</string>
+    <string name="settings_app_learned_ready">Aprendida · lista para responder</string>
+    <string name="settings_app_learned_paused">Pausada: varias lecturas fallaron</string>
+
+    <!-- Activity log -->
+    <string name="log_learned_mounted">🧩 Aprendí a leer %1$s</string>
+    <string name="log_shadow">👀 Leído sin responder (aprendiendo)</string>
+    <string name="log_learned_paused">⏸ Pausé %1$s: varias lecturas fallaron</string>
+
+    <!-- Owner notifications -->
+    <string name="learned_ready_question">Aprendí a leer %1$s. Cuando quieras que responda ahí, actívala en Ajustes → Apps conectadas → Dónde responde.</string>
+    <string name="learned_paused_question">Pausé %1$s porque varias lecturas fallaron. Puedes volver a activarla en Ajustes.</string>
+</resources>

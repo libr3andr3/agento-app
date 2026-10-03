@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payout_step">Step 4 of 4</string>
+    <string name="payout_headline">Where do customers pay you?</string>
+    <string name="payout_sub">Type the wallet and the number, key or alias they should send money to. Your agent will tell customers exactly that.</string>
+    <string name="payout_notice">📲 agento confirms payments by reading your wallet\'s notifications. Install it, with notification access, on the phone those alerts arrive on — if your wallet lives on a different phone than your WhatsApp, install it there too.</string>
+    <string name="payout_holder_hint">Account holder name (as shown in the wallet)</string>
+    <string name="payout_wallet_hint">Wallet or bank (Yape, Pix, Zelle…)</string>
+    <string name="payout_handle_hint">Number, key or alias they pay to</string>
+    <string name="payout_add">+ Add another way to get paid</string>
+    <string name="payout_remove_cd">Remove this way to get paid</string>
+    <string name="payout_cash_only">Cash only</string>
+    <string name="payout_save">Save</string>
+    <string name="payout_save_continue">Save and continue</string>
+    <string name="payout_error_row">Fill in the wallet and the number on row %1$d.</string>
+    <string name="payout_error_generic">Could not save: %1$s</string>
+    <string name="payout_saved">Done. Your agent now knows where you get paid.</string>
+    <string name="payout_warning_missing">We don\'t see the %1$s app on this phone. If your payments land on another phone, install agento there with notification access; otherwise payments won\'t confirm on their own.</string>
+    <string name="settings_payout">💸 Payouts</string>
+</resources>

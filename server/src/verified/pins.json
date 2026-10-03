@@ -1,0 +1,20 @@
+{
+  "seq": 1,
+  "issued": "2026-09-18",
+  "note": "Router enclave behind inference.tinfoil.sh (tinfoilsh/confidential-model-router v0.0.150). Verified independently on 2026-09-18: AMD VCEK signature, measurement equal to the Sigstore attestation for that release (Rekor log index 2852313122), and the attestation hash committed to the TLS certificate's SANs (CT-logged).",
+  "tinfoil": {
+    "host": "inference.tinfoil.sh",
+    "router_repo": "tinfoilsh/confidential-model-router",
+    "snp": [
+      {
+        "release": "v0.0.150",
+        "measurement": "27e0b90db95a9a31afa2b0af31405934171f4ebbc4345e46f4107da68adc426202abee077c9515a3c9b07aad93a7da90"
+      }
+    ],
+    "min_tcb": null
+  },
+  "aliases": {
+    "agento:default": { "tinfoil": "deepseek-v4-1-flash" },
+    "agento:fast": { "tinfoil": "gpt-oss-120b" }
+  }
+}

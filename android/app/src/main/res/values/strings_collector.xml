@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- YapeCollector / CollectorActivity: the house phone's till. -->
+<resources>
+    <string name="collector_on_title">Cobrar recargas de agento</string>
+    <string name="collector_on_body">Este teléfono enviará cada notificación de Yape a %1$s para acreditar las recargas y planes de agento automáticamente. Solo las de Yape, nada más.</string>
+    <string name="collector_on_yes">Activar</string>
+    <string name="collector_off_title">Dejar de cobrar</string>
+    <string name="collector_off_body">Este teléfono dejará de enviar las notificaciones de Yape a agento.</string>
+    <string name="collector_off_yes">Desactivar</string>
+    <string name="collector_status_on">Este teléfono ya cobra las recargas de agento.</string>
+    <string name="collector_bad_link">Enlace no válido: pide uno nuevo.</string>
+</resources>

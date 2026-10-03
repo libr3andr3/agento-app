@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Painel (A3). Português. -->
+<resources>
+    <string name="dash_attention">Atenção</string>
+    <string name="dash_gaps_empty">Nada pendente ✨ Seu agente conseguiu responder todas as perguntas dos seus clientes.</string>
+    <string name="dash_orders_empty">Ainda não há pedidos. Quando um cliente pedir um produto pelo chat, seu agente vai anotar aqui.</string>
+    <string name="dash_offline_chip">Sem conexão · deslize para atualizar</string>
+    <string name="dash_agent_switch_desc">Ligar ou desligar o agente</string>
+    <string name="dash_status_desc">Estado do agente</string>
+
+    <!-- Self-hosted update channel -->
+</resources>

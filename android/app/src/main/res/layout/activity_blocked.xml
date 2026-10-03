@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Prohibited business category: neutral, no judgement (BlockedActivity). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/space_l">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/blocked_title"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:gravity="center"
+        android:text="@string/blocked_body"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/blocked_support"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_l"
+        android:minHeight="@dimen/touch_min"
+        android:text="@string/plan_support"
+        app:strokeColor="@color/agente_outline" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/blocked_back"
+        style="@style/Widget.Agente.Button.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:minHeight="@dimen/touch_min"
+        android:text="@string/reg_back_cd"
+        android:textColor="@color/agente_primary" />
+</LinearLayout>

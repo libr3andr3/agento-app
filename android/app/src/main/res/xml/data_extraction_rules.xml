@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  `agente_prefs` holds the device bearer token, the cached dashboard, and the
+  onboarding transcript. `allowBackup="false"` already keeps it out of cloud
+  backup; these rules cover device-to-device transfer, which is governed
+  separately on API 31+.
+
+  The token is additionally encrypted under the Android Keystore (SecureStore),
+  so even a copy of this file is not a working credential.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="agente_prefs.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="agente_prefs.xml" />
+    </device-transfer>
+</data-extraction-rules>

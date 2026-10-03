@@ -1,0 +1,49 @@
+# Peluquerías, barberías, salones de uñas, spas: citas con una persona, en
+# un horario, con adelanto para reservar. El dueño atiende con las manos ocupadas.
+bundle: peluqueria
+version: 3
+extends: core
+defaults:
+  slotDuration: 45
+  businessKind: services
+fields:
+  slotDuration:
+    ask_in_onboarding: true
+    question_es: ¿Cuánto dura una cita normalmente?
+    type: minutes
+  staffCount:
+    ask_in_onboarding: true
+    question_es: ¿Atiendes solo tú, o hay más personas en el salón?
+    type: int
+  staffSpecialties:
+    ask_in_onboarding: false
+    question_es: ¿Cada quien hace de todo, o tienen especialidades?
+    type: map[person -> list[specialty]]
+  deliveryZones:
+    ask_in_onboarding: false
+    question_es: ¿Atienden a domicilio? ¿A qué zonas y cuánto cobran por el traslado?
+    type: map[zone -> price]
+tools:
+- check_availability
+- book_appointment
+- collect_payment
+- handle_cancellation
+# D15: the salon's book — today, the week, the customers.
+ui:
+  home: hoy
+  tabs:
+    - id: hoy
+      label: Hoy
+      icon: agenda
+      intro: "Tus citas de hoy en orden. Cuando termines una, deslízala a la derecha."
+      blocks: [earnings, attention, agenda_day]
+    - id: semana
+      label: Semana
+      icon: agenda
+      intro: "La semana de un vistazo: qué horas están tomadas y cuáles libres."
+      blocks: [agenda_week]
+    - id: clientes
+      label: Clientes
+      icon: chats
+      intro: "Cada cliente que tu agente atendió y sus conversaciones."
+      blocks: [conversations, contacts]

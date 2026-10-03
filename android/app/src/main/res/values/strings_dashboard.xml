@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dashboard (A3). Spanish default; English in values-en/strings_dashboard.xml. -->
+<resources>
+    <string name="dash_attention">Atención</string>
+    <string name="dash_gaps_empty">Nada pendiente ✨ Tu agente pudo responder todas las preguntas de tus clientes.</string>
+    <string name="dash_orders_empty">Aún no hay pedidos. Cuando un cliente pida un producto por chat, tu agente lo anotará aquí.</string>
+    <string name="dash_offline_chip">Sin conexión · desliza para actualizar</string>
+    <string name="dash_agent_switch_desc">Encender o apagar el agente</string>
+    <string name="dash_status_desc">Estado del agente</string>
+
+    <!-- Self-hosted update channel -->
+</resources>

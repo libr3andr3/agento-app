@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The last two onboarding steps + Settings → Connected apps. English; see values/strings_apps.xml. -->
+<resources>
+    <!-- Step 1: read -->
+    <string name="read_step">Step 1 of 2</string>
+    <string name="read_headline">Which notifications can your agent read?</string>
+    <string name="read_sub">Choose, app by app, whose notifications it may read. The ones you leave off are ignored: your agent never even opens them.</string>
+    <string name="read_search_hint">Search apps</string>
+    <string name="read_count">Reads %1$d of %2$d apps</string>
+    <string name="read_all_on">Turn all on</string>
+    <string name="read_all_off">Turn all off</string>
+    <string name="read_next">Next</string>
+    <string name="read_kind_chat">Chat app · customers message you here</string>
+    <string name="read_kind_learned">Chat app learned on this phone</string>
+    <string name="read_kind_money">Wallet or bank · payment notices</string>
+    <string name="read_later_label">Apps you install later</string>
+    <string name="read_later_hint">If on, your agent also reads notifications from new apps and from apps without an icon (say, a bank you install tomorrow). If off, you pick them here whenever you like.</string>
+    <string name="read_privacy_note">🔒 Your agent lives on this phone. It reads only the apps you turn on here; notifications from the rest are dropped unopened.</string>
+
+    <!-- Step 2: reply -->
+    <string name="reply_step">Step 2 of 2</string>
+    <string name="reply_headline">Where does your agent reply?</string>
+    <string name="reply_sub">Of the apps it reads, choose the ones where it answers your customers. It replies from the notification itself, just as you would.</string>
+    <string name="reply_not_read">Let it read this app first</string>
+    <string name="reply_none_installed">We see no chat app on this phone. Install WhatsApp Business (or WhatsApp) and come back to Settings → Connected apps.</string>
+    <string name="reply_none_read">Your agent reads no chat app, so it cannot reply on any. Turn at least one on in the notifications it reads.</string>
+    <string name="reply_more">It can also reply on %1$s if you install them.</string>
+    <string name="reply_read_only_note">Wallets, banks and the other apps it reads offer no reply from the notification: there your agent only reads (to confirm a payment, for instance).</string>
+
+    <!-- Settings → Connected apps -->
+    <string name="settings_read_apps">Notifications it reads</string>
+    <string name="settings_reply_apps">Where it replies</string>
+    <string name="settings_reply_apps_none">No app yet</string>
+
+    <!-- Activity log -->
+    <string name="log_read_only">📖 Read, not answered (replies are off for this app)</string>
+
+    <string name="apps_done">Done, take me to my business</string>
+    <string name="apps_save">Save</string>
+</resources>

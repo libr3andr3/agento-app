@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Recent conversation event. Payment events get primary_container bg (code). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dash_convo_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_s"
+    app:cardBackgroundColor="@color/agente_surface_card"
+    app:cardCornerRadius="@dimen/corner_card"
+    app:cardElevation="@dimen/card_elevation"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_m">
+
+        <TextView
+            android:id="@+id/dash_convo_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/agente_on_surface_muted" />
+
+        <TextView
+            android:id="@+id/dash_convo_incoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/agente_on_surface" />
+
+        <TextView
+            android:id="@+id/dash_convo_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/agente_on_surface_muted" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner bubble: right-aligned, primary-container fill, sharp bottom-right
+     corner (tail). Background + max width are set in code (MaterialShapeDrawable,
+     78% of screen) so no ad-hoc dp/hex lives here. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="end"
+    android:paddingTop="@dimen/space_xs"
+    android:paddingBottom="@dimen/space_xs">
+
+    <TextView
+        android:id="@+id/bubble_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_m"
+        android:paddingEnd="@dimen/space_m"
+        android:paddingTop="@dimen/space_s"
+        android:paddingBottom="@dimen/space_s"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="@color/agente_on_primary_container"
+        android:textIsSelectable="true" />
+
+    <!-- Failed-send affordance: tap resends this exact text. -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bubble_retry"
+        style="@style/Widget.Agente.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/touch_min"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="@color/agente_error"
+        android:text="@string/chat_retry"
+        android:visibility="gone" />
+</LinearLayout>

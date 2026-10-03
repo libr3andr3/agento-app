@@ -1,0 +1,9 @@
+# cargo-audit policy. Each ignore names the advisory and why it does not
+# apply; remove the entry when upstream ships a fix.
+[advisories]
+ignore = [
+    # rsa: Marvin timing side-channel. Reaches the lock file only through
+    # sqlx-mysql, which this crate never compiles or calls (SQLite only).
+    # No fixed rsa release exists yet (2026-08).
+    "RUSTSEC-2023-0071",
+]

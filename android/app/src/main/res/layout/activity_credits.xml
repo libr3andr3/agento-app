@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Credits (CreditsActivity): balance, the three prices, the ledger. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_m">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/credits_title"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/agente_on_surface" />
+
+        <!-- Balance -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m"
+            app:cardBackgroundColor="@color/agente_primary_container"
+            app:cardCornerRadius="@dimen/corner_card"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/credits_balance_label"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="@color/agente_on_primary_container" />
+
+                <TextView
+                    android:id="@+id/credits_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceDisplaySmall"
+                    android:textColor="@color/agente_on_primary_container" />
+
+                <TextView
+                    android:id="@+id/credits_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/agente_on_primary_container" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/credits_topup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:minHeight="@dimen/cta_height"
+                    android:text="@string/credits_topup" />
+
+                <!-- Shown instead of the top-up button: no checkout in the app (Play payments policy). -->
+                <TextView
+                    android:id="@+id/credits_topup_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:visibility="gone"
+                    android:text="@string/credits_topup_play" />
+
+                <!-- Closed-loop terms: always under the top-up button (docs/CREDITS.md § 3). -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/credits_terms"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="@color/agente_on_primary_container" />
+
+                <TextView
+                    android:id="@+id/credits_deposits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/credits_deposits_soon"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="@color/agente_on_primary_container"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- How credits are spent -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            app:cardBackgroundColor="@color/agente_surface_card"
+            app:cardCornerRadius="@dimen/corner_card"
+            app:cardElevation="@dimen/card_elevation"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_m">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/credits_rules_header"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:id="@+id/credits_rule_known"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:id="@+id/credits_rule_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:id="@+id/credits_rule_volume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/agente_on_surface_muted" />
+
+                <TextView
+                    android:id="@+id/credits_rule_welcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/agente_on_surface_muted" />
+
+                <TextView
+                    android:id="@+id/credits_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/credits_rules_note"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="@color/agente_on_surface_muted" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Ledger -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/credits_ledger_header"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@color/agente_on_surface" />
+
+        <TextView
+            android:id="@+id/credits_ledger_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/credits_ledger_empty"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/agente_on_surface_muted" />
+
+        <LinearLayout
+            android:id="@+id/credits_ledger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:orientation="vertical" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/credits_support"
+            style="@style/Widget.Agente.Button.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/plan_support"
+            android:textColor="@color/agente_primary" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="@dimen/space_l"
+            android:background="@color/agente_outline" />
+
+        <TextView
+            android:id="@+id/credits_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/agente_on_surface_muted" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/credits_manage"
+            style="@style/Widget.Agente.Button.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/account_manage_web"
+            android:textColor="@color/agente_primary" />
+    </LinearLayout>
+</ScrollView>

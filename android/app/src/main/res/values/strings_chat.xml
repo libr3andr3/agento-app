@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chat surface (OnboardingActivity) — owned by A2. Spanish (default). -->
+<resources>
+    <string name="chat_header_status">Asistente en línea</string>
+    <string name="chat_retry">No se envió · Reintentar</string>
+
+    <!-- Hold-to-record gesture. -->
+    <string name="chat_slide_cancel_hint">◀ Desliza para cancelar</string>
+    <string name="chat_locked_hint">Grabando — toca ➤ para enviar</string>
+    <string name="chat_hold_to_record">Mantén presionado 🎤 para grabar, suelta para enviar</string>
+    <string name="chat_record_cancel">Cancelar</string>
+    <string name="chat_a11y_send_voice">Enviar la nota de voz</string>
+    <string name="chat_a11y_cancel_voice">Cancelar la grabación</string>
+    <string name="chat_lock_glyph" translatable="false">🔒</string>
+    <string name="chat_lock_chevron" translatable="false">⌃</string>
+
+    <!-- Voice mode: status strip + hands-free loop. -->
+    <string name="voice_status_speaking">🔊 Hablando…</string>
+    <string name="voice_status_listening">🎙 Escuchando…</string>
+    <string name="voice_status_thinking">💭 Pensando…</string>
+    <string name="voice_not_heard">No te escuché — toca el micrófono o escribe</string>
+    <string name="voice_perm_denied">Sin permiso de micrófono — seguimos por escrito. Toca 🔇 para reintentar.</string>
+
+    <!-- Glyph-only labels (never translated). -->
+    <string name="chat_send_glyph" translatable="false">➤</string>
+    <string name="chat_mic_glyph" translatable="false">🎤</string>
+    <string name="chat_dot" translatable="false">●</string>
+    <string name="chat_timer_zero" translatable="false">0:00</string>
+    <string name="chat_voice_on_glyph" translatable="false">🔊</string>
+    <string name="chat_voice_off_glyph" translatable="false">🔇</string>
+
+    <!-- Accessibility -->
+    <string name="chat_a11y_send">Enviar mensaje</string>
+    <string name="chat_a11y_mic">Grabar nota de voz</string>
+    <string name="chat_a11y_stop_recording">Detener y enviar la nota de voz</string>
+    <string name="chat_a11y_camera">Enviar foto del catálogo</string>
+    <string name="chat_a11y_replay">Volver a escuchar la respuesta</string>
+    <string name="chat_a11y_typing">El asistente está escribiendo</string>
+    <string name="chat_a11y_voice_mute">Silenciar el modo voz</string>
+    <string name="chat_a11y_voice_unmute">Activar el modo voz</string>
+    <string name="chat_a11y_voice_interrupt">Interrumpir al asistente y hablar</string>
+    <string name="chat_a11y_voice_status">Estado del modo voz</string>
+</resources>

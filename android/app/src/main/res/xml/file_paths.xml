@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Camera capture target for the catalog-photo flow (cacheDir). -->
+<paths>
+    <cache-path name="camera" path="." />
+</paths>

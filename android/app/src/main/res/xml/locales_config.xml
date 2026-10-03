@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The languages the app ships (Android 13+ per-app language picker).
+     Spanish is the default (res/values); Portuguese and English follow the
+     phone or the owner's pick in Ajustes → Idioma. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="es" />
+    <locale android:name="pt" />
+    <locale android:name="en" />
+</locale-config>

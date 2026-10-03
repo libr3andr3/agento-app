@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A casa do dono (D15): abas, blocos, fila de trabalho, catálogo, tour. Português. -->
+<resources>
+    <string name="tab_today">Hoje</string>
+    <string name="tab_orders">Pedidos</string>
+    <string name="tab_agenda">Agenda</string>
+    <string name="tab_catalog">Catálogo</string>
+    <string name="tab_customers">Clientes</string>
+    <string name="ui_redesigned">Seu agente reorganizou o app ✨</string>
+
+    <string name="queue_paid_header">Para preparar</string>
+    <string name="queue_paid_empty">Nada para preparar agora. Os pedidos pagos aparecem aqui.</string>
+    <string name="queue_pending_header">A pagar</string>
+    <string name="queue_done_today">Prontos hoje · %1$d</string>
+    <string name="queue_swipe_hint">Deslize para a direita quando sair →</string>
+    <string name="queue_swipe_label">✓ Pronto</string>
+    <string name="queue_done">pronto</string>
+    <string name="queue_no_show">não veio</string>
+    <string name="queue_marked_done">%1$s · pronto ✓</string>
+    <string name="queue_undo">Desfazer</string>
+    <string name="queue_undo_done">Voltar a pendente</string>
+    <string name="queue_done_action">Marcar como pronto</string>
+    <string name="queue_no_show_action">Não veio</string>
+    <string name="queue_mark_paid">Marcar como pago (dinheiro / eu vi)</string>
+    <string name="queue_cancel_order">Cancelar pedido</string>
+    <string name="queue_cancel_appt">Cancelar horário</string>
+    <string name="queue_failed">Não foi possível salvar. Verifique sua conexão e tente de novo.</string>
+
+    <string name="agenda_today_header">Hoje · %1$s</string>
+    <string name="agenda_today_empty">Hoje não há horários. Quando um cliente reservar pelo chat, vai aparecer aqui.</string>
+    <string name="agenda_swipe_hint">Deslize para a direita quando atender →</string>
+    <string name="agenda_upcoming_header">Próximos dias</string>
+    <string name="agenda_week_header">Esta semana</string>
+    <string name="agenda_week_empty">Sem horários esta semana. As horas ocupadas ficam verdes; toque em uma para ver quem é.</string>
+    <string name="agenda_week_legend">Verde = confirmado · Âmbar = a pagar · Cinza = atendido. Toque em um para agir.</string>
+
+    <string name="catalog_add_photo">Adicionar foto</string>
+    <string name="catalog_share">Compartilhar link</string>
+    <string name="catalog_empty">Envie fotos dos seus produtos. Seu agente vai mandá-las aos clientes por um link privado que dura 5 minutos.</string>
+    <string name="catalog_products_header">Produtos e preços</string>
+    <string name="catalog_no_products">Ainda não há produtos com preço. Mande uma foto do seu catálogo ou cardápio para o seu negócio no chat 💬 e eles são carregados sozinhos.</string>
+    <string name="catalog_photo_desc">Foto do produto</string>
+    <string name="catalog_photo_for">Foto de %1$s</string>
+    <string name="catalog_photo_product_hint">De qual produto é esta foto?</string>
+    <string name="catalog_photo_product_name">Nome do produto</string>
+    <string name="catalog_photo_other_product">Outro produto…</string>
+    <string name="catalog_photo_skip_product">Sem produto</string>
+    <string name="catalog_photo_pick_product">Escolher da lista</string>
+    <string name="catalog_photo_no_product">Foto sem produto</string>
+    <string name="catalog_uploading">Salvando foto…</string>
+    <string name="catalog_uploaded">Foto salva ✓</string>
+    <string name="catalog_upload_failed">Não foi possível salvar a foto. Tente de novo.</string>
+    <string name="catalog_change_product">Trocar produto</string>
+    <string name="catalog_delete">Excluir</string>
+    <string name="catalog_link_creating">Criando link privado…</string>
+    <string name="catalog_link_title">Link privado · 5 minutos</string>
+    <string name="catalog_link_body">%1$d fotos. Quem abrir este link vai vê-las só por alguns minutos:\n\n%2$s</string>
+    <string name="catalog_link_send">Enviar</string>
+    <string name="catalog_link_copy">Copiar</string>
+    <string name="catalog_link_copied">Link copiado</string>
+    <string name="catalog_link_message">Aqui estão as fotos 📷 (o link dura 5 minutos): %1$s</string>
+    <string name="catalog_link_nothing">Ainda não há fotos para compartilhar.</string>
+    <string name="catalog_link_failed">Não foi possível criar o link. Verifique sua conexão e tente de novo.</string>
+
+    <string name="block_contacts_button">Ver todos os clientes</string>
+
+    <string name="walk_step">%1$d de %2$d</string>
+    <string name="walk_next">Próximo</string>
+    <string name="walk_done">Pronto!</string>
+    <string name="walk_skip">Pular</string>
+    <string name="walk_home">O dia de hoje, de relance: quanto você vendeu e o que seu agente precisa de você.</string>
+    <string name="walk_orders">Aqui caem os pedidos pagos. Quando um sair, deslize para a direita.</string>
+    <string name="walk_agenda_day">Seus horários de hoje em ordem. Quando atender um, deslize para a direita.</string>
+    <string name="walk_agenda_week">A semana de relance: quais horas estão ocupadas e quais livres.</string>
+    <string name="walk_catalog">Envie fotos dos seus produtos. Seu agente manda para quem perguntar, por um link privado.</string>
+    <string name="walk_customers">Cada conversa que seu agente atendeu, e quem é quem.</string>
+</resources>

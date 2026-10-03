@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Step 2 of 2 at the end of onboarding, and Settings → Apps conectadas:
+     which of the apps the agent reads it answers on, through the
+     notification's own reply (ReplyAppsActivity). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/space_m">
+
+            <TextView
+                android:id="@+id/reply_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reply_step"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/reply_headline"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="@color/agente_on_surface" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/reply_sub"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="@color/agente_on_surface_muted" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                app:cardBackgroundColor="@color/agente_surface_card"
+                app:cardCornerRadius="@dimen/corner_card"
+                app:cardElevation="@dimen/card_elevation"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_m">
+
+                    <LinearLayout
+                        android:id="@+id/reply_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/reply_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="@color/agente_on_surface_muted" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:text="@string/reply_read_only_note"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="@color/agente_on_surface_muted" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reply_cta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_m"
+        android:minHeight="@dimen/cta_height"
+        android:text="@string/apps_done" />
+</LinearLayout>

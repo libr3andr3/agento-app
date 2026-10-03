@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Plus Jakarta Sans — the app typeface (DESIGN.md v2). Weight-mapped so
+     android:textStyle="bold" and textFontWeight resolve to real cuts. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/jakarta_regular" />
+    <font android:fontStyle="normal" android:fontWeight="500" android:font="@font/jakarta_medium" />
+    <font android:fontStyle="normal" android:fontWeight="600" android:font="@font/jakarta_semibold" />
+    <font android:fontStyle="normal" android:fontWeight="700" android:font="@font/jakarta_bold" />
+    <font android:fontStyle="normal" android:fontWeight="800" android:font="@font/jakarta_extrabold" />
+</font-family>

@@ -1,0 +1,59 @@
+# Restaurantes, comida al paso, dark kitchens, pastelerías: se vende comida,
+# el volumen es de pedidos por chat y la foto del menú es el catálogo.
+bundle: restaurante
+version: 2
+extends: core
+defaults:
+  slotDuration: 90
+  walkInsAllowed: true
+  businessKind: products
+fields:
+  dailyMenu:
+    type: "bool"
+    ask_in_onboarding: true
+    question_es: "¿Tienen menú del día que cambia, o siempre la misma carta?"
+  prepMinutes:
+    type: "minutes"
+    ask_in_onboarding: true
+    question_es: "¿Cuánto demora un pedido normalmente, desde que lo confirman hasta que está listo?"
+  deliveryAvailable:
+    type: "bool"
+    ask_in_onboarding: true
+    question_es: "¿Hacen delivery, o solo recojo en el local?"
+  deliveryZones:
+    type: "map[zone -> price]"
+    ask_in_onboarding: false
+  tableCount:
+    type: "int"
+    ask_in_onboarding: false
+    question_es: "¿Cuántas mesas tienen para reservas?"
+tools:
+  - check_availability
+  - book_appointment
+  - collect_payment
+  - handle_cancellation
+# D15: the owner's app. Pedidos is the kitchen's queue; Menú is the photo
+# catalog; Reservas only survives if the owner takes them (businessKind both).
+ui:
+  home: pedidos
+  tabs:
+    - id: pedidos
+      label: Pedidos
+      icon: orders
+      intro: "Aquí caen los pedidos pagados. Cuando uno salga, deslízalo a la derecha."
+      blocks: [earnings, attention, orders_board]
+    - id: menu
+      label: Menú
+      icon: catalog
+      intro: "Tu carta con fotos. Tu agente se las manda a quien pregunte qué hay."
+      blocks: [catalog]
+    - id: reservas
+      label: Reservas
+      icon: agenda
+      intro: "Las mesas reservadas por chat, hoy y la semana."
+      blocks: [agenda_day, agenda_week]
+    - id: clientes
+      label: Clientes
+      icon: chats
+      intro: "Cada conversación que tu agente atendió, y quién es quién."
+      blocks: [conversations, contacts]

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- System/status line: centered, small, muted. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/system_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:paddingTop="@dimen/space_s"
+    android:paddingBottom="@dimen/space_s"
+    android:paddingStart="@dimen/space_l"
+    android:paddingEnd="@dimen/space_l"
+    android:textAppearance="?attr/textAppearanceLabelMedium"
+    android:textColor="@color/agente_on_surface_muted" />

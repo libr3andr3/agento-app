@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Auditoría: the agent's append-only, signed, anchored record. English in values-en. -->
+<resources>
+    <string name="settings_audit">Auditoría</string>
+    <string name="audit_title">Auditoría</string>
+    <string name="audit_back">Volver</string>
+    <string name="audit_subtitle">Todo lo que tu agente hizo, en cadena: cada entrada firmada con la identidad de este teléfono y sellada con la hora del servidor. Nadie puede editarla ni borrarla — ni nosotros.</string>
+    <string name="audit_verifying">Verificando la cadena…</string>
+    <string name="audit_verify_ok">✓ %1$d entradas íntegras · sello del servidor: %2$s · %3$d sin sellar aún</string>
+    <string name="audit_verify_ok_unanchored">✓ %1$d entradas íntegras · aún sin sello del servidor</string>
+    <string name="audit_verify_broken">⚠️ La cadena tiene %1$d problemas. Contacta a soporte.</string>
+    <string name="audit_verify_offline">No se pudo verificar ahora.</string>
+    <string name="audit_agent_id">Identidad: %1$s</string>
+    <string name="audit_anchor_now">Sellar ahora</string>
+    <string name="audit_anchored">Sellado con la hora del servidor ✓</string>
+    <string name="audit_anchor_failed">No se pudo sellar. Revisa tu conexión.</string>
+    <string name="audit_empty">Todavía no hay entradas. Aparecen con la primera conversación.</string>
+    <string name="audit_row_anchored">sellado ✓</string>
+    <string name="audit_row_pending">pendiente de sello</string>
+    <string name="audit_detail">%1$s\nActor: %2$s\nHash: %3$s\n\n%4$s</string>
+    <string name="audit_kind_customer_turn">Cliente %1$s → respondió: “%2$s”</string>
+    <string name="audit_kind_owner_turn">Tú → respondió: “%1$s”</string>
+    <string name="audit_kind_tool_call">Acción %1$s %2$s</string>
+    <string name="audit_kind_owner_cmd">Desde la web: %1$s (%2$s)</string>
+    <string name="audit_kind_payment">Pago %1$s %2$s</string>
+    <string name="audit_kind_status">%1$s → %2$s</string>
+    <string name="audit_kind_share">Enlace privado con %1$d fotos</string>
+    <string name="audit_kind_restore">Restaurado desde un respaldo (%1$d filas)</string>
+    <string name="audit_kind_boot">Agento iniciado v%1$s</string>
+</resources>

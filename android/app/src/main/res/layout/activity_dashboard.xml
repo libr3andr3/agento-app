@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner's home (D15). Pinned: header (name + status chip + switch + chat +
+     gear) and the agent-off alert. Under swipe-refresh: the banners (home tab
+     only) and the tab's blocks, drawn by Blocks.kt from the UI spec the core
+     composed for this business. The bottom bar lists the spec's tabs. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_l"
+        android:paddingEnd="@dimen/space_s"
+        android:paddingTop="@dimen/space_m">
+
+        <TextView
+            android:id="@+id/dash_business_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/agente_on_surface" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/dash_agent_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_min"
+            android:contentDescription="@string/dash_agent_switch_desc" />
+
+
+        <TextView
+            android:id="@+id/dash_chat"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/dash_talk_to_business"
+            android:gravity="center"
+            android:text="💬"
+            android:textSize="22sp" />
+
+        <ImageButton
+            android:id="@+id/dash_settings"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/dash_settings"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_gear" />
+    </LinearLayout>
+
+    <!-- Truth chip: is the agent answering right now? -->
+    <com.google.android.material.chip.Chip
+        android:id="@+id/dash_status"
+        style="@style/Widget.Agente.Chip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_l"
+        android:layout_marginEnd="@dimen/space_l"
+        android:clickable="false"
+        android:focusable="false"
+        android:ellipsize="end"
+        android:contentDescription="@string/dash_status_desc"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        app:chipStrokeWidth="0dp"
+        app:ensureMinTouchTargetSize="false" />
+
+    <!-- Agent-off alert: pinned so it can never scroll out of sight. -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/off_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_m"
+        android:layout_marginEnd="@dimen/space_m"
+        android:layout_marginTop="@dimen/space_s"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/agente_error_container"
+        app:cardCornerRadius="@dimen/corner_card"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/space_m">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status_off_banner"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_error" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/off_banner_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:minHeight="@dimen/touch_min"
+                android:text="@string/status_activate"
+                android:textColor="@color/agente_on_primary"
+                app:backgroundTint="@color/agente_error" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/dash_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/space_s">
+
+        <ScrollView
+            android:id="@+id/dash_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            android:paddingBottom="@dimen/space_l"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Banners: update, backup pitch, plan. Home tab only. -->
+                <LinearLayout
+                    android:id="@+id/dash_banners"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <!-- D17: tus clientes se quedan contigo — offered once. -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/ossync_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_s"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/agente_primary_container"
+                    app:cardCornerRadius="@dimen/corner_card"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_m">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ossync_banner_title"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="@color/agente_on_primary_container" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/ossync_banner_body"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/agente_on_primary_container" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/ossync_enable"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/touch_min"
+                                android:text="@string/ossync_banner_enable" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/ossync_later"
+                                style="@style/Widget.Agente.Button.Text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_s"
+                                android:minHeight="@dimen/touch_min"
+                                android:text="@string/ossync_banner_later" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Update banner: a newer APK is published on agente.ceo. -->
+
+                <!-- Credits banner: secondary_container while the agent can
+                     book, error_container when it is out of credits (bound
+                     in code, DashboardActivity.refreshCreditsBanner). -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/credits_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_s"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/agente_secondary_container"
+                    app:cardCornerRadius="@dimen/corner_card"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_m">
+
+                        <TextView
+                            android:id="@+id/credits_banner_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="@color/agente_on_secondary_container" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/credits_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:minHeight="@dimen/touch_min"
+                            android:text="@string/credits_banner_button" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- The tab's blocks (Blocks.kt). -->
+                <LinearLayout
+                    android:id="@+id/tab_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/space_l" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- The tabs the agent designed; hidden when there is only one. -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/dash_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/agente_surface_card"
+        app:itemIconTint="@color/agente_nav_item"
+        app:itemTextColor="@color/agente_nav_item"
+        app:labelVisibilityMode="labeled" />
+</LinearLayout>

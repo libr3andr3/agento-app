@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The last two onboarding steps, also in Settings → Apps conectadas:
+     which apps the agent reads (ReadAppsActivity), then which of those it
+     answers on (ReplyAppsActivity). Spanish default; values-pt, values-en. -->
+<resources>
+    <!-- Step 1: read -->
+    <string name="read_step">Paso 1 de 2</string>
+    <string name="read_headline">¿Qué avisos puede leer tu agente?</string>
+    <string name="read_sub">Elige app por app de cuáles puede leer las notificaciones. Las que dejes apagadas se ignoran: tu agente ni las abre.</string>
+    <string name="read_search_hint">Buscar app</string>
+    <string name="read_count">Lee %1$d de %2$d apps</string>
+    <string name="read_all_on">Activar todas</string>
+    <string name="read_all_off">Desactivar todas</string>
+    <string name="read_next">Siguiente</string>
+    <string name="read_kind_chat">App de chat · aquí te escriben tus clientes</string>
+    <string name="read_kind_learned">App de chat aprendida en este teléfono</string>
+    <string name="read_kind_money">Billetera o banco · avisos de pago</string>
+    <string name="read_later_label">Apps que instales después</string>
+    <string name="read_later_hint">Si lo activas, tu agente también lee los avisos de apps nuevas y de las que no tienen ícono (por ejemplo, un banco que instales mañana). Si no, las eliges aquí cuando quieras.</string>
+    <string name="read_privacy_note">🔒 Tu agente vive en este teléfono. Lee solo las apps que actives aquí; los avisos de las demás se descartan sin abrirlos.</string>
+
+    <!-- Step 2: reply -->
+    <string name="reply_step">Paso 2 de 2</string>
+    <string name="reply_headline">¿Dónde responde tu agente?</string>
+    <string name="reply_sub">De las apps que lee, elige en cuáles contesta a tus clientes. Responde desde la misma notificación, como lo harías tú.</string>
+    <string name="reply_not_read">Primero permite leer sus avisos</string>
+    <string name="reply_none_installed">No vemos ninguna app de chat en este teléfono. Instala WhatsApp Business (o WhatsApp) y vuelve a Ajustes → Apps conectadas.</string>
+    <string name="reply_none_read">Tu agente no lee ninguna app de chat, así que no puede responder en ninguna. Activa al menos una en los avisos que lee.</string>
+    <string name="reply_more">También responde en %1$s si las instalas.</string>
+    <string name="reply_read_only_note">Las billeteras, bancos y demás apps que lee no permiten responder desde el aviso: ahí tu agente solo lee (por ejemplo, para confirmar un pago).</string>
+
+    <!-- Settings → Apps conectadas -->
+    <string name="settings_read_apps">Avisos que lee</string>
+    <string name="settings_reply_apps">Dónde responde</string>
+    <string name="settings_reply_apps_none">En ninguna app todavía</string>
+
+    <!-- Activity log -->
+    <string name="log_read_only">📖 Leído, sin responder (las respuestas están apagadas en esta app)</string>
+
+    <string name="apps_done">Listo, vamos a mi negocio</string>
+    <string name="apps_save">Guardar</string>
+</resources>

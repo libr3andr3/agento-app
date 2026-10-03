@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_title_signin">Continue com agento</string>
+    <string name="account_sub">Sua identidade é sua: uma conta para seu negócio, seus dispositivos e seu painel web.</string>
+    <string name="account_name_hint">Seu nome</string>
+    <string name="account_primary_signin">Continuar com agento</string>
+    <string name="account_error_wrong">Código incorreto.</string>
+    <string name="account_error_rate">Muitas tentativas. Espere um momento.</string>
+    <string name="account_error_offline">Sem conexão. Verifique sua internet.</string>
+    <string name="account_error_generic">Não foi possível concluir: %1$s</string>
+    <string name="account_restore_title">Vem de outro celular?</string>
+    <string name="account_restore_body">Se sua conta tem um backup, trazemos seu negócio do jeito que você deixou.</string>
+    <string name="account_restore">Restaurar meu negócio</string>
+    <string name="account_fresh">Começar do zero</string>
+    <string name="account_restore_none">Não há nenhum backup nesta conta. Vamos começar do zero.</string>
+    <string name="account_restored">🟢 Seu negócio está de volta neste celular.</string>
+    <string name="account_signed_as">Sessão iniciada como %1$s</string>
+    <string name="account_logout">Sair</string>
+    <string name="account_continue">Continuar</string>
+    <string name="account_manage_web">Gerenciar minha conta na web</string>
+    <string name="plan_account_line">Conta: %1$s</string>
+    <string name="account_phone_hint">Celular (WhatsApp)</string>
+    <string name="account_no_password">Sem senhas — enviamos um código pelo WhatsApp.</string>
+    <string name="account_error_phone">Digite seu número de celular.</string>
+    <string name="account_code_sent">Enviamos um código por %1$s. Vale por 10 minutos.</string>
+    <string name="account_code_sent_whatsapp">WhatsApp</string>
+    <string name="account_code_sent_email">e-mail</string>
+    <string name="account_code_sent_both">WhatsApp e e-mail</string>
+    <string name="account_code_hint">Código de 6 dígitos</string>
+    <string name="account_code_cta">Entrar</string>
+    <string name="account_resend">Reenviar código</string>
+    <string name="account_resend_in">Reenviar em %1$ds</string>
+    <string name="account_change">Alterar dados</string>
+    <string name="account_error_expired">O código expirou. Peça outro.</string>
+    <string name="account_error_delivery">Não conseguimos enviar o código agora. Tente em um minuto.</string>
+    <string name="settings_share_label">Ajude a melhorar o agento</string>
+    <string name="settings_share_hint">Compartilha como seu agente raciocina, sem números, valores nem datas. Os agentes do seu ramo aprendem com o que funciona.</string>
+</resources>

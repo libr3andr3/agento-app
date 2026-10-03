@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- YapeCollector / CollectorActivity: the house phone's till. -->
+<resources>
+    <string name="collector_on_title">Collect agento top-ups</string>
+    <string name="collector_on_body">This phone will send every Yape notification to %1$s so agento top-ups and plans are credited automatically. Yape only, nothing else.</string>
+    <string name="collector_on_yes">Turn on</string>
+    <string name="collector_off_title">Stop collecting</string>
+    <string name="collector_off_body">This phone will stop sending Yape notifications to agento.</string>
+    <string name="collector_off_yes">Turn off</string>
+    <string name="collector_status_on">This phone already collects agento top-ups.</string>
+    <string name="collector_bad_link">Invalid link: ask for a new one.</string>
+</resources>

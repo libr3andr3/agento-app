@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- D17: tus clientes se quedan contigo — Contactos, Calendario, exportar. English in values-en. -->
+<resources>
+    <string name="ossync_banner_title">Tus clientes se quedan contigo</string>
+    <string name="ossync_banner_body">Guarda a tus clientes en los Contactos del teléfono y tus citas en el Calendario. Son tuyos aunque un día dejes de usar agento.</string>
+    <string name="ossync_banner_enable">Activar</string>
+    <string name="ossync_banner_later">Luego</string>
+    <string name="settings_ossync_header">Tus datos, en tu teléfono</string>
+    <string name="settings_sync_contacts">Guardar clientes en Contactos</string>
+    <string name="settings_sync_calendar">Guardar citas en el Calendario</string>
+    <string name="settings_ossync_hint">Solo los clientes con número de teléfono. WhatsApp mostrará sus nombres. Se crea un calendario «agento» que puedes ver en tu app de calendario.</string>
+    <string name="ossync_permission_denied">Sin ese permiso no puedo guardarlos. Puedes darlo en Ajustes del teléfono.</string>
+    <string name="ossync_contact_note">Cliente de %1$s · guardado por agento</string>
+    <string name="ossync_calendar_name">agento · %1$s</string>
+    <string name="ossync_event_note">Agendado por tu agente (agento)</string>
+    <string name="crm_export">Exportar</string>
+    <string name="crm_export_vcf">Contactos (.vcf) — importar en el teléfono o Google</string>
+    <string name="crm_export_csv">Tabla (.csv) — Excel / Sheets</string>
+    <string name="agenda_export">Exportar .ics</string>
+    <string name="export_nothing">Nada que exportar todavía.</string>
+</resources>

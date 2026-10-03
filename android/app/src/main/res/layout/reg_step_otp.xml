@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Step 3: 6-digit verification code, resend countdown, change number. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/reg_otp_headline"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:id="@+id/reg_otp_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reg_code_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:hintEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        app:boxCornerRadiusTopStart="@dimen/corner_control"
+        app:boxCornerRadiusTopEnd="@dimen/corner_control"
+        app:boxCornerRadiusBottomStart="@dimen/corner_control"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reg_code_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/reg_otp_field_cd"
+            android:gravity="center"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:imeOptions="actionDone"
+            android:letterSpacing="0.5"
+            android:maxLength="6"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/agente_on_surface" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reg_resend"
+        style="@style/Widget.Agente.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="@dimen/touch_min"
+        android:enabled="false"
+        android:text="@string/reg_resend" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reg_change_number"
+        style="@style/Widget.Agente.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="@dimen/touch_min"
+        android:text="@string/reg_change_number"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="@dimen/space_l" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reg_otp_cta"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_height"
+            android:text="@string/reg_verify"
+            app:cornerRadius="@dimen/corner_control" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/reg_otp_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/agente_on_primary"
+            app:indicatorSize="24dp"
+            app:trackThickness="3dp" />
+    </FrameLayout>
+</LinearLayout>

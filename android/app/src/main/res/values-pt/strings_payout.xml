@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payout_step">Passo 4 de 4</string>
+    <string name="payout_headline">Onde seus clientes te pagam?</string>
+    <string name="payout_sub">Informe a carteira e o número, chave ou apelido para onde devem enviar o dinheiro. Seu agente vai passar isso aos seus clientes exatamente assim.</string>
+    <string name="payout_notice">📲 O agento confirma os pagamentos lendo as notificações da sua carteira. Instale-o com acesso às notificações no celular onde chegam esses avisos — se o seu Pix, Mercado Pago ou carteira está em outro celular que o seu WhatsApp, instale lá também.</string>
+    <string name="payout_holder_hint">Nome do titular (como aparece na carteira)</string>
+    <string name="payout_wallet_hint">Carteira ou banco (Pix, Mercado Pago, Nubank…)</string>
+    <string name="payout_handle_hint">Número, chave ou apelido para onde te pagam</string>
+    <string name="payout_add">+ Adicionar outra forma de receber</string>
+    <string name="payout_remove_cd">Remover esta forma de receber</string>
+    <string name="payout_cash_only">Só recebo em dinheiro</string>
+    <string name="payout_save">Salvar</string>
+    <string name="payout_save_continue">Salvar e continuar</string>
+    <string name="payout_error_row">Preencha a carteira e o número da linha %1$d.</string>
+    <string name="payout_error_generic">Não foi possível salvar: %1$s</string>
+    <string name="payout_saved">Pronto. Seu agente já sabe onde te pagam.</string>
+    <string name="payout_warning_missing">Não vemos o app de %1$s neste celular. Se seus pagamentos chegam em outro celular, instale o agento lá com acesso às notificações; senão, os pagamentos não serão confirmados sozinhos.</string>
+    <string name="settings_payout">💸 Recebimentos</string>
+</resources>

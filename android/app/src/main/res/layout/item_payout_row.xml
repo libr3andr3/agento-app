@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One way to get paid: the wallet's name (free text, suggestions) and
+     the destination customers should send to. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_m"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/row_wallet_til"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:hintEnabled="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/payout_wallet_hint"
+            app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+            app:boxCornerRadiusBottomStart="@dimen/corner_control"
+            app:boxCornerRadiusTopEnd="@dimen/corner_control"
+            app:boxCornerRadiusTopStart="@dimen/corner_control">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/row_wallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:completionThreshold="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/row_remove"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:layout_marginStart="@dimen/space_xs"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/payout_remove_cd"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="@color/agente_on_surface_muted" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/row_handle_til"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:hintEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:hint="@string/payout_handle_hint"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+        app:boxCornerRadiusBottomStart="@dimen/corner_control"
+        app:boxCornerRadiusTopEnd="@dimen/corner_control"
+        app:boxCornerRadiusTopStart="@dimen/corner_control"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/row_handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

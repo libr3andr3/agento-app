@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_subtitle">Your AI receptionist for your chat apps</string>
+
+
+    <string name="permission_banner_text">To reply for you, agento needs to read your notifications. Nothing leaves your phone: replies go out through each app\'s own reply button.</string>
+    <string name="permission_title">One permission to start</string>
+    <string name="permission_explainer">To answer your customers, agento needs to: 1) read notifications from your messaging apps, and 2) be excluded from battery optimization so the system doesn\'t kill it in the background. Android settings will open first — find "agento" and turn it on. When you come back, also accept the battery permission.</string>
+    <string name="permission_open_settings">Open settings</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="master_switch_label">Agent on</string>
+    <string name="group_switch_label">Also reply in group chats</string>
+    <string name="clear_switch_label">Clear the notification after replying</string>
+    <string name="reply_message">Backup reply (no internet)</string>
+    <string name="cooldown_title">Wait before repeating the reply</string>
+    <string name="cooldown_value">At most one auto-reply every %1$d min per customer</string>
+    <string name="log_clear">Clear</string>
+    <string name="log_empty">No messages yet. When a customer writes, you\'ll see your agent\'s replies here.</string>
+
+    <string name="server_header">Agent connection</string>
+    <string name="server_configure">Server</string>
+    <string name="server_setup_chat">Edit my business (hours, prices…)</string>
+    <string name="server_setup_chat_new">Create my agent</string>
+    <string name="server_status_connected">✓ Your agent is connected</string>
+    <string name="server_status_off">Your agent isn\'t created yet — create one to start</string>
+    <string name="ai_engine_title">AI engine</string>
+    <string name="ai_engine_explainer">Your agent and all your data live on this phone. Only the language model is remote: by default it uses yaya.tech (free). For full control, enter your own OpenAI-compatible provider and key. Applies after restarting the app.</string>
+    <string name="ai_engine_url_hint">URL (blank = yaya.tech)</string>
+    <string name="ai_engine_key_hint">API key (blank = agent identity)</string>
+    <string name="ai_engine_model_hint">Model (blank = default)</string>
+    <string name="ai_engine_saved">Saved. Restart the app to apply.</string>
+    <string name="ai_engine_reset">Use yaya.tech</string>
+    <string name="server_url_must_be_https">The address must start with https:// (http:// only for a machine on your own network) — not saved.</string>
+    <string name="server_error">Couldn\'t connect. Check your internet and try again.</string>
+
+    <string name="onboarding_title">My business</string>
+    <string name="onboarding_input_hint">Type your answer…</string>
+    <string name="onboarding_resume_hint">🟢 Your business is registered. Tell me about changed hours, prices or holidays and I\'ll update it.</string>
+    <string name="onboarding_saved">Profile saved — your agent is now answering customers.</string>
+    <string name="typing_indicator">🟢 typing…</string>
+
+
+    <string name="done_title">All set! 🎉</string>
+    <string name="done_cta">Let\'s see your calendar</string>
+
+    <string name="voice_too_short">Too short — keep holding while you speak</string>
+    <string name="mic_perm_title">Microphone permission</string>
+    <string name="mic_perm_msg">To talk with your assistant, allow the microphone. You can also type if you prefer.</string>
+    <string name="mic_error">Couldn\'t use the microphone. You can type your answer.</string>
+    <string name="audio_error">Couldn\'t play the audio. The text is above.</string>
+
+    <string name="dash_settings">Settings</string>
+    <string name="dash_today">Today</string>
+    <string name="dash_week">This week</string>
+    <string name="dash_month">This month</string>
+    <string name="notif_channel_name">Attention needed</string>
+    <string name="notif_attention_title">Your agent needs your help</string>
+    <string name="notif_escalation_title">⚠️ A customer wants to talk to you</string>
+    <string name="dash_reminder_set">📅 Email reminder %1$d min before</string>
+    <string name="gap_from">A customer (%1$s) asked:</string>
+    <string name="gap_answer_button">Answer</string>
+    <string name="gap_answer_hint">Write the answer as you\'d tell your customer…</string>
+    <string name="gap_answer_send">Teach my agent</string>
+    <string name="gap_answered">Done ✅ Your agent knows it now and will answer next time.</string>
+    <string name="gap_answer_failed">Couldn\'t send. Check your connection and try again.</string>
+    <string name="dash_paid">✓ paid</string>
+    <string name="dash_pending">pending</string>
+    <string name="dash_convos">Recent conversations</string>
+    <string name="dash_convos_empty">When a customer writes, you\'ll see the conversation here.</string>
+    <string name="status_active">● Agent active</string>
+    <string name="status_active_last">● Agent active · last reply %1$s</string>
+    <string name="status_off_banner">Your agent is off — customers are not getting replies</string>
+    <string name="status_activate">Turn it on</string>
+
+    <string name="log_replied">✔ replied</string>
+    <string name="log_skipped_group">Group skipped (groups are off)</string>
+    <string name="log_skipped_cooldown">This customer was already answered recently</string>
+    <string name="log_no_reply_action">This notification doesn\'t allow replies</string>
+    <string name="log_send_failed">Couldn\'t send — try again</string>
+    <string name="log_fallback_sent">Offline — backup reply was sent</string>
+    <string name="log_payment_no_server">Payment detected (create your agent to verify it)</string>
+    <string name="log_payment_matched">Payment verified and linked to the booking (%1$s)</string>
+    <string name="log_payment_recorded">Payment recorded — no matching pending booking</string>
+
+    <string name="default_reply">Hi! Thanks for writing. We got your message and will reply in a moment. 🙌</string>
+    <!-- App toggles + free plan limits -->
+    <!-- Phone verification (OTP) + talk-to-sales -->
+    <string name="verify_throttled">Too many attempts — wait a moment and try again</string>
+    <!-- Catalog photo (onboarding) -->
+    <string name="catalog_photo_title">Photo of your catalog or menu</string>
+    <string name="catalog_photo_take">Take a photo</string>
+    <string name="catalog_photo_gallery">Choose from gallery</string>
+    <string name="catalog_photo_reading">Reading your catalog…</string>
+    <string name="catalog_photo_saved">%1$d products saved</string>
+    <string name="catalog_photo_unreadable">Couldn\'t read the photo — try again with more light, facing the page</string>
+    <string name="catalog_photo_unavailable">Feature not available</string>
+    <string name="catalog_photo_no_app">No camera or gallery app found on your phone</string>
+
+    <string name="order_paid">paid</string>
+    <string name="order_pending">unpaid</string>
+    <string name="dash_talk_to_business">Talk to your business</string>
+
+    <!-- Plans (both editions) -->
+    <string name="plan_error">Could not load the plan. Check your connection.</string>
+    <string name="assistant_status_plan">%1$s plan</string>
+
+    <!-- D14: three plans, conversations as the metric, sales over WhatsApp -->
+    <string name="crm_plan_pro">⭐ Pro</string>
+    <string name="crm_plan_max">⭐ Max</string>
+    <string name="crm_plan_trial">Free trial</string>
+    <string name="crm_plan_free">Free plan</string>
+    <string name="crm_plan_lead">New lead</string>
+
+    <!-- Support line (number comes from the server; see Support.kt) -->
+    <string name="settings_support">🆘 Support</string>
+    <string name="plan_support">Talk to support on WhatsApp</string>
+    <string name="support_text">Hi, I need help with agento</string>
+
+    <!-- Legal footer (Ajustes). Play's User Data policy requires the
+         privacy policy linked inside the app, not only on the listing. -->
+    <string name="settings_privacy">Privacy policy</string>
+    <string name="settings_terms">Terms and conditions</string>
+</resources>

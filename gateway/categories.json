@@ -1,0 +1,97 @@
+{
+ "version": "2026-09-03",
+ "categories": [
+  {
+   "key": "peluqueria",
+   "es": "Peluquería / barbería",
+   "pt": "Salão / barbearia",
+   "en": "Hair salon / barber"
+  },
+  {
+   "key": "estetica",
+   "es": "Estética / uñas",
+   "pt": "Estética / unhas",
+   "en": "Beauty / nails"
+  },
+  {
+   "key": "consultorio",
+   "es": "Consultorio / clínica",
+   "pt": "Consultório / clínica",
+   "en": "Practice / clinic"
+  },
+  {
+   "key": "veterinaria",
+   "es": "Veterinaria",
+   "pt": "Veterinária",
+   "en": "Veterinary"
+  },
+  {
+   "key": "gimnasio",
+   "es": "Gimnasio / clases",
+   "pt": "Academia / aulas",
+   "en": "Gym / classes"
+  },
+  {
+   "key": "restaurante",
+   "es": "Restaurante / delivery",
+   "pt": "Restaurante / delivery",
+   "en": "Restaurant / delivery"
+  },
+  {
+   "key": "ropa",
+   "es": "Ropa / tienda",
+   "pt": "Roupas / loja",
+   "en": "Clothing / shop"
+  },
+  {
+   "key": "servicios",
+   "es": "Servicios técnicos",
+   "pt": "Serviços técnicos",
+   "en": "Technical services"
+  },
+  {
+   "key": "otro",
+   "es": "Otro",
+   "pt": "Outro",
+   "en": "Other"
+  }
+ ],
+ "prohibited": [
+  {
+   "key": "farmacia_sin_receta",
+   "es": "Farmacia sin receta",
+   "pt": "Farmácia sem receita",
+   "en": "Pharmacy without prescription"
+  },
+  {
+   "key": "armas",
+   "es": "Armas",
+   "pt": "Armas",
+   "en": "Weapons"
+  },
+  {
+   "key": "apuestas",
+   "es": "Apuestas / casinos",
+   "pt": "Apostas / cassinos",
+   "en": "Betting / casinos"
+  },
+  {
+   "key": "adulto",
+   "es": "Contenido adulto",
+   "pt": "Conteúdo adulto",
+   "en": "Adult content"
+  },
+  {
+   "key": "cripto_intercambio",
+   "es": "Criptointercambio",
+   "pt": "Exchange de cripto",
+   "en": "Crypto exchange"
+  },
+  {
+   "key": "prestamos",
+   "es": "Préstamos",
+   "pt": "Empréstimos",
+   "en": "Loans"
+  }
+ ]
+}

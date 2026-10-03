@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_attention">Attention</string>
+    <string name="dash_gaps_empty">Nothing pending ✨ Your agent was able to answer all your customers\' questions.</string>
+    <string name="dash_orders_empty">No orders yet. When a customer orders a product by chat, your agent will list it here.</string>
+    <string name="dash_offline_chip">Offline · swipe to refresh</string>
+    <string name="dash_agent_switch_desc">Turn the agent on or off</string>
+    <string name="dash_status_desc">Agent status</string>
+
+    <!-- Self-hosted update channel -->
+</resources>

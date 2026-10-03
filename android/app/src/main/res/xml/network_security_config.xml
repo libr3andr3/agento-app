@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Everything agente sends is sensitive: the device bearer token, full customer
+  conversations, and payment notification text. A modified reply is also text
+  the app then sends to a customer as the business, so the channel needs
+  integrity as much as confidentiality.
+
+  Certificate pinning is NOT configured here, deliberately. A hardcoded pin with
+  no rotation plan and no remote config turns a routine certificate renewal into
+  a total outage for every installed app. Adding it needs two pins (current plus
+  a backup key) and a documented rotation procedure; until then, removing
+  cleartext is the change that actually closes the exposure.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- The agent core runs inside this process and listens on the loopback;
+         traffic never leaves the device, so plain HTTP is the right tool. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+    </domain-config>
+
+    <!-- Debug builds only: the local server reached over `adb reverse` is
+         plain HTTP. Never applies to a release APK. -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>

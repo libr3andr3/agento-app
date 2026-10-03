@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Registration shell: top bar (back + 3-segment progress), one step visible
+     at a time. Tokens only — see DESIGN.md. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/agente_surface"
+    android:fitsSystemWindows="true">
+
+    <!-- Top bar -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_s"
+        android:paddingEnd="@dimen/space_s"
+        android:paddingTop="@dimen/space_s">
+
+        <ImageButton
+            android:id="@+id/reg_back"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:layout_gravity="start|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/reg_back_cd"
+            android:src="@drawable/ic_reg_back" />
+
+        <LinearLayout
+            android:id="@+id/reg_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/reg_seg_1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/space_xs"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_xs"
+                android:background="@drawable/reg_progress_active" />
+
+            <View
+                android:id="@+id/reg_seg_2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/space_xs"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/space_xs"
+                android:background="@drawable/reg_progress_inactive" />
+
+            <View
+                android:id="@+id/reg_seg_3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/space_xs"
+                android:layout_weight="1"
+                android:background="@drawable/reg_progress_inactive" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_l">
+
+            <include
+                android:id="@+id/reg_step_business"
+                layout="@layout/reg_step_business"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/reg_step_phone"
+                layout="@layout/reg_step_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/reg_step_otp"
+                layout="@layout/reg_step_otp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
+    </ScrollView>
+</LinearLayout>

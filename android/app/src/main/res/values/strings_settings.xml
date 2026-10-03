@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings screen (A5). Spanish is the default locale. -->
+<resources>
+    <!-- Section cards -->
+    <string name="settings_section_status">Estado del agente</string>
+    <string name="settings_section_apps">Apps conectadas</string>
+    <string name="settings_section_replies">Respuestas</string>
+    <string name="settings_section_log">Registro de actividad</string>
+
+    <!-- App toggle list -->
+    <string name="settings_app_not_installed">No instalado</string>
+
+    <!-- Battery-exemption nudge (OEM background killers) -->
+    <string name="battery_card_title">Que tu agente no se duerma 🔋</string>
+    <string name="battery_card_body">Algunos teléfonos (Xiaomi, Huawei, Oppo…) cierran las apps en segundo plano para ahorrar batería, y tu agente dejaría de responder sin avisarte. Permite que agento quede libre del ahorro de batería para que atienda siempre.</string>
+    <string name="battery_card_allow">Mantener activo</string>
+    <string name="battery_card_dismiss">Ahora no</string>
+
+    <!-- Activity log -->
+    <string name="log_relative_now">ahora</string>
+    <!-- yaya mesh: the post-quantum p2p VPN between agents -->
+    <string name="settings_mesh_label">Red privada entre agentes (post-cuántica)</string>
+    <string name="settings_mesh_hint">Tu agente se une a la red p2p yaya: túnel cifrado WireGuard con clave post-cuántica (ML-KEM-768), punto de encuentro gratis. Otros agentes que apruebes hablan con el tuyo directo, sin pasar por nadie.</string>
+    <string name="settings_mesh_on">En la red: %1$s · %2$d agente(s) enlazado(s)</string>
+    <string name="settings_mesh_off">Apagada</string>
+    <string name="settings_mesh_denied">Necesita tu permiso para crear la VPN</string>
+</resources>

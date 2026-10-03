@@ -1,0 +1,24 @@
+# /etc/systemd/system/wa-otp.service — WhatsApp OTP bridge for agente.
+# Install on the node:  sudo cp wa-otp/deploy/wa-otp.service /etc/systemd/system/ \
+#                        && sudo systemctl daemon-reload && sudo systemctl enable --now wa-otp
+[Unit]
+Description=wa-otp — WhatsApp bridge for agente phone verification
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=hola
+WorkingDirectory=/home/hola/wa-otp
+EnvironmentFile=/home/hola/wa-otp/.env
+ExecStart=/home/hola/wa-otp/wa-otp
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/hola/wa-otp/wa-otp.log
+StandardError=inherit
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/hola/wa-otp
+
+[Install]
+WantedBy=multi-user.target

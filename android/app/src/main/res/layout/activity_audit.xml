@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The audit chain (Ajustes → Auditoría): the verdict of a full verification,
+     the anchor button, and the entries newest first. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_s"
+        android:paddingEnd="@dimen/space_l"
+        android:paddingTop="@dimen/space_m">
+
+        <ImageButton
+            android:id="@+id/audit_back"
+            android:layout_width="@dimen/touch_min"
+            android:layout_height="@dimen/touch_min"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/audit_back"
+            android:src="@drawable/ic_reg_back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/audit_title"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/agente_on_surface" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_l"
+        android:paddingEnd="@dimen/space_l"
+        android:paddingTop="@dimen/space_xs"
+        android:text="@string/audit_subtitle"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/audit_verdict_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_m"
+        app:cardBackgroundColor="@color/agente_surface_variant"
+        app:cardCornerRadius="@dimen/corner_card"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/space_m">
+
+            <TextView
+                android:id="@+id/audit_verdict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/audit_verifying"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_on_surface" />
+
+            <TextView
+                android:id="@+id/audit_agent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_on_surface_muted" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/audit_anchor"
+                style="@style/Widget.Agente.Button.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:minHeight="@dimen/touch_min"
+                android:text="@string/audit_anchor_now" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/audit_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/space_l"
+        android:text="@string/audit_empty"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/audit_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/space_m"
+        android:paddingEnd="@dimen/space_m"
+        android:paddingBottom="@dimen/space_l" />
+</LinearLayout>

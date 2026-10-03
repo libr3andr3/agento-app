@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title" translatable="false">agento</string>
+    <string name="app_subtitle">Tu recepcionista con IA para tus apps de chat</string>
+    <!-- Permission -->
+    <string name="permission_banner_text">Para responder por ti, agento necesita leer tus notificaciones. Nada sale de tu teléfono: las respuestas se envían con el botón de respuesta de cada app.</string>
+    <string name="permission_title">Un permiso para empezar</string>
+    <string name="permission_explainer">Para responder a tus clientes, agento necesita: 1) leer las notificaciones de tus apps de mensajes, y 2) quedar libre del ahorro de batería para no ser cerrado en segundo plano. Primero se abrirá la configuración de Android: busca «agento» y actívalo. Al volver, acepta también el permiso de batería.</string>
+    <string name="permission_open_settings">Abrir configuración</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ajustes</string>
+    <string name="master_switch_label">Agento encendido</string>
+    <string name="group_switch_label">Responder también en grupos</string>
+    <string name="clear_switch_label">Limpiar la notificación al responder</string>
+    <string name="reply_message">Respuesta de respaldo (sin internet)</string>
+    <string name="cooldown_title">Esperar antes de repetir la respuesta</string>
+    <string name="cooldown_value">Máximo una respuesta automática cada %1$d min por cliente</string>
+    <string name="log_clear">Borrar</string>
+    <string name="log_empty">Aún no hay mensajes. Cuando un cliente te escriba, verás aquí lo que respondió tu agente.</string>
+
+    <string name="server_header">Conexión del agente</string>
+    <string name="server_configure">Servidor</string>
+    <string name="server_setup_chat">Editar mi negocio (horarios, precios…)</string>
+    <string name="server_setup_chat_new">Crear mi agente</string>
+    <string name="server_status_connected">✓ Tu agente está conectado</string>
+    <string name="server_status_off">Tu agente aún no está creado — crea uno para empezar</string>
+    <string name="ai_engine_title">Motor de IA</string>
+    <string name="ai_engine_explainer">Tu agente y todos tus datos viven en este teléfono. Solo el modelo de lenguaje es remoto: por defecto usa yaya.tech (gratis). Si quieres control total, pon aquí tu propio proveedor compatible con OpenAI y tu clave. Se aplica al reiniciar la app.</string>
+    <string name="ai_engine_url_hint">URL (vacío = yaya.tech)</string>
+    <string name="ai_engine_key_hint">Clave API (vacío = identidad del agente)</string>
+    <string name="ai_engine_model_hint">Modelo (vacío = predeterminado)</string>
+    <string name="ai_engine_saved">Guardado. Reinicia la app para aplicar.</string>
+    <string name="ai_engine_reset">Usar yaya.tech</string>
+    <string name="server_url_must_be_https">La dirección debe empezar con https:// (o http:// solo si es un equipo de tu propia red) — no se guardó.</string>
+    <string name="server_error">No se pudo conectar. Revisa tu internet e inténtalo de nuevo.</string>
+
+    <!-- Onboarding chat -->
+    <string name="onboarding_title">Mi negocio</string>
+    <string name="onboarding_input_hint">Escribe tu respuesta…</string>
+    <string name="onboarding_resume_hint">🟢 Tu negocio ya está registrado. Cuéntame si cambian tus horarios, precios o feriados y lo actualizo.</string>
+    <string name="onboarding_saved">Perfil guardado — tu agente ya atiende a tus clientes.</string>
+    <string name="typing_indicator">🟢 escribiendo…</string>
+
+    <!-- Registration -->
+
+    <!-- Done sheet -->
+    <string name="done_title">¡Todo listo! 🎉</string>
+    <string name="done_arrow" translatable="false">⬇️</string>
+    <string name="done_cta">Vamos a tu calendario</string>
+
+    <!-- Voice -->
+    <string name="voice_too_short">Muy corto — mantén presionado mientras hablas</string>
+    <string name="voice_replay" translatable="false">🔊</string>
+    <string name="mic_perm_title">Permiso de micrófono</string>
+    <string name="mic_perm_msg">Para hablar con tu asistente necesitas permitir el micrófono. También puedes escribir si prefieres.</string>
+    <string name="mic_error">No se pudo usar el micrófono. Puedes escribir tu respuesta.</string>
+    <string name="audio_error">No se pudo reproducir el audio. El texto está arriba.</string>
+
+    <!-- Dashboard -->
+    <string name="dash_settings">Ajustes</string>
+    <string name="dash_today">Hoy</string>
+    <string name="dash_week">Esta semana</string>
+    <string name="dash_month">Este mes</string>
+    <string name="notif_channel_name">Atención requerida</string>
+    <string name="notif_attention_title">Tu agente necesita tu ayuda</string>
+    <string name="notif_escalation_title">⚠️ Un cliente quiere hablar contigo</string>
+    <string name="dash_reminder_set">📅 Recordatorio por correo %1$d min antes</string>
+    <string name="gap_from">Un cliente (%1$s) preguntó:</string>
+    <string name="gap_answer_button">Responder</string>
+    <string name="gap_answer_hint">Escribe la respuesta como se la dirías a tu cliente…</string>
+    <string name="gap_answer_send">Enseñar a mi agente</string>
+    <string name="gap_answered">Listo ✅ Tu agente ya lo sabe y responderá la próxima vez.</string>
+    <string name="gap_answer_failed">No se pudo enviar. Revisa tu conexión e intenta de nuevo.</string>
+    <string name="dash_paid">✓ pagado</string>
+    <string name="dash_pending">pendiente</string>
+    <string name="dash_convos">Conversaciones recientes</string>
+    <string name="dash_convos_empty">Cuando un cliente escriba, verás aquí la conversación.</string>
+    <string name="status_active">● Agento activo</string>
+    <string name="status_active_last">● Agento activo · última respuesta %1$s</string>
+    <string name="status_off_banner">Tu agente está apagado — tus clientes no reciben respuesta</string>
+    <string name="status_activate">Activarlo</string>
+
+    <!-- Activity log (owner-readable) -->
+    <string name="log_replied">✔ respondió</string>
+    <string name="log_skipped_group">Grupo omitido (los grupos están desactivados)</string>
+    <string name="log_skipped_cooldown">Ya se respondió hace poco a este cliente</string>
+    <string name="log_no_reply_action">Esta notificación no permite responder</string>
+    <string name="log_send_failed">No se pudo enviar — vuelve a intentar</string>
+    <string name="log_fallback_sent">Sin conexión — se envió la respuesta de respaldo</string>
+    <string name="log_payment_no_server">Pago detectado (crea tu agente para verificarlo)</string>
+    <string name="log_payment_matched">Pago verificado y vinculado a la cita (%1$s)</string>
+    <string name="log_payment_recorded">Pago registrado — sin cita pendiente que coincida</string>
+
+    <!-- Fallback reply sent to customers when offline -->
+    <string name="default_reply">¡Hola! Gracias por escribirnos. Ya recibimos tu mensaje y te respondemos en un momento. 🙌</string>
+    <!-- App toggles + free plan limits -->
+    <!-- Phone verification (OTP) + talk-to-sales -->
+    <string name="verify_throttled">Demasiados intentos — espera un momento y vuelve a intentar</string>
+    <!-- Catalog photo (onboarding) -->
+    <string name="catalog_photo_button" translatable="false">📷</string>
+    <string name="catalog_photo_title">Foto de tu catálogo o carta</string>
+    <string name="catalog_photo_take">Tomar foto</string>
+    <string name="catalog_photo_gallery">Elegir de la galería</string>
+    <string name="catalog_photo_reading">Leyendo tu catálogo…</string>
+    <string name="catalog_photo_saved">%1$d productos guardados</string>
+    <string name="catalog_photo_unreadable">No pude leer la foto — intenta con más luz y de frente</string>
+    <string name="catalog_photo_unavailable">Función no disponible</string>
+    <string name="catalog_photo_no_app">No se encontró una app de cámara o galería en tu teléfono</string>
+
+    <string name="order_paid">pagado</string>
+    <string name="order_pending">por pagar</string>
+    <string name="dash_talk_to_business">Habla con tu negocio</string>
+
+    <!-- Plans (both editions) -->
+    <string name="plan_error">No se pudo cargar el plan. Revisa tu internet.</string>
+    <string name="assistant_status_plan">Plan %1$s</string>
+
+    <!-- D14: three plans, conversations as the metric, sales over WhatsApp -->
+    <string name="crm_plan_pro">⭐ Pro</string>
+    <string name="crm_plan_max">⭐ Max</string>
+    <string name="crm_plan_trial">Prueba gratis</string>
+    <string name="crm_plan_free">Plan gratis</string>
+    <string name="crm_plan_lead">Lead nuevo</string>
+
+    <!-- Support line (number comes from the server; see Support.kt) -->
+    <string name="settings_support">🆘 Soporte</string>
+    <string name="plan_support">Hablar con soporte por WhatsApp</string>
+    <string name="support_text">Hola, necesito ayuda con agento</string>
+
+    <!-- Legal footer (Ajustes). Play's User Data policy requires the
+         privacy policy linked inside the app, not only on the listing. -->
+    <string name="settings_privacy">Política de privacidad</string>
+    <string name="settings_terms">Términos y condiciones</string>
+</resources>

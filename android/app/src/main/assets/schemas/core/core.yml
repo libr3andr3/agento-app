@@ -1,0 +1,105 @@
+# Layer 0: core — fields every business has, regardless of vertical.
+# Never edited per-client. Bundles extend it; client patches override values.
+version: 1
+defaults:
+  # timezone / currency / language / paymentRails are NOT listed here: they come
+  # from the business's registration country (see src/locale.rs) and are mounted
+  # between these defaults and the owner's patch, so any of them can be overridden.
+  slotDuration: 30
+  cancellationNoticeMins: 60
+  maxAdvanceBookingDays: 30
+  walkInsAllowed: true
+  paymentMethod: atVisit          # upfront | atVisit | transfer (legacy: yape)
+  bookingDeposit: null            # fixed amount (business currency) to reserve; null = no deposit
+  networkPublish: true            # "participar del internet de los agentes": published card, reachable
+                                  # by other agents, peer referrals, paid consultations. Off = invisible.
+fields:
+  businessKind:
+    # Inferred by the onboarding agent from "¿a qué te dedicas?" — never asked
+    # as a multiple choice (D15 amendment, 2026-08-30).
+    type: "enum[services|products|both]"
+    ask_in_onboarding: false
+    question_es: "¿A qué te dedicas? ¿Qué vendes o qué haces por tus clientes?"
+  location:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿En qué distrito o ciudad está tu negocio? (así los clientes cercanos te encuentran)"
+  networkPublish:
+    # The one switch of the internet of agents. Asked as a toggle on the
+    # registration screen (default on); the owner can flip it any time by
+    # telling the manager agent ("no quiero aparecer en la red" / "quiero
+    # volver a la red"). Off: no card on the registry, no relay messages
+    # from customers or peers, referrals declined, nothing to earn.
+    type: "bool"
+    ask_in_onboarding: false
+    question_es: "¿Quieres que tu agente participe del internet de los agentes? (aparece en la red, recibe clientes de otros negocios y gana por cada referido)"
+  askPrice:
+    type: "int"                     # céntimos another agent pays per question over the network; 0/absent = free
+    ask_in_onboarding: false
+    question_es: "¿Quieres cobrar por cada consulta que otro agente le haga al tuyo por la red? ¿Cuánto (en soles)?"
+  businessHours:
+    type: "map[day -> range]"
+    ask_in_onboarding: true
+    question_es: "¿Qué días y en qué horario atienden?"
+  pricing:
+    type: "map[service -> money]"
+    ask_in_onboarding: true
+    question_es: "¿Qué servicios ofrecen y cuánto cuesta cada uno?"
+  products:
+    type: "map[product -> money]"
+    ask_in_onboarding: true
+    question_es: "¿Qué productos vendes y a qué precio cada uno?"
+  digital:
+    # D14: digital products — what the agent hands over right after payment
+    # (a link, a file, access instructions), keyed by product name.
+    type: "map[product -> string]"
+    ask_in_onboarding: false
+    question_es: "¿Vendes algo digital (un PDF, un curso, acceso a una plataforma)? ¿Cómo lo entregas: un enlace, un archivo, un acceso?"
+  delivery:
+    type: "{zones: map[district -> money], default: money, coverage: string, freeAt: [keyword]}"
+    ask_in_onboarding: false
+    question_es: "¿Hacen delivery? ¿Cuánto cobran según la zona, hasta dónde llegan, y hay puntos de entrega gratis?"
+  requireEmail:
+    type: "bool"
+    ask_in_onboarding: false
+    question_es: "¿Necesitas el correo del cliente para agendar? (reuniones virtuales, confirmaciones por email)"
+  payout:
+    # Where customers send money: entered by the owner in the app (Cobros),
+    # never inferred. {holder, cashOnly, destinations: [{rail, handle}]}.
+    type: "{holder: string, cashOnly: bool, destinations: [{wallet: string, handle: string}]}"
+    ask_in_onboarding: false
+  paymentMethod:
+    type: "enum[upfront|atVisit|transfer]"
+    ask_in_onboarding: true
+    question_es: "¿Cobran por adelantado, en la visita, o por transferencia (Yape/Plin o el equivalente local)?"
+  bookingDeposit:
+    type: "money | null"
+    ask_in_onboarding: false
+    question_es: "¿Piden un adelanto fijo para reservar? ¿De cuánto?"
+  cancellationNoticeMins:
+    type: "minutes"
+    ask_in_onboarding: false
+  maxAdvanceBookingDays:
+    type: "days"
+    ask_in_onboarding: false
+  walkInsAllowed:
+    type: "bool"
+    ask_in_onboarding: false
+  timezone:
+    type: "iana-timezone"
+    ask_in_onboarding: false
+  language:
+    type: "bcp47-language"
+    ask_in_onboarding: false
+  currency:
+    type: "iso4217"
+    ask_in_onboarding: false
+  currencySymbol:
+    type: "string"
+    ask_in_onboarding: false
+  paymentRails:
+    type: "string"
+    ask_in_onboarding: false
+  country:
+    type: "iso3166-alpha2"
+    ask_in_onboarding: false

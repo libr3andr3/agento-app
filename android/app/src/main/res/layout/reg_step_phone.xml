@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Step 2: country selector (flag + dial code) + local number. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/reg_phone_headline"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:text="@string/reg_phone_sub"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/reg_country_card"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:checkable="false"
+            app:cardBackgroundColor="@color/agente_surface_card"
+            app:cardCornerRadius="@dimen/corner_control"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/agente_outline"
+            app:strokeWidth="1dp"
+            app:rippleColor="@color/agente_primary_container">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/space_m"
+                android:paddingEnd="@dimen/space_m">
+
+                <TextView
+                    android:id="@+id/reg_country_flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🇵🇪"
+                    android:importantForAccessibility="no"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <TextView
+                    android:id="@+id/reg_country_dial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:text="+51"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xs"
+                    android:text="▾"
+                    android:importantForAccessibility="no"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="@color/agente_on_surface_muted" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reg_phone_til"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:hintEnabled="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/space_s"
+            android:hint="@string/reg_phone_hint"
+            app:boxCornerRadiusTopStart="@dimen/corner_control"
+            app:boxCornerRadiusTopEnd="@dimen/corner_control"
+            app:boxCornerRadiusBottomStart="@dimen/corner_control"
+            app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+            app:errorEnabled="true"
+            app:helperTextEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reg_phone_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:digits="0123456789 "
+                android:imeOptions="actionDone"
+                android:maxLength="16" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="@dimen/space_l" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reg_phone_cta"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_height"
+            android:text="@string/reg_send_code"
+            app:cornerRadius="@dimen/corner_control" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/reg_phone_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/agente_on_primary"
+            app:indicatorSize="24dp"
+            app:trackThickness="3dp" />
+    </FrameLayout>
+</LinearLayout>

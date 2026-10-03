@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fluxo de registro (A1). Português. -->
+<resources>
+    <string name="reg_back_cd">Voltar</string>
+    <string name="reg_progress_cd">Passo %1$d de %2$d</string>
+    <string name="reg_error_network">Não conseguimos conectar. Verifique sua internet e tente de novo.</string>
+
+    <string name="reg_business_headline">Conte sobre seu negócio</string>
+    <string name="reg_business_sub">O agento atende seus clientes nos seus apps de chat, agenda horários e recebe — enquanto você trabalha. 🌱</string>
+    <string name="reg_business_name_hint">Nome do seu negócio</string>
+    <string name="reg_business_industry_hint">Ramo</string>
+    <string name="reg_business_industry_helper">Ex.: salão, restaurante, oficina</string>
+    <string name="reg_business_ruc_hint">RUC (opcional)</string>
+    <string name="reg_business_ruc_helper">Se você tiver RUC, seus comprovantes sairão no seu nome</string>
+    <string name="reg_business_ruc_error">O RUC tem 11 dígitos</string>
+    <string name="reg_business_name_error">Digite o nome do seu negócio</string>
+    <string name="reg_business_industry_error">Conte o que seu negócio faz</string>
+    <string name="reg_continue">Continuar</string>
+
+    <string name="reg_phone_headline">Qual é o seu número?</string>
+    <string name="reg_phone_sub">O número do dono do negócio. Vamos enviar um código para confirmar.</string>
+    <string name="reg_phone_hint">Número de celular</string>
+    <string name="reg_country_cd">Escolher país. Atual: %1$s, %2$s</string>
+    <string name="reg_phone_len_error">Confira o número: deve ter entre 8 e 12 dígitos</string>
+    <string name="reg_phone_invalid_error">Esse número não parece válido. Confira e tente de novo.</string>
+    <string name="reg_throttle_error">Pedimos vários códigos seguidos. Espere um momento e tente de novo.</string>
+    <string name="reg_send_code">Enviar código</string>
+
+    <string name="reg_country_title">Escolha seu país</string>
+    <string name="reg_country_search_hint">Buscar país ou código</string>
+    <string name="reg_country_empty">Não encontramos esse país. Tente com o código, ex. 55</string>
+
+    <string name="reg_otp_headline">Digite o código</string>
+    <string name="reg_otp_sub">Enviamos um código de 6 dígitos por mensagem para %1$s</string>
+    <string name="reg_otp_field_cd">Código de verificação de 6 dígitos</string>
+    <string name="reg_verify">Verificar</string>
+    <string name="reg_resend">Reenviar código</string>
+    <string name="reg_resend_wait">Reenviar código (%1$d s)</string>
+    <string name="reg_resent">Código reenviado. Confira suas mensagens.</string>
+    <string name="reg_change_number">Alterar número</string>
+    <string name="reg_code_len_error">Digite os 6 dígitos do código</string>
+    <string name="reg_code_wrong_error">Código incorreto. Confira e tente de novo.</string>
+    <string name="reg_verify_unavailable_error">Não conseguimos verificar este número agora. Use o número de WhatsApp da sua conta, ou tente mais tarde.</string>
+
+    <string name="reg_onboard_error">Não conseguimos criar seu agente. Tente de novo.</string>
+    <string name="reg_network_title">Participar da internet dos agentes</string>
+    <string name="reg_network_sub">Seu agente aparece na rede, recebe clientes de outros negócios e ganha por cada indicação. Mude quando quiser.</string>
+</resources>

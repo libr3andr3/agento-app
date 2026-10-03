@@ -1,0 +1,19 @@
+[package]
+name = "corazon"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "A Cordis-inspired plugin kernel for Rust agent runtimes: services, tools, typed events, and reversible mounts."
+license = "MIT OR Apache-2.0"
+authors = ["Yaya Tech PBC <andre@yaya.tech>"]
+repository = "https://github.com/libr3andr3/corazon"
+keywords = ["agent", "plugin", "llm", "framework", "composability"]
+categories = ["asynchronous"]
+
+[dependencies]
+anyhow = "1"
+serde_json = "1"
+tracing = "0.1"
+
+[dev-dependencies]
+pollster = "0.4"

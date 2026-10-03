@@ -1,0 +1,611 @@
+{
+ "version": "2026-09-03",
+ "wallets": [
+  {
+   "package": "com.bcp.innovacxion.yapeapp",
+   "name": "Yape",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "com.bcp.bank.bcp",
+   "name": "BCP",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "pe.com.interbank.mobilebanking",
+   "name": "Interbank (Plin)",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "com.bbva.nxt_peru",
+   "name": "BBVA Perú (Plin)",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "pe.com.scotiabank.blpm.android.client",
+   "name": "Scotiabank Perú (Plin)",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "pe.com.bn.bnmovil",
+   "name": "Banco de la Nación",
+   "countries": [
+    "PE"
+   ]
+  },
+  {
+   "package": "com.bancomer.mbanking",
+   "name": "BBVA México",
+   "countries": [
+    "MX"
+   ]
+  },
+  {
+   "package": "com.banorte.movil",
+   "name": "Banorte Móvil",
+   "countries": [
+    "MX"
+   ]
+  },
+  {
+   "package": "mx.com.santander.supermovil",
+   "name": "Santander México",
+   "countries": [
+    "MX"
+   ]
+  },
+  {
+   "package": "com.banamex.mobile",
+   "name": "Citibanamex",
+   "countries": [
+    "MX"
+   ]
+  },
+  {
+   "package": "com.oxxo.spin",
+   "name": "Spin by OXXO",
+   "countries": [
+    "MX"
+   ]
+  },
+  {
+   "package": "com.nequi.MobileApp",
+   "name": "Nequi",
+   "countries": [
+    "CO"
+   ]
+  },
+  {
+   "package": "com.davivienda.daviplataapp",
+   "name": "Daviplata",
+   "countries": [
+    "CO"
+   ]
+  },
+  {
+   "package": "com.todo1.mobile",
+   "name": "Bancolombia",
+   "countries": [
+    "CO"
+   ]
+  },
+  {
+   "package": "com.bbva.bbvacolombia",
+   "name": "BBVA Colombia",
+   "countries": [
+    "CO"
+   ]
+  },
+  {
+   "package": "co.movii",
+   "name": "Movii",
+   "countries": [
+    "CO"
+   ]
+  },
+  {
+   "package": "ar.com.uala",
+   "name": "Ualá",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "ar.com.modo",
+   "name": "MODO",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "com.brubank",
+   "name": "Brubank",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "ar.com.bancoprovincia.cuentadni",
+   "name": "Cuenta DNI",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "com.naranja.nx",
+   "name": "Naranja X",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "ar.com.personalpay",
+   "name": "Personal Pay",
+   "countries": [
+    "AR"
+   ]
+  },
+  {
+   "package": "cl.bci.mach",
+   "name": "MACH",
+   "countries": [
+    "CL"
+   ]
+  },
+  {
+   "package": "cl.tenpo.app",
+   "name": "Tenpo",
+   "countries": [
+    "CL"
+   ]
+  },
+  {
+   "package": "cl.bancoestado.app",
+   "name": "BancoEstado",
+   "countries": [
+    "CL"
+   ]
+  },
+  {
+   "package": "cl.bancochile.mobile",
+   "name": "Banco de Chile",
+   "countries": [
+    "CL"
+   ]
+  },
+  {
+   "package": "cl.santander.smartphone",
+   "name": "Santander Chile",
+   "countries": [
+    "CL"
+   ]
+  },
+  {
+   "package": "com.nu.production",
+   "name": "Nubank",
+   "countries": [
+    "BR",
+    "CO",
+    "MX"
+   ]
+  },
+  {
+   "package": "com.picpay",
+   "name": "PicPay",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "br.com.bb.android",
+   "name": "Banco do Brasil",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "com.itau",
+   "name": "Itaú",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "com.bradesco",
+   "name": "Bradesco",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "br.gov.caixa.tem",
+   "name": "Caixa Tem",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "br.com.intermedium",
+   "name": "Inter",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "com.c6bank.app",
+   "name": "C6 Bank",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "com.santander.app",
+   "name": "Santander Brasil",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "br.com.uol.ps.myaccount",
+   "name": "PagBank",
+   "countries": [
+    "BR"
+   ]
+  },
+  {
+   "package": "com.pichincha.deuna",
+   "name": "Deuna",
+   "countries": [
+    "EC"
+   ]
+  },
+  {
+   "package": "com.bancopichincha.bancamovil",
+   "name": "Banco Pichincha",
+   "countries": [
+    "EC"
+   ]
+  },
+  {
+   "package": "com.bancoguayaquil.app",
+   "name": "Banco Guayaquil",
+   "countries": [
+    "EC"
+   ]
+  },
+  {
+   "package": "com.produbanco.app",
+   "name": "Produbanco",
+   "countries": [
+    "EC"
+   ]
+  },
+  {
+   "package": "bo.com.bnb.app",
+   "name": "BNB",
+   "countries": [
+    "BO"
+   ]
+  },
+  {
+   "package": "bo.com.bancounion.app",
+   "name": "Banco Unión",
+   "countries": [
+    "BO"
+   ]
+  },
+  {
+   "package": "com.tigo.money.bo",
+   "name": "Tigo Money",
+   "countries": [
+    "BO"
+   ]
+  },
+  {
+   "package": "uy.com.prex",
+   "name": "Prex",
+   "countries": [
+    "UY"
+   ]
+  },
+  {
+   "package": "uy.com.brou.app",
+   "name": "BROU",
+   "countries": [
+    "UY"
+   ]
+  },
+  {
+   "package": "uy.com.oca.app",
+   "name": "OCA",
+   "countries": [
+    "UY"
+   ]
+  },
+  {
+   "package": "py.com.tigo.money",
+   "name": "Tigo Money",
+   "countries": [
+    "PY"
+   ]
+  },
+  {
+   "package": "py.com.personal.pay",
+   "name": "Personal Pay",
+   "countries": [
+    "PY"
+   ]
+  },
+  {
+   "package": "py.com.ueno.app",
+   "name": "ueno",
+   "countries": [
+    "PY"
+   ]
+  },
+  {
+   "package": "py.com.zimple",
+   "name": "Zimple",
+   "countries": [
+    "PY"
+   ]
+  },
+  {
+   "package": "com.banesco.banescomovil",
+   "name": "Banesco",
+   "countries": [
+    "VE"
+   ]
+  },
+  {
+   "package": "com.mercantil.mercantilmovil",
+   "name": "Mercantil",
+   "countries": [
+    "VE"
+   ]
+  },
+  {
+   "package": "com.bdv.bdvapp",
+   "name": "Banco de Venezuela",
+   "countries": [
+    "VE"
+   ]
+  },
+  {
+   "package": "com.bbva.provinet",
+   "name": "BBVA Provincial",
+   "countries": [
+    "VE"
+   ]
+  },
+  {
+   "package": "com.bi.bienlinea",
+   "name": "Bi en Línea",
+   "countries": [
+    "GT"
+   ]
+  },
+  {
+   "package": "com.banrural.app",
+   "name": "Banrural",
+   "countries": [
+    "GT"
+   ]
+  },
+  {
+   "package": "com.bac.credomatic",
+   "name": "BAC Credomatic",
+   "countries": [
+    "CR",
+    "GT",
+    "HN",
+    "NI",
+    "PA",
+    "SV"
+   ]
+  },
+  {
+   "package": "cr.bncr.app",
+   "name": "BN Móvil (SINPE)",
+   "countries": [
+    "CR"
+   ]
+  },
+  {
+   "package": "cr.bancobcr.app",
+   "name": "BCR Móvil",
+   "countries": [
+    "CR"
+   ]
+  },
+  {
+   "package": "com.bgeneral.yappy",
+   "name": "Yappy",
+   "countries": [
+    "PA"
+   ]
+  },
+  {
+   "package": "com.bgeneral.app",
+   "name": "Banco General",
+   "countries": [
+    "PA"
+   ]
+  },
+  {
+   "package": "com.bpd.app",
+   "name": "Banco Popular",
+   "countries": [
+    "DO"
+   ]
+  },
+  {
+   "package": "com.banreservas.app",
+   "name": "Banreservas",
+   "countries": [
+    "DO"
+   ]
+  },
+  {
+   "package": "com.bancoagricola.app",
+   "name": "Banco Agrícola",
+   "countries": [
+    "SV"
+   ]
+  },
+  {
+   "package": "com.tigo.money.hn",
+   "name": "Tigo Money",
+   "countries": [
+    "HN"
+   ]
+  },
+  {
+   "package": "com.banpro.app",
+   "name": "Banpro",
+   "countries": [
+    "NI"
+   ]
+  },
+  {
+   "package": "com.mercadopago.wallet",
+   "name": "Mercado Pago",
+   "countries": [
+    "AR",
+    "BO",
+    "BR",
+    "CL",
+    "CO",
+    "CR",
+    "DO",
+    "EC",
+    "GT",
+    "HN",
+    "MX",
+    "NI",
+    "PA",
+    "PE",
+    "PY",
+    "SV",
+    "UY",
+    "VE"
+   ]
+  },
+  {
+   "package": "com.paypal.android.p2pmobile",
+   "name": "PayPal",
+   "countries": [
+    "AR",
+    "BO",
+    "BR",
+    "CL",
+    "CO",
+    "CR",
+    "DO",
+    "EC",
+    "ES",
+    "GT",
+    "HN",
+    "MX",
+    "NI",
+    "PA",
+    "PE",
+    "PT",
+    "PY",
+    "SV",
+    "US",
+    "UY",
+    "VE"
+   ]
+  },
+  {
+   "package": "com.venmo",
+   "name": "Venmo",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "com.squareup.cash",
+   "name": "Cash App",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "com.zellepay.zelle",
+   "name": "Zelle",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "com.chase.sig.android",
+   "name": "Chase",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "com.infonow.bofa",
+   "name": "Bank of America",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "com.wf.wellsfargomobile",
+   "name": "Wells Fargo",
+   "countries": [
+    "US"
+   ]
+  },
+  {
+   "package": "es.lacaixa.mobile.android.newwapicon",
+   "name": "CaixaBank (Bizum)",
+   "countries": [
+    "ES"
+   ]
+  },
+  {
+   "package": "com.bbva.bbvacontigo",
+   "name": "BBVA España (Bizum)",
+   "countries": [
+    "ES"
+   ]
+  },
+  {
+   "package": "es.bancosantander.apps",
+   "name": "Santander España (Bizum)",
+   "countries": [
+    "ES"
+   ]
+  },
+  {
+   "package": "com.revolut.revolut",
+   "name": "Revolut",
+   "countries": [
+    "ES",
+    "PT",
+    "US"
+   ]
+  },
+  {
+   "package": "pt.sibs.android.mbway",
+   "name": "MB WAY",
+   "countries": [
+    "PT"
+   ]
+  }
+ ]
+}

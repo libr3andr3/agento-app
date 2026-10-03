@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- agente design tokens v2 ("warm paper") — see android/DESIGN.md. Layouts
+     use these names, never raw hex. Owned by the integrator.
+     Token NAMES are load-bearing (Kotlin binds them); values are the theme. -->
+<resources>
+    <!-- Brand -->
+    <color name="agente_primary">#0B7B5B</color>
+    <color name="agente_on_primary">#FFFFFF</color>
+    <color name="agente_primary_container">#DDF3E7</color>
+    <color name="agente_on_primary_container">#0A4632</color>
+
+    <!-- Accent / pending -->
+    <color name="agente_secondary">#A6650A</color>
+    <color name="agente_secondary_container">#FCEED3</color>
+    <color name="agente_on_secondary_container">#6E4408</color>
+
+    <!-- Warning: low credits ("Recarga pronto") -->
+    <color name="agente_warning_container">#FFF3C4</color>
+
+    <!-- Error / off -->
+    <color name="agente_error">#BA342A</color>
+    <color name="agente_error_container">#FBEAE7</color>
+
+    <!-- Surfaces: warm ivory ground, strokeless white cards -->
+    <color name="agente_surface">#F6F5F0</color>
+    <color name="agente_surface_card">#FFFFFF</color>
+    <color name="agente_surface_variant">#ECEAE2</color>
+    <color name="agente_on_surface">#1B1F1C</color>
+    <color name="agente_on_surface_muted">#6D726C</color>
+    <color name="agente_outline">#E4E2D9</color>
+
+    <!-- v2 additions -->
+    <color name="agente_shadow">#22143D2E</color>          <!-- card ambient shadow tint -->
+    <color name="agente_hero_grad_start">#0E8A64</color>   <!-- gradient brand moments -->
+    <color name="agente_hero_grad_end">#0A3D2C</color>
+    <color name="agente_halo">#1A0B7B5B</color>            <!-- 10% emerald wash -->
+    <color name="agente_input_bg">#FFFFFF</color>
+</resources>

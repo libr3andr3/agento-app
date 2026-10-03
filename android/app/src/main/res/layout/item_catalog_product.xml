@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One product with its price; the camera glyph attaches a photo (dim = none yet). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/touch_min"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/space_s"
+    android:paddingEnd="0dp">
+
+    <TextView
+        android:id="@+id/catalog_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:id="@+id/catalog_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_s"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        android:textColor="@color/agente_primary" />
+
+    <TextView
+        android:id="@+id/catalog_product_photo"
+        android:layout_width="@dimen/touch_min"
+        android:layout_height="@dimen/touch_min"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/catalog_add_photo"
+        android:gravity="center"
+        android:text="📷"
+        android:textSize="18sp" />
+</LinearLayout>

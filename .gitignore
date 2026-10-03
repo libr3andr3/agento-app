@@ -1,0 +1,31 @@
+# Rust
+target/
+
+# Android
+android/build/
+android/app/build/
+android/.gradle/
+android/.kotlin/
+android/local.properties
+android/app/src/main/jniLibs/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Local state and secrets: never committed
+.env
+*.env
+!.env.example
+*.db
+*.db-*
+*.sqlite
+server/agente-server*
+server/outbox/
+server/tts/
+server/*.log
+
+# Editors
+.idea/
+*.iml
+.DS_Store

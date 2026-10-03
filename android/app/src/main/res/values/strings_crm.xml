@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crm_conversations_title">Conversaciones</string>
+    <string name="crm_contacts_title">Clientes</string>
+    <string name="crm_contacts_search">Buscar por nombre, celular o correo</string>
+    <string name="crm_contacts_empty">Aún no hay clientes. Aparecen solos cuando alguien te escribe.</string>
+    <string name="crm_conversations_empty">Todavía no hay conversaciones. Cuando un cliente te escriba, tu agente responde y lo verás aquí.</string>
+    <string name="crm_see_all">Ver todas</string>
+    <string name="crm_kind_owner">Dueño</string>
+    <string name="crm_source_network">Red agento</string>
+    <string name="crm_messages_count">%1$d mensajes</string>
+    <string name="crm_unknown_name">Sin nombre</string>
+    <string name="crm_agent_action">🤖 %1$s</string>
+    <string name="crm_agent_action_failed">⚠️ %1$s — no pudo</string>
+    <string name="crm_edit_contact">Editar contacto</string>
+    <string name="crm_edit_name">Nombre</string>
+    <string name="crm_edit_email">Correo</string>
+    <string name="crm_edit_notes">Notas</string>
+    <string name="crm_save">Guardar</string>
+    <string name="crm_saved">Contacto guardado</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "typing…" indicator: agent-side mini bubble with three dots animated
+     from code (staggered alpha pulse). Bubble background set in code. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="start"
+    android:paddingTop="@dimen/space_xs"
+    android:paddingBottom="@dimen/space_xs">
+
+    <LinearLayout
+        android:id="@+id/typing_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/space_m"
+        android:paddingEnd="@dimen/space_m"
+        android:paddingTop="@dimen/space_s"
+        android:paddingBottom="@dimen/space_s"
+        android:contentDescription="@string/chat_a11y_typing">
+
+        <TextView
+            android:id="@+id/typing_dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/agente_on_surface_muted"
+            android:importantForAccessibility="no"
+            android:text="@string/chat_dot" />
+
+        <TextView
+            android:id="@+id/typing_dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_xs"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/agente_on_surface_muted"
+            android:importantForAccessibility="no"
+            android:text="@string/chat_dot" />
+
+        <TextView
+            android:id="@+id/typing_dot3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_xs"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/agente_on_surface_muted"
+            android:importantForAccessibility="no"
+            android:text="@string/chat_dot" />
+    </LinearLayout>
+</LinearLayout>

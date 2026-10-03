@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Créditos — o modelo de receita. Português; ver values/strings_credits.xml. -->
+<resources>
+    <string name="credits_title">Créditos</string>
+    <string name="credits_balance_label">Créditos disponíveis</string>
+    <string name="credits_state_unknown">Sem conexão — mostrando o último saldo salvo.</string>
+    <string name="credits_state_ok">Dá para %1$d resultados com clientes novos.</string>
+    <string name="credits_state_low">Recarregue em breve: seu agente continua atendendo todo mundo, mas o saldo está acabando.</string>
+    <string name="credits_topup">Recarregar créditos</string>
+    <string name="credits_rules_header">Como são usados</string>
+    <string name="credits_rule_known">%1$s por cada agendamento ou venda confirmada com um cliente que seu negócio já conhece</string>
+    <string name="credits_rule_new">%1$s por cada agendamento ou venda confirmada com um cliente novo</string>
+    <string name="credits_rule_welcome">Presente de boas-vindas ao se cadastrar: %1$s</string>
+    <string name="credits_rules_note">Você só paga quando um agendamento ou uma venda é confirmada. Responder, passar preços e confirmar pagamentos não custa nada; pedidos abandonados também não. Um cliente conta como conhecido depois de ter um resultado confirmado com seu negócio.</string>
+    <string name="credits_ledger_header">Movimentações</string>
+    <string name="credits_ledger_empty">Ainda não há movimentações. Elas aparecem com o primeiro horário que seu agente agendar.</string>
+    <string name="credits_entry_known">Resultado · %1$s (cliente conhecido)</string>
+    <string name="credits_entry_new">Resultado · %1$s (cliente novo)</string>
+    <string name="credits_entry_welcome">Créditos de boas-vindas</string>
+    <string name="credits_entry_topup">Recarga</string>
+    <string name="credits_entry_refund">Estorno · %1$s</string>
+    <string name="credits_error">Não foi possível carregar os créditos. Verifique sua internet.</string>
+
+    <string name="credits_banner_ok">Créditos: %1$s · agendamento %2$s com cliente conhecido · %3$s com cliente novo</string>
+    <string name="credits_banner_low">Recarregue em breve · saldo %1$s · seu agente continua atendendo todo mundo</string>
+    <string name="credits_banner_button">Ver créditos</string>
+
+
+    <string name="settings_credits">💳 Créditos</string>
+    <string name="settings_language">Idioma</string>
+    <string name="language_system">Igual ao celular</string>
+
+    <string name="account_welcome_credits">Ao se cadastrar você recebe %1$s em créditos: seus primeiros 6 clientes novos.</string>
+    <string name="credits_state_grace">Saldo negativo. Seu agente continua atendendo até %1$s abaixo de zero; recarregue para não interromper.</string>
+    <string name="credits_state_manual">Modo manual: seu agente parou de responder. As mensagens chegam para você até você recarregar.</string>
+    <string name="credits_banner_grace">Saldo negativo (%1$s): recarregue para seguir sem interrupções</string>
+    <string name="credits_banner_manual">Modo manual (%1$s): seu agente parou de responder; recarregue para reativá-lo</string>
+    <string name="status_manual_mode">Modo manual — você responde até recarregar</string>
+    <string name="log_manual_mode">Modo manual — o agente não respondeu; é com você</string>
+    <string name="manual_mode_alert">Seu agente está em modo manual: ficou sem créditos e os clientes escrevem para você. Recarregue para reativá-lo.</string>
+    <string name="credits_terms">Os créditos só podem ser trocados por serviços do Agento. Não são transferíveis entre contas nem resgatáveis em dinheiro; os reembolsos são feitos apenas para o meio de pagamento original. Não são dinheiro, nem depósito, nem conta de pagamento.</string>
+    <string name="credits_deposits_soon">Adiantamentos: em breve no seu país</string>
+    <string name="credits_rule_volume">A partir do resultado %1$d do mês: %2$s conhecido · %3$s novo. Teto mensal: %4$s.</string>
+    <string name="credits_month_line">Este mês: %1$d resultados · %2$s</string>
+    <string name="credits_cap_reached">teto atingido, o resto do mês é grátis</string>
+    <string name="credits_topup_sub">Escolha um valor. Pague com cartão (Dodo Payments) ou, no Peru, por Yape ou Plin.</string>
+    <string name="credits_topup_card">Cartão</string>
+    <string name="credits_topup_yape">Recarregar com Yape</string>
+    <string name="credits_topup_opening">Abrindo pagamento…</string>
+    <string name="credits_topup_failed">Não foi possível abrir a recarga: %1$s</string>
+    <string name="credits_yape_title">Recarga por Yape ou Plin</string>
+    <string name="credits_yape_body">Envie exatamente %1$s e escreva esta referência na mensagem: %2$s. O saldo chega sozinho quando vemos a transferência.</string>
+    <string name="reg_category_hint">Tipo de negócio</string>
+    <string name="reg_category_error">Escolha o tipo de negócio</string>
+    <string name="reg_terms_label">Aceito os termos: os créditos só podem ser trocados por serviços do Agento, não são transferíveis nem resgatáveis em dinheiro (reembolsos só para o meio de pagamento original) e não são dinheiro nem depósito.</string>
+    <string name="reg_terms_error">Você precisa aceitar os termos para continuar.</string>
+    <string name="blocked_title">O Agento não está disponível para este tipo de negócio</string>
+    <string name="blocked_body">Nenhuma conta de negócio foi criada. Se acha que é um erro, escreva para nós.</string>
+    <string name="credits_topup_play">As recargas de créditos são feitas na sua conta agento, fora do app.</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crm_conversations_title">Conversations</string>
+    <string name="crm_contacts_title">Customers</string>
+    <string name="crm_contacts_search">Search by name, phone or email</string>
+    <string name="crm_contacts_empty">No customers yet. They appear on their own when someone writes to you.</string>
+    <string name="crm_conversations_empty">No conversations yet. When a customer writes, your agent replies and you\'ll see it here.</string>
+    <string name="crm_see_all">See all</string>
+    <string name="crm_kind_owner">Owner</string>
+    <string name="crm_source_network">agento network</string>
+    <string name="crm_messages_count">%1$d messages</string>
+    <string name="crm_unknown_name">No name</string>
+    <string name="crm_agent_action">🤖 %1$s</string>
+    <string name="crm_agent_action_failed">⚠️ %1$s — couldn\'t</string>
+    <string name="crm_edit_contact">Edit contact</string>
+    <string name="crm_edit_name">Name</string>
+    <string name="crm_edit_email">Email</string>
+    <string name="crm_edit_notes">Notes</string>
+    <string name="crm_save">Save</string>
+    <string name="crm_saved">Contact saved</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Registration flow (A1), English. -->
+<resources>
+    <!-- Shared chrome -->
+    <string name="reg_back_cd">Back</string>
+    <string name="reg_progress_cd">Step %1$d of %2$d</string>
+    <string name="reg_error_network">We couldn\'t connect. Check your internet and try again.</string>
+
+    <!-- Step 1 — business -->
+    <string name="reg_business_headline">Tell us about your business</string>
+    <string name="reg_business_sub">agento answers your customers in your chat apps, books appointments and collects payments — while you work. 🌱</string>
+    <string name="reg_business_name_hint">Business name</string>
+    <string name="reg_business_industry_hint">Line of business</string>
+    <string name="reg_business_industry_helper">E.g.: hair salon, restaurant, repair shop</string>
+    <string name="reg_business_name_error">Enter your business name</string>
+    <string name="reg_business_industry_error">Tell us what your business does</string>
+    <string name="reg_business_ruc_hint">Tax ID / RUC (optional)</string>
+    <string name="reg_business_ruc_helper">If you have a RUC, your receipts will be issued under it</string>
+    <string name="reg_business_ruc_error">A RUC is 11 digits</string>
+    <string name="reg_continue">Continue</string>
+
+    <!-- Step 2 — owner phone -->
+    <string name="reg_phone_headline">What\'s your number?</string>
+    <string name="reg_phone_sub">The owner\'s phone number. We\'ll send you a code to confirm it.</string>
+    <string name="reg_phone_hint">Mobile number</string>
+    <string name="reg_country_cd">Choose country. Current: %1$s, %2$s</string>
+    <string name="reg_phone_len_error">Check the number: it should be 8 to 12 digits</string>
+    <string name="reg_phone_invalid_error">That number doesn\'t look valid. Check it and try again.</string>
+    <string name="reg_throttle_error">Too many codes requested. Wait a moment and try again.</string>
+    <string name="reg_send_code">Send code</string>
+
+    <!-- Country picker -->
+    <string name="reg_country_title">Choose your country</string>
+    <string name="reg_country_search_hint">Search country or code</string>
+    <string name="reg_country_empty">Country not found. Try the dial code, e.g. 51</string>
+
+    <!-- Step 3 — verification code -->
+    <string name="reg_otp_headline">Enter the code</string>
+    <string name="reg_otp_sub">We sent a 6-digit code by message to %1$s</string>
+    <string name="reg_otp_field_cd">6-digit verification code</string>
+    <string name="reg_verify">Verify</string>
+    <string name="reg_resend">Resend code</string>
+    <string name="reg_resend_wait">Resend code (%1$d s)</string>
+    <string name="reg_resent">Code resent. Check your messages.</string>
+    <string name="reg_change_number">Change number</string>
+    <string name="reg_code_len_error">Enter the 6-digit code</string>
+    <string name="reg_code_wrong_error">Wrong code. Check it and try again.</string>
+    <string name="reg_verify_unavailable_error">We can\'t verify this number right now. Use your account\'s WhatsApp number, or try again later.</string>
+
+    <!-- Finish -->
+    <string name="reg_onboard_error">We couldn\'t create your agent. Please try again.</string>
+    <string name="reg_network_title">Join the internet of agents</string>
+    <string name="reg_network_sub">Your agent is listed on the network, receives customers from other businesses and earns for every referral. Change it any time.</string>
+</resources>

@@ -1,0 +1,19 @@
+# Gradle / Android build output
+.gradle/
+build/
+app/build/
+.kotlin/
+local.properties
+*.apk
+*.aab
+release/
+
+# Editors
+.idea/
+*.iml
+.DS_Store
+
+# Signing material never enters the repo (docs/RELEASE.md)
+*.jks
+*.keystore
+keystore.env

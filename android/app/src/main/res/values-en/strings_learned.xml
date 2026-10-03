@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Learned chat apps (A5: UnknownAppObserver / ProfileStore). English. -->
+<resources>
+    <string name="settings_app_learned_observing">Learned · watching %1$d/%2$d</string>
+    <string name="settings_app_learned_ready">Learned · ready to reply</string>
+    <string name="settings_app_learned_paused">Paused: several reads failed</string>
+
+    <string name="log_learned_mounted">🧩 I learned to read %1$s</string>
+    <string name="log_shadow">👀 Read without replying (learning)</string>
+    <string name="log_learned_paused">⏸ Paused %1$s: several reads failed</string>
+
+    <string name="learned_ready_question">I learned to read %1$s. When you want me to reply there, turn it on in Settings → Connected apps → Where it replies.</string>
+    <string name="learned_paused_question">I paused %1$s because several reads failed. You can turn it back on in Settings.</string>
+</resources>

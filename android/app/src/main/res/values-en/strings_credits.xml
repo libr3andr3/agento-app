@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Credits — the revenue model. English; see values/strings_credits.xml. -->
+<resources>
+    <string name="credits_title">Credits</string>
+    <string name="credits_balance_label">Available credits</string>
+    <string name="credits_state_unknown">Offline — showing the last saved balance.</string>
+    <string name="credits_state_ok">Enough for %1$d outcomes with new customers.</string>
+    <string name="credits_state_low">Top up soon: your agent keeps serving everyone, but the balance is about to run out.</string>
+    <string name="credits_topup">Top up credits</string>
+    <string name="credits_rules_header">How they are spent</string>
+    <string name="credits_rule_known">%1$s per confirmed booking or sale with a customer your business already knows</string>
+    <string name="credits_rule_new">%1$s per confirmed booking or sale with a new customer</string>
+    <string name="credits_rule_welcome">Welcome gift on sign-up: %1$s</string>
+    <string name="credits_rules_note">You only pay when a booking or a sale is confirmed. Replying, quoting and confirming payments cost nothing; neither do abandoned orders. A customer counts as known once they had a confirmed outcome with your business.</string>
+    <string name="credits_ledger_header">Activity</string>
+    <string name="credits_ledger_empty">Nothing yet. Entries appear with the first appointment your agent books.</string>
+    <string name="credits_entry_known">Outcome · %1$s (known customer)</string>
+    <string name="credits_entry_new">Outcome · %1$s (new customer)</string>
+    <string name="credits_entry_welcome">Welcome credits</string>
+    <string name="credits_entry_topup">Top-up</string>
+    <string name="credits_entry_refund">Refund · %1$s</string>
+    <string name="credits_error">Could not load your credits. Check your internet.</string>
+
+    <string name="credits_banner_ok">Credits: %1$s · booking %2$s with a known customer · %3$s with a new one</string>
+    <string name="credits_banner_low">Top up soon · balance %1$s · your agent keeps serving everyone</string>
+    <string name="credits_banner_button">See credits</string>
+
+
+    <string name="settings_credits">💳 Credits</string>
+    <string name="settings_language">Language</string>
+    <string name="language_system">Same as the phone</string>
+
+    <string name="account_welcome_credits">When you sign up you get %1$s in credits: your first 6 new customers.</string>
+    <string name="credits_state_grace">Negative balance. Your agent keeps serving down to %1$s below zero; top up to avoid an interruption.</string>
+    <string name="credits_state_manual">Manual mode: your agent stopped replying. Messages reach you until you top up.</string>
+    <string name="credits_banner_grace">Negative balance (%1$s): top up to keep going without interruption</string>
+    <string name="credits_banner_manual">Manual mode (%1$s): your agent stopped replying; top up to bring it back</string>
+    <string name="status_manual_mode">Manual mode — you reply until you top up</string>
+    <string name="log_manual_mode">Manual mode — the agent did not reply; it is on you</string>
+    <string name="manual_mode_alert">Your agent is in manual mode: it ran out of credits and customers are writing to you. Top up to bring it back.</string>
+    <string name="credits_terms">Credits redeem only for Agento services. They are not transferable between accounts and not redeemable for cash; refunds go only to the original payment method. They are not money, a deposit, or a payment account.</string>
+    <string name="credits_deposits_soon">Deposits: coming soon in your country</string>
+    <string name="credits_rule_volume">From outcome %1$d of the month: %2$s known · %3$s new. Monthly cap: %4$s.</string>
+    <string name="credits_month_line">This month: %1$d outcomes · %2$s</string>
+    <string name="credits_cap_reached">cap reached, the rest of the month is free</string>
+    <string name="credits_topup_sub">Pick an amount. Pay by card (Dodo Payments) or, in Peru, by Yape or Plin.</string>
+    <string name="credits_topup_card">Card</string>
+    <string name="credits_topup_yape">Top up with Yape</string>
+    <string name="credits_topup_opening">Opening payment…</string>
+    <string name="credits_topup_failed">Could not open the top-up: %1$s</string>
+    <string name="credits_yape_title">Top up by Yape or Plin</string>
+    <string name="credits_yape_body">Send exactly %1$s and write this reference in the message: %2$s. The balance lands on its own when we see the transfer.</string>
+    <string name="reg_category_hint">Type of business</string>
+    <string name="reg_category_error">Pick the type of business</string>
+    <string name="reg_terms_label">I accept the terms: credits redeem only for Agento services, are not transferable or redeemable for cash (refunds only to the original payment method) and are not money or a deposit.</string>
+    <string name="reg_terms_error">You need to accept the terms to continue.</string>
+    <string name="blocked_title">Agento is not available for this type of business</string>
+    <string name="blocked_body">No business account was created. If you think this is a mistake, write to us.</string>
+    <string name="credits_topup_play">Credit top-ups are managed from your agento account, outside the app.</string>
+</resources>

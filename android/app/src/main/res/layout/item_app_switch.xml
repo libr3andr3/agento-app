@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One app, one switch: icon, name, optional sub-label. Shared by the read
+     and reply screens (AppToggles), so every app row looks the same. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/touch_min"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/space_xs">
+
+    <!-- Decorative: the name right next to it carries the label. -->
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="@dimen/space_xl"
+        android:layout_height="@dimen/space_xl"
+        android:layout_marginEnd="@dimen/space_m"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Agente.Body"
+            android:textColor="@color/agente_on_surface" />
+
+        <TextView
+            android:id="@+id/app_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Agente.Label"
+            android:textColor="@color/agente_on_surface_muted"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/app_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

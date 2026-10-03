@@ -1,0 +1,57 @@
+# Consultorios y oficinas con citas: dental, médico, psicología, nutrición,
+# veterinaria, abogados, contadores, consultoría. Una agenda por profesional,
+# consultas de duración fija, a veces virtuales.
+bundle: consultorio
+version: 1
+extends: core
+defaults:
+  slotDuration: 30
+  businessKind: services
+  cancellationNoticeMins: 720
+  requireEmail: false
+fields:
+  professionals:
+    type: "map[person -> specialty]"
+    ask_in_onboarding: true
+    question_es: "¿Quiénes atienden y en qué especialidad?"
+  slotDuration:
+    type: "minutes"
+    ask_in_onboarding: true
+    question_es: "¿Cuánto dura una consulta?"
+  virtual:
+    type: "bool"
+    ask_in_onboarding: true
+    question_es: "¿Atienden también de forma virtual (videollamada)?"
+  firstVisitNote:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿Qué debe saber o traer un paciente nuevo? (documentos, ayuno, exámenes previos)"
+  insurance:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿Trabajan con seguros o planes? ¿Cuáles?"
+tools:
+  - check_availability
+  - book_appointment
+  - collect_payment
+  - handle_cancellation
+  - schedule_reminder
+# D15: the practice's book.
+ui:
+  home: hoy
+  tabs:
+    - id: hoy
+      label: Hoy
+      icon: agenda
+      intro: "Las citas de hoy, en orden. Deslízala cuando termine la consulta."
+      blocks: [earnings, attention, agenda_day]
+    - id: semana
+      label: Semana
+      icon: agenda
+      intro: "La semana: qué horas están tomadas por profesional."
+      blocks: [agenda_week]
+    - id: pacientes
+      label: Pacientes
+      icon: people
+      intro: "Cada persona que tu agente atendió y lo que preguntó."
+      blocks: [conversations, contacts]

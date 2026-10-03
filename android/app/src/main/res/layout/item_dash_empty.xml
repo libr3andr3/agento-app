@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Teaching empty state; text set in code per section. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dash_empty_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:paddingTop="@dimen/space_m"
+    android:paddingBottom="@dimen/space_s"
+    android:paddingStart="@dimen/space_xs"
+    android:paddingEnd="@dimen/space_xs"
+    android:textAppearance="?attr/textAppearanceBodyMedium"
+    android:textColor="@color/agente_on_surface_muted" />

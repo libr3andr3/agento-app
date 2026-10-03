@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chat surface (OnboardingActivity) — owned by A2. English. -->
+<resources>
+    <string name="chat_header_status">Assistant online</string>
+    <string name="chat_retry">Not sent · Retry</string>
+
+    <!-- Hold-to-record gesture. -->
+    <string name="chat_slide_cancel_hint">◀ Slide to cancel</string>
+    <string name="chat_locked_hint">Recording — tap ➤ to send</string>
+    <string name="chat_hold_to_record">Hold 🎤 to record, release to send</string>
+    <string name="chat_record_cancel">Cancel</string>
+    <string name="chat_a11y_send_voice">Send the voice note</string>
+    <string name="chat_a11y_cancel_voice">Cancel the recording</string>
+
+    <!-- Voice mode: status strip + hands-free loop. -->
+    <string name="voice_status_speaking">🔊 Speaking…</string>
+    <string name="voice_status_listening">🎙 Listening…</string>
+    <string name="voice_status_thinking">💭 Thinking…</string>
+    <string name="voice_not_heard">I didn\'t hear you — tap the mic or type</string>
+    <string name="voice_perm_denied">No microphone permission — we\'ll continue by text. Tap 🔇 to try again.</string>
+
+    <!-- Accessibility -->
+    <string name="chat_a11y_send">Send message</string>
+    <string name="chat_a11y_mic">Record voice note</string>
+    <string name="chat_a11y_stop_recording">Stop and send voice note</string>
+    <string name="chat_a11y_camera">Send catalog photo</string>
+    <string name="chat_a11y_replay">Replay the answer</string>
+    <string name="chat_a11y_typing">The assistant is typing</string>
+    <string name="chat_a11y_voice_mute">Mute voice mode</string>
+    <string name="chat_a11y_voice_unmute">Turn on voice mode</string>
+    <string name="chat_a11y_voice_interrupt">Interrupt the assistant and speak</string>
+    <string name="chat_a11y_voice_status">Voice mode status</string>
+</resources>

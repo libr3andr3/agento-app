@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_today">Today</string>
+    <string name="tab_orders">Orders</string>
+    <string name="tab_agenda">Agenda</string>
+    <string name="tab_catalog">Catalog</string>
+    <string name="tab_customers">Customers</string>
+    <string name="ui_redesigned">Your agent rearranged the app ✨</string>
+
+    <string name="queue_paid_header">To prepare</string>
+    <string name="queue_paid_empty">Nothing to prepare right now. Paid orders show up here.</string>
+    <string name="queue_pending_header">Awaiting payment</string>
+    <string name="queue_done_today">Done today · %1$d</string>
+    <string name="queue_swipe_hint">Swipe right when it goes out →</string>
+    <string name="queue_swipe_label">✓ Done</string>
+    <string name="queue_done">done</string>
+    <string name="queue_no_show">no-show</string>
+    <string name="queue_marked_done">%1$s · done ✓</string>
+    <string name="queue_undo">Undo</string>
+    <string name="queue_undo_done">Back to pending</string>
+    <string name="queue_done_action">Mark as done</string>
+    <string name="queue_no_show_action">No-show</string>
+    <string name="queue_mark_paid">Mark paid (cash / I saw it)</string>
+    <string name="queue_cancel_order">Cancel order</string>
+    <string name="queue_cancel_appt">Cancel appointment</string>
+    <string name="queue_failed">Could not save. Check your connection and try again.</string>
+
+    <string name="agenda_today_header">Today · %1$s</string>
+    <string name="agenda_today_empty">No appointments today. When a customer books by chat it shows up here.</string>
+    <string name="agenda_swipe_hint">Swipe right once you have served them →</string>
+    <string name="agenda_upcoming_header">Coming days</string>
+    <string name="agenda_week_header">This week</string>
+    <string name="agenda_week_empty">No bookings this week. Taken hours turn green; tap one to see who it is.</string>
+    <string name="agenda_week_legend">Green = confirmed · Amber = awaiting payment · Grey = done. Tap one to act.</string>
+
+    <string name="catalog_add_photo">Add photo</string>
+    <string name="catalog_share">Share link</string>
+    <string name="catalog_empty">Upload photos of your products. Your agent sends them to customers as a private link that lasts 5 minutes.</string>
+    <string name="catalog_products_header">Products and prices</string>
+    <string name="catalog_no_products">No priced products yet. Send your business a photo of your catalog or menu in the chat 💬 and they load by themselves.</string>
+    <string name="catalog_photo_desc">Product photo</string>
+    <string name="catalog_photo_for">Photo of %1$s</string>
+    <string name="catalog_photo_product_hint">Which product is this photo of?</string>
+    <string name="catalog_photo_product_name">Product name</string>
+    <string name="catalog_photo_other_product">Another product…</string>
+    <string name="catalog_photo_skip_product">No product</string>
+    <string name="catalog_photo_pick_product">Pick from the list</string>
+    <string name="catalog_photo_no_product">Photo without product</string>
+    <string name="catalog_uploading">Saving photo…</string>
+    <string name="catalog_uploaded">Photo saved ✓</string>
+    <string name="catalog_upload_failed">Could not save the photo. Try again.</string>
+    <string name="catalog_change_product">Change product</string>
+    <string name="catalog_delete">Delete</string>
+    <string name="catalog_link_creating">Creating private link…</string>
+    <string name="catalog_link_title">Private link · 5 minutes</string>
+    <string name="catalog_link_body">%1$d photos. Whoever opens this link sees them for a few minutes only:\n\n%2$s</string>
+    <string name="catalog_link_send">Send</string>
+    <string name="catalog_link_copy">Copy</string>
+    <string name="catalog_link_copied">Link copied</string>
+    <string name="catalog_link_message">Here are the photos 📷 (the link lasts 5 minutes): %1$s</string>
+    <string name="catalog_link_nothing">No photos to share yet.</string>
+    <string name="catalog_link_failed">Could not create the link. Check your connection and try again.</string>
+
+    <string name="block_contacts_button">See all customers</string>
+
+    <string name="walk_step">%1$d of %2$d</string>
+    <string name="walk_next">Next</string>
+    <string name="walk_done">Got it!</string>
+    <string name="walk_skip">Skip</string>
+    <string name="walk_home">Today at a glance: what you sold and what your agent needs from you.</string>
+    <string name="walk_orders">Paid orders land here. When one goes out, swipe it to the right.</string>
+    <string name="walk_agenda_day">Today\'s appointments in order. Once you have served one, swipe it to the right.</string>
+    <string name="walk_agenda_week">The week at a glance: which hours are taken and which are free.</string>
+    <string name="walk_catalog">Upload photos of your products. Your agent sends them to whoever asks, as a private link.</string>
+    <string name="walk_customers">Every conversation your agent handled, and who is who.</string>
+</resources>

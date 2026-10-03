@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Block `earnings`: hoy grande, semana/mes al costado. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/corner_card"
+    app:cardElevation="@dimen/card_elevation"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_earn_hero"
+        android:padding="@dimen/space_l">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dash_today"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="#B3FFFFFF" />
+
+            <TextView
+                android:id="@+id/earn_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="—"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:textColor="@color/agente_on_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dash_week"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="#8AFFFFFF" />
+
+            <TextView
+                android:id="@+id/earn_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_on_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:text="@string/dash_month"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="#8AFFFFFF" />
+
+            <TextView
+                android:id="@+id/earn_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_on_primary" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

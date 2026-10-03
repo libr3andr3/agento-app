@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spacing & shape tokens v2 — see android/DESIGN.md. Owned by the integrator. -->
+<resources>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+
+    <!-- Shape language: big soft radii, pill controls -->
+    <dimen name="corner_card">24dp</dimen>
+    <dimen name="corner_control">26dp</dimen>   <!-- pill on a 52dp CTA -->
+    <dimen name="corner_bubble">20dp</dimen>
+    <dimen name="corner_sheet">28dp</dimen>
+
+    <dimen name="touch_min">48dp</dimen>
+    <dimen name="cta_height">56dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings screen (A5), English. -->
+<resources>
+    <!-- Section cards -->
+    <string name="settings_section_status">Agent status</string>
+    <string name="settings_section_apps">Connected apps</string>
+    <string name="settings_section_replies">Replies</string>
+    <string name="settings_section_log">Activity log</string>
+
+    <!-- App toggle list -->
+    <string name="settings_app_not_installed">Not installed</string>
+
+    <!-- Battery-exemption nudge (OEM background killers) -->
+    <string name="battery_card_title">Keep your agent awake 🔋</string>
+    <string name="battery_card_body">Some phones (Xiaomi, Huawei, Oppo…) kill background apps to save battery, and your agent would silently stop replying. Exempt agento from battery optimization so it always answers.</string>
+    <string name="battery_card_allow">Keep it running</string>
+    <string name="battery_card_dismiss">Not now</string>
+
+    <!-- Activity log -->
+    <string name="log_relative_now">now</string>
+    <!-- yaya mesh: the post-quantum p2p VPN between agents -->
+    <string name="settings_mesh_label">Private agent network (post-quantum)</string>
+    <string name="settings_mesh_hint">Your agent joins the yaya p2p network: an encrypted WireGuard tunnel with a post-quantum key (ML-KEM-768) and a free rendezvous point. Other agents you approve talk to yours directly, through nobody else.</string>
+    <string name="settings_mesh_on">On the network: %1$s · %2$d linked agent(s)</string>
+    <string name="settings_mesh_off">Off</string>
+    <string name="settings_mesh_denied">Needs your permission to create the VPN</string>
+</resources>

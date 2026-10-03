@@ -1,0 +1,34 @@
+# Mercado agrícola / acopio: el negocio COORDINA — conecta productores con
+# compradores (empresas, mayoristas, restaurantes) y con transportistas, y
+# sigue los acuerdos. No compra ni transporta. Todo entra por WhatsApp: cada
+# contacto dice si es productor, comprador o transportista y el agente lo
+# registra (tools agro_*; la entrevista por rol vive en src/agro.rs).
+bundle: agro
+version: 1
+extends: core
+defaults:
+  businessKind: services
+  walkInsAllowed: false
+fields:
+  corridor:
+    type: "string"
+    ask_in_onboarding: true
+    question_es: "¿En qué zonas o corredor trabajan? (por ejemplo Puno → Arequipa → Nazca → Lima)"
+  products:
+    type: "string"
+    ask_in_onboarding: true
+    question_es: "¿Con qué productos trabajan sobre todo? (papa, quinua, palta, cebolla…)"
+  buyerTypes:
+    type: "string"
+    ask_in_onboarding: true
+    question_es: "¿A qué compradores apuntan? (empresas, mayoristas, restaurantes, exportadores)"
+  commission:
+    type: "string"
+    ask_in_onboarding: false
+    question_es: "¿Cómo cobran por coordinar? (comisión, suscripción, gratis por ahora)"
+tools:
+  - agro_register
+  - agro_save
+  - agro_directory
+  - ops_configure
+  - ops_test_webhook

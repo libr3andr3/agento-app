@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The agente account, without passwords. Step 1: name · phone →
+     "Continuar con agente" sends a code by WhatsApp. Step 2: the code. Shown
+     before anything else in both editions; a business phone with nothing
+     on it yet may then restore from the account's backup. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_l">
+
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/space_xl"
+            android:background="@drawable/bg_brand_mark">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_yaya_alien"
+                app:tint="@color/agente_on_primary" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/account_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/account_title_signin"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="@color/agente_on_surface" />
+
+        <TextView
+            android:id="@+id/account_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/account_sub"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/agente_on_surface_muted" />
+
+        <!-- Step 1 -->
+        <LinearLayout
+            android:id="@+id/account_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_name_til"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                app:hintEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:hint="@string/account_name_hint"
+                app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+                app:boxCornerRadiusBottomStart="@dimen/corner_control"
+                app:boxCornerRadiusTopEnd="@dimen/corner_control"
+                app:boxCornerRadiusTopStart="@dimen/corner_control">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="name"
+                    android:inputType="textPersonName|textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/account_country_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="56dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/agente_surface_card"
+                    app:cardCornerRadius="@dimen/corner_control"
+                    app:cardElevation="0dp"
+                    app:rippleColor="@color/agente_primary_container"
+                    app:strokeColor="@color/agente_outline"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/space_m"
+                        android:paddingEnd="@dimen/space_m">
+
+                        <TextView
+                            android:id="@+id/account_country_flag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:importantForAccessibility="no"
+                            android:text="🇵🇪"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                        <TextView
+                            android:id="@+id/account_country_dial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_s"
+                            android:text="+51"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="@color/agente_on_surface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_xs"
+                            android:importantForAccessibility="no"
+                            android:text="▾"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="@color/agente_on_surface_muted" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_phone_til"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:hintEnabled="true"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:hint="@string/account_phone_hint"
+                    app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+                    app:boxCornerRadiusBottomStart="@dimen/corner_control"
+                    app:boxCornerRadiusTopEnd="@dimen/corner_control"
+                    app:boxCornerRadiusTopStart="@dimen/corner_control"
+                    app:errorEnabled="true"
+                    app:helperTextEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/account_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="phoneNational"
+                        android:digits="0123456789 "
+                        android:imeOptions="actionDone"
+                        android:inputType="phone"
+                        android:maxLength="16" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/account_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="@color/agente_error"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/account_primary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cta_height"
+                android:layout_marginTop="@dimen/space_m"
+                android:text="@string/account_primary_signin"
+                app:icon="@drawable/ic_yaya_alien"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/space_s"
+                app:iconSize="22dp"
+                app:iconTint="@color/agente_on_primary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:gravity="center"
+                android:text="@string/account_no_password"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_on_surface_muted" />
+
+            <TextView
+                android:id="@+id/account_welcome_credits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_primary" />
+        </LinearLayout>
+
+        <!-- Step 2 -->
+        <LinearLayout
+            android:id="@+id/account_code_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/account_code_sent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="@color/agente_on_surface" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_code_til"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                app:hintEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:hint="@string/account_code_hint"
+                app:boxCornerRadiusBottomEnd="@dimen/corner_control"
+                app:boxCornerRadiusBottomStart="@dimen/corner_control"
+                app:boxCornerRadiusTopEnd="@dimen/corner_control"
+                app:boxCornerRadiusTopStart="@dimen/corner_control"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="smsOTPCode"
+                    android:inputType="number"
+                    android:letterSpacing="0.3"
+                    android:maxLength="6"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/account_code_cta"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cta_height"
+                android:text="@string/account_code_cta" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_resend"
+                    style="@style/Widget.Agente.Button.Text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/account_resend" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_change"
+                    style="@style/Widget.Agente.Button.Text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/account_change" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/account_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/account_restore_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xl"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/corner_card"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_restore_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/agente_on_surface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/account_restore_body"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/agente_on_surface_muted" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_restore"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cta_height"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:text="@string/account_restore" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_fresh"
+                    style="@style/Widget.Agente.Button.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_fresh" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/account_signed_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xl"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/corner_card"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_m">
+
+                <TextView
+                    android:id="@+id/account_signed_as"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/agente_on_surface" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_continue"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cta_height"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:text="@string/account_continue" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/account_logout"
+                    style="@style/Widget.Agente.Button.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_logout" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

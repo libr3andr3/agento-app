@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Atención": a question the agent couldn't answer. Amber card + Responder. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_s"
+    app:cardBackgroundColor="@color/agente_secondary_container"
+    app:cardCornerRadius="@dimen/corner_card"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_m">
+
+        <TextView
+            android:id="@+id/dash_gap_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.8"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/agente_on_secondary_container" />
+
+        <TextView
+            android:id="@+id/dash_gap_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@color/agente_on_secondary_container" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dash_gap_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/gap_answer_button"
+            android:textColor="@color/agente_on_primary"
+            app:backgroundTint="@color/agente_secondary"
+            app:cornerRadius="@dimen/corner_control" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

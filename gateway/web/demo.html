@@ -1,0 +1,1866 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F3F2EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A120F" media="(prefers-color-scheme: dark)">
+<title>agento · demo del panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400..700&display=swap">
+<style>
+/* Layout: slim nav rail + wide working canvas. The one loud surface is the dark-green
+   "centro de mando" hero where every customer message is a particle flowing into the agent. */
+:root{
+  --paper:#F3F2EC; --card:#FFFFFF; --sunk:#ECEAE2; --line:#E2E0D6; --line-strong:#D1CEC2;
+  --ink:#15201A; --ink-2:#39443E; --muted:#67716B;
+  --primary:#0B7B5B; --primary-hover:#086A4E; --on-primary:#FFFFFF; --primary-soft:#DDF3E7; --on-primary-soft:#0A4632;
+  --amber:#9A5E08; --amber-soft:#FCEED3; --red:#B3352B; --red-soft:#FBE9E6; --on-red:#FFFFFF;
+  --blue:#2B55C8; --blue-soft:#E5EBFC;
+  --hero-a:#0F8A64; --hero-b:#052019; --hero-ink:#EAF7F0; --hero-muted:#A4CABA; --hero-line:rgba(234,247,240,.13);
+  --hero-glass:rgba(234,247,240,.08); --glow:#6CF5BF; --hero-warn:#F2B35A;
+  --bubble-agent:#DDF0E5; --bubble-owner:#15201A; --on-bubble-owner:#F3F2EC;
+  --thumb:#FFFFFF; --av-bg:87%; --av-fg:27%;
+  --shadow-sm:0 1px 2px rgba(21,32,26,.06);
+  --shadow:0 1px 2px rgba(21,32,26,.05),0 14px 34px -14px rgba(21,32,26,.20);
+  --scrim:rgba(8,16,12,.45);
+  --f-display:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --r-lg:22px; --r:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A120F; --card:#101A16; --sunk:#16221D; --line:#1E2B25; --line-strong:#2B3A33;
+    --ink:#E3ECE7; --ink-2:#C2CEC7; --muted:#8B9B93;
+    --primary:#37C58F; --primary-hover:#52D6A4; --on-primary:#03140D; --primary-soft:#12352A; --on-primary-soft:#A6EBCE;
+    --amber:#E6A94E; --amber-soft:#33260F; --red:#F07F73; --red-soft:#3A1A17; --on-red:#2A0B08;
+    --blue:#8DA8FF; --blue-soft:#1A2444;
+    --hero-a:#0C6C4E; --hero-b:#020A07; --hero-ink:#EAF7F0; --hero-muted:#98C1B0; --hero-line:rgba(234,247,240,.11);
+    --hero-glass:rgba(234,247,240,.07); --glow:#6CF5BF; --hero-warn:#F2B35A;
+    --bubble-agent:#14342A; --bubble-owner:#E3ECE7; --on-bubble-owner:#0A120F;
+    --thumb:#E3ECE7; --av-bg:23%; --av-fg:84%;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 16px 36px -14px rgba(0,0,0,.7);
+    --scrim:rgba(0,0,0,.62);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A120F; --card:#101A16; --sunk:#16221D; --line:#1E2B25; --line-strong:#2B3A33;
+  --ink:#E3ECE7; --ink-2:#C2CEC7; --muted:#8B9B93;
+  --primary:#37C58F; --primary-hover:#52D6A4; --on-primary:#03140D; --primary-soft:#12352A; --on-primary-soft:#A6EBCE;
+  --amber:#E6A94E; --amber-soft:#33260F; --red:#F07F73; --red-soft:#3A1A17; --on-red:#2A0B08;
+  --blue:#8DA8FF; --blue-soft:#1A2444;
+  --hero-a:#0C6C4E; --hero-b:#020A07; --hero-ink:#EAF7F0; --hero-muted:#98C1B0; --hero-line:rgba(234,247,240,.11);
+  --hero-glass:rgba(234,247,240,.07); --glow:#6CF5BF; --hero-warn:#F2B35A;
+  --bubble-agent:#14342A; --bubble-owner:#E3ECE7; --on-bubble-owner:#0A120F;
+  --thumb:#E3ECE7; --av-bg:23%; --av-fg:84%;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 16px 36px -14px rgba(0,0,0,.7);
+  --scrim:rgba(0,0,0,.62);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea{font:inherit;color:inherit}
+a{color:inherit}
+h1,h2,h3,h4{text-wrap:balance}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:8px}
+.mono{font-family:var(--f-mono)}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- primitives ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:38px;padding:0 14px;border-radius:12px;font-weight:600;font-size:.9rem;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);transition:background .15s,border-color .15s,transform .1s;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn:active{transform:translateY(1px)}
+.btn .ic{width:17px;height:17px}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+.btn.primary:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{height:32px;padding:0 11px;font-size:.84rem;border-radius:10px}
+.btn.big{height:50px;font-size:1rem;border-radius:14px;width:100%}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--sunk)}
+.link{color:var(--primary);font-weight:600;font-size:.86rem;text-decoration:none}
+.link:hover{text-decoration:underline}
+.icon-btn{width:38px;height:38px;border-radius:12px;display:inline-grid;place-items:center;color:var(--ink-2)}
+.icon-btn:hover{background:var(--sunk)}
+.chip{display:inline-flex;align-items:center;gap:.35rem;height:23px;padding:0 9px;border-radius:999px;font-size:.74rem;font-weight:600;background:var(--sunk);color:var(--ink-2);white-space:nowrap}
+.chip .ic{width:13px;height:13px}
+.chip.red{background:var(--red-soft);color:var(--red)}
+.chip.amber{background:var(--amber-soft);color:var(--amber)}
+.chip.blue{background:var(--blue-soft);color:var(--blue)}
+.chip.green{background:var(--primary-soft);color:var(--on-primary-soft)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--muted);flex:none}
+.dot.on{background:var(--primary)}
+.dot.warn{background:var(--amber)}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--glow);box-shadow:0 0 0 0 var(--glow);animation:live 2s infinite;display:inline-block;flex:none}
+@keyframes live{0%{box-shadow:0 0 0 0 rgba(108,245,191,.6)}70%{box-shadow:0 0 0 8px rgba(108,245,191,0)}100%{box-shadow:0 0 0 0 rgba(108,245,191,0)}}
+
+.tile{--s:28px;width:var(--s);height:var(--s);border-radius:calc(var(--s) * .3);display:inline-grid;place-items:center;flex:none;background:var(--cc);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.tile svg{width:64%;height:64%;display:block}
+.tile[data-ch="instagram"]{background:linear-gradient(45deg,#F9A13A 0%,#E1306C 52%,#8A3AB9 100%)}
+.av{--s:40px;position:relative;width:var(--s);height:var(--s);border-radius:50%;flex:none;display:grid;place-items:center;font:700 calc(var(--s) * .38)/1 var(--f-display);background:hsl(var(--h) 40% var(--av-bg));color:hsl(var(--h) 45% var(--av-fg))}
+.av .ic{width:52%;height:52%}
+.av .tile{position:absolute;right:-4px;bottom:-3px;border:2px solid var(--card);box-shadow:none}
+.av .tile svg{width:70%;height:70%}
+
+.switch{position:relative;display:inline-flex;align-items:center;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch .track{width:38px;height:22px;border-radius:99px;background:var(--line-strong);transition:background .2s;position:relative}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--thumb);box-shadow:var(--shadow-sm);transition:transform .2s}
+.switch input:checked+.track{background:var(--primary)}
+.switch input:checked+.track::after{transform:translateX(16px)}
+.switch input:focus-visible+.track{outline:2px solid var(--primary);outline-offset:2px}
+.switch input:disabled{cursor:not-allowed}
+.switch input:disabled+.track{opacity:.4}
+
+/* ---------- login ---------- */
+.login{position:fixed;inset:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);background:var(--paper);overflow:auto;z-index:20;transition:opacity .45s ease,transform .45s ease}
+.login.leaving{opacity:0;transform:scale(.985);pointer-events:none}
+.login-panel{display:flex;flex-direction:column;padding:28px clamp(20px,5vw,72px);min-height:100%}
+.brand{display:flex;align-items:center;gap:10px;font:750 1.35rem/1 var(--f-display);letter-spacing:-.02em}
+.mark{width:34px;height:34px;flex:none;display:block}
+.login-body{margin-block:auto;max-width:440px;width:100%;padding-block:40px;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font:500 .74rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}
+.login-title{font:760 clamp(2.3rem,4.3vw,3.5rem)/.98 var(--f-display);letter-spacing:-.035em;margin:0}
+.login-title em{font-style:normal;color:var(--primary)}
+.lede{margin:0;color:var(--ink-2);font-size:1.02rem;max-width:40ch}
+.login-form{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.84rem;font-weight:600;color:var(--ink-2)}
+.field input{height:52px;border-radius:14px;border:1px solid var(--line-strong);background:var(--card);padding:0 16px;font-size:1rem;width:100%;color:var(--ink)}
+.field input:focus{outline:2px solid var(--primary);outline-offset:0;border-color:transparent}
+.field-err{margin:0;color:var(--red);font-size:.84rem}
+.code-lead{margin:0;color:var(--ink-2)}
+.otp{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.otp input{height:60px;text-align:center;font:600 1.55rem var(--f-mono);border-radius:14px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);width:100%;min-width:0;caret-color:var(--primary)}
+.otp input:focus{outline:2px solid var(--primary);outline-offset:0;border-color:transparent}
+.code-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.84rem;flex-wrap:wrap}
+.fine{margin:0;font-size:.82rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.fine .ic{width:16px;height:16px;margin-top:2px}
+.login-foot{display:flex;justify-content:space-between;font:500 .74rem var(--f-mono);color:var(--muted)}
+.spin{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.login-art{position:relative;margin:14px;border-radius:30px;overflow:hidden;background:radial-gradient(120% 120% at 70% 30%,var(--hero-a) 0%,var(--hero-b) 64%);isolation:isolate;min-height:520px}
+.login-art canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.float-card{position:absolute;display:flex;gap:10px;align-items:flex-start;background:var(--hero-glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--hero-line);border-radius:16px;padding:12px 14px;color:var(--hero-ink);font-size:.84rem;line-height:1.35;width:min(270px,44%);animation:bob 7s ease-in-out infinite}
+.float-card b{display:block;font-weight:650;font-size:.8rem}
+.float-card p{margin:2px 0 0;color:var(--hero-muted)}
+.float-card .badge{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:var(--glow);color:var(--hero-b);flex:none}
+.float-card .badge .ic{width:16px;height:16px}
+.fc1{top:9%;left:7%}
+.fc2{top:40%;right:6%;animation-delay:-2.3s}
+.fc3{bottom:12%;left:10%;animation-delay:-4.6s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.art-cap{position:absolute;right:20px;bottom:18px;display:flex;align-items:center;gap:8px;font:500 .72rem var(--f-mono);color:var(--hero-muted);letter-spacing:.04em}
+
+/* ---------- app shell ---------- */
+.app{display:grid;grid-template-columns:256px minmax(0,1fr);height:100%}
+.side{background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px;padding:20px 14px 16px;overflow-y:auto;min-height:0}
+.side .brand{padding:0 8px}
+.biz{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:var(--sunk)}
+.biz-logo{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font:750 .9rem var(--f-display);background:var(--amber-soft);color:var(--amber);flex:none}
+.biz b{display:block;font-size:.9rem;line-height:1.2}
+.biz span{font-size:.76rem;color:var(--muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;align-items:center;gap:11px;height:42px;padding:0 11px;border-radius:12px;color:var(--ink-2);font-weight:560;text-align:left;width:100%}
+.nav button:hover{background:var(--sunk)}
+.nav button.on{background:var(--primary-soft);color:var(--on-primary-soft)}
+.nav .count{margin-left:auto;font:600 .72rem var(--f-mono);min-width:22px;height:20px;padding:0 6px;border-radius:99px;background:var(--red);color:var(--on-red);display:grid;place-items:center}
+.nav .count.soft{background:var(--sunk);color:var(--muted)}
+.nav button.on .count.soft{background:var(--card)}
+.side-label{font:500 .68rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 10px 8px;display:flex;justify-content:space-between}
+.side-ch{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.side-ch li{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;font-size:.86rem}
+.side-ch li .n{margin-left:auto;font:500 .75rem var(--f-mono);color:var(--muted)}
+.side-ch .add{color:var(--primary);font-weight:600;cursor:pointer}
+.side-ch .add:hover{background:var(--sunk)}
+.side-ch .add .plus{width:20px;height:20px;border-radius:6px;border:1.5px dashed var(--primary);display:grid;place-items:center}
+.side-ch .add .plus .ic{width:12px;height:12px}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.device{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;border:1px solid var(--line)}
+.device b{display:block;font-size:.84rem;line-height:1.2}
+.device span{font-size:.74rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.device .batt{margin-left:auto;font:500 .74rem var(--f-mono);color:var(--muted);white-space:nowrap}
+.main{display:flex;flex-direction:column;min-width:0;height:100%;overflow:hidden;position:relative}
+.top{display:flex;align-items:center;gap:14px;padding:14px 28px;border-bottom:1px solid var(--line);background:var(--paper);flex:none;min-height:68px}
+.top .brand-sm{display:none}
+.top-title{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.top h1{margin:0;font:700 1.35rem/1.1 var(--f-display);letter-spacing:-.02em;white-space:nowrap}
+.preview-pill{font:500 .7rem var(--f-mono);letter-spacing:.04em;color:var(--amber);background:var(--amber-soft);padding:4px 9px;border-radius:99px;white-space:nowrap}
+.top-actions{display:flex;align-items:center;gap:8px}
+.search-btn{display:flex;align-items:center;gap:10px;height:38px;padding:0 10px 0 12px;border-radius:12px;border:1px solid var(--line-strong);background:var(--card);color:var(--muted);font-size:.88rem;min-width:220px}
+.search-btn:hover{border-color:var(--muted)}
+.search-btn .ic{width:17px;height:17px}
+.search-btn kbd{margin-left:auto;font:500 .7rem var(--f-mono);padding:2px 6px;border-radius:6px;background:var(--sunk);color:var(--muted)}
+.agent-toggle{display:flex;align-items:center;gap:9px;height:38px;padding:0 12px 0 10px;border-radius:12px;background:var(--card);border:1px solid var(--line-strong);font-size:.86rem;font-weight:600}
+.agent-toggle .lbl{white-space:nowrap}
+.avatar-btn{width:38px;height:38px;border-radius:50%;background:var(--amber-soft);color:var(--amber);font:700 .85rem var(--f-display);display:grid;place-items:center}
+.menu{position:absolute;right:20px;top:62px;z-index:45;width:280px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:8px;animation:pop .16s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.menu .who{padding:10px 12px 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.menu .who b{display:block}
+.menu .who span{font-size:.82rem;color:var(--muted)}
+.menu button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;font-size:.9rem;text-align:left}
+.menu button:hover{background:var(--sunk)}
+.menu .plan{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-size:.84rem}
+.paused{display:flex;align-items:center;gap:12px;padding:10px 28px;background:var(--amber-soft);color:var(--amber);font-size:.9rem;font-weight:550;flex:none;flex-wrap:wrap}
+.paused .btn{margin-left:auto}
+.view{flex:1;min-height:0;overflow-y:auto;padding:24px 28px 48px}
+.view-inner{max-width:1360px;margin:0 auto}
+.tabbar{display:none}
+
+/* ---------- home ---------- */
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);border-radius:28px;overflow:hidden;color:var(--hero-ink);background:radial-gradient(110% 150% at 88% 18%,var(--hero-a) 0%,var(--hero-b) 62%);isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(var(--hero-line) 1px,transparent 1px),linear-gradient(90deg,var(--hero-line) 1px,transparent 1px);background-size:34px 34px;-webkit-mask-image:radial-gradient(70% 90% at 22% 30%,#000 0%,transparent 75%);mask-image:radial-gradient(70% 90% at 22% 30%,#000 0%,transparent 75%);opacity:.5}
+.hero-text{padding:28px 32px 26px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.hero-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hero-status{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border-radius:99px;background:var(--hero-glass);border:1px solid var(--hero-line);font-size:.8rem;font-weight:600}
+.hero-status.off .live-dot{background:var(--hero-warn);animation:none}
+.hero-date{font:500 .72rem var(--f-mono);letter-spacing:.06em;color:var(--hero-muted);text-transform:uppercase}
+.hero-title{font:740 clamp(2rem,3.4vw,2.9rem)/1.02 var(--f-display);letter-spacing:-.03em;margin:4px 0 0}
+.hero-sub{margin:0;color:var(--hero-muted);max-width:46ch;font-size:1rem}
+.hero-sub b{color:var(--hero-ink);font-weight:650}
+.hero-sub button{color:var(--glow);font-weight:650;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.hero-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:auto 0 0;border-top:1px solid var(--hero-line)}
+.hero-stats>div{padding:14px 14px 4px 0;min-width:0}
+.hero-stats>div:nth-child(even){padding-left:18px;border-left:1px solid var(--hero-line)}
+.hero-stats>div:nth-child(n+3){border-top:1px solid var(--hero-line);padding-top:14px}
+.hero-stats dt{font:500 .68rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--hero-muted)}
+.hero-stats dd{margin:4px 0 2px;font:700 clamp(1.5rem,2.3vw,2rem)/1.05 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .6s}
+.hero-stats dd.bump{color:var(--glow)}
+.hero-stats span{font-size:.78rem;color:var(--hero-muted)}
+.hero-viz{position:relative;min-height:380px}
+.hero-viz canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.viz-cap{position:absolute;top:18px;right:20px;display:flex;align-items:center;gap:8px;font:500 .68rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--hero-muted)}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;min-width:0}
+.span-7{grid-column:span 7}.span-5{grid-column:span 5}.span-12{grid-column:1/-1}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.card-h h3{margin:0;font:680 1.08rem/1.2 var(--f-display);letter-spacing:-.01em}
+.card-h .grow{flex:1}
+.card-sub{margin:-6px 0 12px;font-size:.84rem;color:var(--muted)}
+
+.att-list{list-style:none;margin:0;padding:0}
+.att-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}
+.att-item:first-child{border-top:0;padding-top:4px}
+.att-who{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.att-who b{font-weight:650}
+.att-who .t{font:500 .72rem var(--f-mono);color:var(--muted)}
+.att-reason{margin:3px 0 0;font-size:.9rem;color:var(--ink-2)}
+.att-quote{margin:8px 0 0;padding:8px 12px;background:var(--sunk);border-radius:12px;font-size:.86rem;color:var(--ink-2)}
+.att-sug{margin-top:8px;display:flex;gap:8px;align-items:flex-start;font-size:.84rem;color:var(--muted);text-align:left}
+.att-sug .ic{width:15px;height:15px;color:var(--primary);margin-top:3px}
+.att-sug:hover span{color:var(--ink)}
+.att-actions{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.empty{padding:26px 10px;text-align:center;color:var(--muted);font-size:.9rem}
+.empty b{display:block;color:var(--ink);font:680 1rem var(--f-display);margin-bottom:4px}
+
+.feed-card{display:flex;flex-direction:column}
+.feed-wrap{position:relative;flex:1;min-height:380px}
+.feed{position:absolute;inset:0;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;overflow:hidden;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.feed li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:center;padding:10px 4px;border-top:1px solid var(--line)}
+.feed li:first-child{border-top:0}
+.feed li.new{animation:feedIn .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes feedIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.feed .who{font-weight:650;font-size:.85rem;display:flex;gap:6px;align-items:baseline;min-width:0}
+.feed .who span{font:500 .7rem var(--f-mono);color:var(--muted);font-weight:500}
+.feed .msg{color:var(--muted);font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs{font:600 .7rem var(--f-mono);display:inline-flex;align-items:center;gap:4px;white-space:nowrap;padding:3px 8px;border-radius:99px}
+.fs .ic{width:12px;height:12px;stroke-width:2.4}
+.fs.ok{background:var(--primary-soft);color:var(--on-primary-soft)}
+.fs.warn{background:var(--amber-soft);color:var(--amber)}
+.fs.mut{background:var(--sunk);color:var(--muted)}
+.fs.typing{background:var(--primary-soft);color:var(--on-primary-soft);gap:3px;padding:6px 9px}
+.fs.typing i,.typing i{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.2s infinite;display:block}
+.fs.typing i:nth-child(2),.typing i:nth-child(2){animation-delay:.18s}
+.fs.typing i:nth-child(3),.typing i:nth-child(3){animation-delay:.36s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+
+.chart{width:100%;height:230px;display:block;overflow:visible}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .ax{fill:var(--muted);font:500 10.5px var(--f-mono)}
+.chart .ax.now{fill:var(--primary);font-weight:600}
+.chart .b-agent{fill:var(--primary)}
+.chart .b-you{fill:var(--amber)}
+.chart .b-pend{fill:var(--red)}
+.chart .cur{opacity:.6}
+.chart g.bar:hover rect{opacity:.8}
+.legend{display:flex;gap:14px;font-size:.78rem;color:var(--muted);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;background:var(--primary)}
+.legend i.you{background:var(--amber)}
+.legend i.pend{background:var(--red)}
+
+.chrows{display:flex;flex-direction:column}
+.chrow{display:grid;grid-template-columns:auto minmax(0,7.5rem) minmax(0,1fr) 2.6rem;gap:12px;align-items:center;padding:9px 0}
+.chrow .nm{font-size:.88rem;font-weight:600;line-height:1.2;min-width:0}
+.chrow .nm span{display:block;font-size:.74rem;color:var(--muted);font-weight:500}
+.chrow .bar{height:10px;border-radius:99px;background:var(--sunk);overflow:hidden;display:flex}
+.chrow .bar i{display:block;height:100%;background:var(--cc)}
+.chrow .bar i.rest{opacity:.35}
+.chrow .n{font:600 .88rem var(--f-mono);text-align:right}
+
+.outcomes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.outcome{padding:4px 22px;border-left:1px solid var(--line);min-width:0}
+.outcome:first-child{border-left:0;padding-left:0}
+.outcome .lbl{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);font-weight:600}
+.outcome .lbl .ic{width:17px;height:17px;color:var(--primary)}
+.outcome .big{font:720 1.9rem/1.1 var(--f-display);letter-spacing:-.02em;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.outcome p{margin:0;font-size:.82rem;color:var(--muted)}
+
+/* ---------- inbox ---------- */
+.view.inbox{padding:0;display:grid;grid-template-columns:340px minmax(0,1fr);overflow:hidden;position:relative}
+.ib-list{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--card)}
+.ib-tools{padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line)}
+.search{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--paper);color:var(--muted)}
+.search:focus-within{outline:2px solid var(--primary);border-color:transparent}
+.search .ic{width:17px;height:17px}
+.search input{border:0;background:transparent;outline:0;flex:1;min-width:0;color:var(--ink);font-size:.9rem}
+.seg{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{height:30px;padding:0 10px;border-radius:9px;font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.seg button .n{font:500 .7rem var(--f-mono);opacity:.75}
+.chf{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chf::-webkit-scrollbar{display:none}
+.chf button{border-radius:9px;opacity:.38;transition:opacity .15s,transform .15s;flex:none}
+.chf button:hover{opacity:.7}
+.chf button.on,.chf.all button{opacity:1}
+.chf button .tile{--s:28px}
+.ib-items{list-style:none;margin:0;padding:6px;overflow-y:auto;flex:1;min-height:0}
+.ib-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:12px 10px;border-radius:14px;cursor:pointer}
+.ib-item:hover{background:var(--sunk)}
+.ib-item.on{background:var(--primary-soft)}
+.ib-item.on .av .tile{border-color:var(--primary-soft)}
+.ib-item:hover .av .tile{border-color:var(--sunk)}
+.ib-item .l1{display:flex;align-items:baseline;gap:8px}
+.ib-item .name{font-weight:650;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
+.ib-item .time{font:500 .7rem var(--f-mono);color:var(--muted);flex:none}
+.ib-item .snip{font-size:.84rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.ib-item.unread .snip{color:var(--ink);font-weight:560}
+.ib-item .l3{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;align-items:center}
+.ub{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--primary);color:var(--on-primary);font:600 .7rem var(--f-mono);display:grid;place-items:center}
+
+.ib-thread{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--paper)}
+.th-h{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--card);flex:none}
+.th-h .who{min-width:0;flex:1}
+.th-h .who b{display:block;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.th-h .who span{font-size:.8rem;color:var(--muted)}
+.th-h .acts{display:flex;align-items:center;gap:8px}
+.th-back{display:none}
+.mode-pill{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 11px;border-radius:99px;font-size:.78rem;font-weight:650;background:var(--primary-soft);color:var(--on-primary-soft);white-space:nowrap}
+.mode-pill .ic{width:15px;height:15px}
+.mode-pill.you{background:var(--amber-soft);color:var(--amber)}
+.th-body{flex:1;overflow-y:auto;padding:22px clamp(16px,3vw,44px);display:flex;flex-direction:column;gap:6px;min-height:0}
+.summary{display:flex;gap:12px;padding:14px 16px;border-radius:16px;background:var(--card);border:1px solid var(--line);margin-bottom:14px;align-items:flex-start}
+.summary .badge{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--primary-soft);color:var(--on-primary-soft);flex:none}
+.summary .badge .ic{width:17px;height:17px}
+.summary b{font-size:.78rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.summary p{margin:2px 0 0;font-size:.92rem}
+.summary .tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.daysep{align-self:center;font:500 .68rem var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:4px 0 8px}
+.ctx{align-self:flex-start;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;margin-bottom:2px}
+.ctx .ic{width:14px;height:14px}
+.msg{max-width:min(560px,80%);padding:10px 14px;border-radius:18px;font-size:.93rem;line-height:1.45;overflow-wrap:anywhere}
+.msg.c{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
+.msg.a{align-self:flex-end;background:var(--bubble-agent);border-bottom-right-radius:6px}
+.msg.o{align-self:flex-end;background:var(--bubble-owner);color:var(--on-bubble-owner);border-bottom-right-radius:6px}
+.msg.enter{animation:feedIn .4s ease both}
+.meta{display:flex;gap:5px;align-items:center;font:500 .66rem var(--f-mono);color:var(--muted);margin:0 6px 8px}
+.meta .ic{width:12px;height:12px}
+.meta.r{align-self:flex-end}
+.meta.l{align-self:flex-start}
+.ph{width:230px;max-width:100%;aspect-ratio:4/3;border-radius:12px;display:grid;place-items:center;align-content:center;gap:6px;color:var(--muted);font-size:.8rem;background:repeating-linear-gradient(135deg,var(--sunk) 0 10px,var(--paper) 10px 20px)}
+.ph .ic{width:26px;height:26px}
+.msg.img{padding:6px}
+.note{align-self:center;max-width:520px;text-align:center;font-size:.82rem;color:var(--amber);background:var(--amber-soft);padding:9px 14px;border-radius:12px;margin:10px 0;display:flex;gap:8px;align-items:flex-start}
+.note .ic{width:16px;height:16px;margin-top:1px}
+.typing{align-self:flex-end;display:inline-flex;gap:4px;padding:13px 15px;background:var(--bubble-agent);border-radius:18px;border-bottom-right-radius:6px;color:var(--on-primary-soft)}
+.composer{border-top:1px solid var(--line);background:var(--card);padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px;flex:none}
+.sugs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.sugs::-webkit-scrollbar{display:none}
+.sug{display:inline-flex;align-items:center;gap:7px;max-width:380px;flex:none;padding:7px 12px;border-radius:12px;background:var(--primary-soft);color:var(--on-primary-soft);font-size:.82rem;font-weight:550;border:1px solid transparent;text-align:left}
+.sug span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sug .ic{width:14px;height:14px}
+.sug:hover{border-color:var(--primary)}
+.comp-row{display:flex;gap:10px;align-items:flex-end}
+.comp-row textarea{flex:1;resize:none;min-height:46px;max-height:150px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink);font-size:.93rem;line-height:1.4}
+.comp-row textarea:focus{outline:2px solid var(--primary);border-color:transparent}
+.comp-row .btn{height:46px;border-radius:14px}
+.teach{display:flex;gap:8px;align-items:center;font-size:.8rem;color:var(--muted);cursor:pointer}
+.teach input{accent-color:var(--primary);width:15px;height:15px;margin:0}
+.th-empty{flex:1;display:grid;place-items:center;text-align:center;color:var(--muted);padding:24px}
+.th-empty b{display:block;color:var(--ink);font:700 1.2rem var(--f-display);margin:12px 0 4px}
+
+.ib-profile{display:none;border-left:1px solid var(--line);background:var(--card);overflow-y:auto;padding:22px 20px;min-height:0}
+.ib-profile.open{display:block;position:absolute;right:0;top:0;bottom:0;width:min(340px,92vw);z-index:30;box-shadow:var(--shadow);animation:slideIn .2s ease}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+.pf-close{float:right}
+.pf-top{text-align:center;padding:6px 0 16px;border-bottom:1px solid var(--line)}
+.pf-top .av{margin:0 auto 10px}
+.pf-top h3{margin:0;font:700 1.15rem var(--f-display)}
+.pf-top p{margin:4px 0 0;font-size:.8rem;color:var(--muted)}
+.pf-top .tags{display:flex;justify-content:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pf-sec{padding:16px 0;border-bottom:1px solid var(--line)}
+.pf-sec:last-child{border-bottom:0}
+.pf-sec h4{margin:0 0 10px;font:500 .68rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pf-id{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:.88rem;min-width:0}
+.pf-id span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-merge{margin-top:8px;display:flex;gap:6px;align-items:center;font-size:.76rem;color:var(--primary);font-weight:600}
+.pf-merge .ic{width:14px;height:14px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0}
+.kv div{min-width:0}
+.kv dt{font-size:.74rem;color:var(--muted)}
+.kv dd{margin:2px 0 0;font:650 1rem var(--f-display);font-variant-numeric:tabular-nums}
+.pf-note{width:100%;min-height:84px;resize:vertical;border:1px solid var(--line-strong);border-radius:12px;background:var(--paper);padding:10px 12px;font-size:.86rem;color:var(--ink)}
+.pf-note:focus{outline:2px solid var(--primary);border-color:transparent}
+.pf-actions{display:grid;gap:8px}
+.pf-actions .btn{justify-content:flex-start}
+
+/* ---------- contacts ---------- */
+.page-h{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.page-h h2{margin:0;font:740 clamp(1.6rem,2.6vw,2.1rem)/1.05 var(--f-display);letter-spacing:-.025em}
+.page-h p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.page-h .grow{flex:1;min-width:240px}
+.merge-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:20px;align-items:center;margin-bottom:18px}
+.merge-viz{display:flex;align-items:center;gap:6px}
+.merge-viz .stack{display:flex;flex-direction:column;gap:4px}
+.merge-viz svg.lines{width:40px;height:62px;color:var(--line-strong)}
+.merge-card h3{margin:0;font:680 1.05rem var(--f-display)}
+.merge-card p{margin:3px 0 0;font-size:.88rem;color:var(--muted)}
+.ctools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.ctools .search{flex:1;min-width:220px;max-width:420px;background:var(--card)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{font:500 .68rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--sunk)}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+.cname{display:flex;align-items:center;gap:12px;min-width:0}
+.cname b{display:block;font-weight:650;white-space:nowrap}
+.cname span{font-size:.76rem;color:var(--muted)}
+.tiles{display:flex;gap:4px}
+.tiles .tile{--s:24px}
+
+/* ---------- channels ---------- */
+.ring{display:flex;align-items:center;gap:14px}
+.ring svg{width:74px;height:74px;transform:rotate(-90deg)}
+.ring .bg{stroke:var(--sunk)}
+.ring .fg{stroke:var(--primary);transition:stroke-dashoffset .6s ease}
+.ring b{display:block;font:740 1.5rem/1 var(--f-display)}
+.ring span{font-size:.82rem;color:var(--muted)}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.mode-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start}
+.mode-card .ill{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--primary-soft);color:var(--on-primary-soft)}
+.mode-card .ill .ic{width:26px;height:26px}
+.mode-card.soon .ill{background:var(--blue-soft);color:var(--blue)}
+.mode-card h3{margin:0;font:680 1.05rem var(--f-display);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mode-card p{margin:4px 0 10px;font-size:.88rem;color:var(--muted)}
+.mode-facts{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--ink-2)}
+.mode-facts span{display:inline-flex;align-items:center;gap:6px}
+.mode-facts .ic{width:15px;height:15px;color:var(--primary)}
+.mode-card.soon .mode-facts .ic{color:var(--blue)}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:28px 0 12px}
+.sec-h h3{margin:0;font:680 1.1rem var(--f-display)}
+.sec-h span{font-size:.84rem;color:var(--muted)}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(290px,100%),1fr));gap:16px}
+.chcard{display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--card);min-width:0;transition:border-color .2s,box-shadow .2s}
+.chcard:hover{box-shadow:var(--shadow)}
+.chcard.off{background:transparent;border-style:dashed;border-color:var(--line-strong)}
+.chcard .hd{display:flex;align-items:center;gap:12px}
+.chcard .hd .tile{--s:42px}
+.chcard .hd b{display:block;font-size:.98rem}
+.chcard .hd span{font-size:.8rem;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chcard .hd>div{min-width:0;flex:1}
+.chcard .stat{font-size:.84rem;color:var(--ink-2);display:flex;justify-content:space-between;gap:10px}
+.chcard .stat b{font:600 .84rem var(--f-mono)}
+.tgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px 9px 12px;border-radius:12px;background:var(--sunk);font-size:.84rem;font-weight:600}
+.tg.dis{opacity:.55}
+.chcard .ft{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.chcard .ft small{font-size:.76rem;color:var(--muted)}
+.soon-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:12px}
+.soon-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;border:1px dashed var(--line-strong)}
+.soon-item .gl{width:34px;height:34px;border-radius:10px;background:var(--sunk);display:grid;place-items:center;color:var(--muted);flex:none}
+.soon-item .gl .ic{width:18px;height:18px}
+.soon-item div{flex:1;min-width:0}
+.soon-item b{display:block;font-size:.9rem}
+.soon-item span{font-size:.76rem;color:var(--muted)}
+
+/* ---------- modal / palette / toasts ---------- */
+.scrim{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:16px;z-index:50;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}}
+.modal{width:min(580px,100%);max-height:calc(100% - 16px);overflow:auto;background:var(--card);border-radius:26px;box-shadow:var(--shadow);border:1px solid var(--line);animation:pop .22s ease}
+.m-h{display:flex;align-items:center;gap:12px;padding:20px 22px 0}
+.m-h .tile{--s:40px}
+.m-h h3{margin:0;font:700 1.2rem var(--f-display);flex:1}
+.steps{list-style:none;margin:16px 22px 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps li{font:500 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:8px;border-top:3px solid var(--sunk)}
+.steps li.on{color:var(--ink);border-color:var(--primary)}
+.steps li.done{border-color:var(--primary);color:var(--primary)}
+.m-b{padding:20px 22px}
+.m-b h4{margin:0 0 4px;font:680 1.05rem var(--f-display)}
+.m-b>p{margin:0 0 16px;color:var(--muted);font-size:.9rem}
+.m-f{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 22px 22px;flex-wrap:wrap}
+.m-f .r{display:flex;gap:8px;margin-left:auto}
+.opt{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:16px;border-radius:16px;border:1.5px solid var(--line-strong);cursor:pointer;text-align:left;width:100%;margin-bottom:10px;align-items:start}
+.opt:hover{border-color:var(--muted)}
+.opt.on{border-color:var(--primary);background:var(--primary-soft)}
+.opt.dis{opacity:.5;cursor:not-allowed}
+.opt .ill{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--sunk);color:var(--ink-2)}
+.opt.on .ill{background:var(--card);color:var(--primary)}
+.opt b{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.95rem}
+.opt p{margin:3px 0 0;font-size:.84rem;color:var(--muted)}
+.qr-wrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center}
+.qr{position:relative;padding:12px;border-radius:18px;border:1px solid var(--line);background:var(--card);width:max-content}
+.qr canvas{display:block;width:150px;height:150px;image-rendering:pixelated}
+.qr .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:10px;box-shadow:0 0 0 5px var(--card)}
+.howto{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.howto li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;font-size:.88rem;counter-increment:s}
+.howto li::before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font:600 .74rem var(--f-mono)}
+.wait{display:flex;align-items:center;gap:10px;margin-top:16px;padding:12px 14px;border-radius:14px;background:var(--sunk);font-size:.88rem;font-weight:600}
+.wait.ok{background:var(--primary-soft);color:var(--on-primary-soft)}
+.wait .ic{width:18px;height:18px}
+.perm{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
+.perm li{display:flex;gap:10px;align-items:center;font-size:.88rem}
+.perm .ic{width:17px;height:17px;color:var(--primary)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row-sw{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--sunk)}
+.row-sw div{flex:1;min-width:0}
+.row-sw b{display:block;font-size:.9rem}
+.row-sw span{font-size:.8rem;color:var(--muted)}
+.mini-seg{display:flex;gap:4px;background:var(--sunk);padding:4px;border-radius:12px;margin:6px 0 4px;flex-wrap:wrap}
+.mini-seg button{flex:1;height:32px;border-radius:9px;font-size:.8rem;font-weight:600;color:var(--muted);padding:0 8px;white-space:nowrap}
+.mini-seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.checks label{display:flex;gap:8px;align-items:center;font-size:.85rem;padding:10px 12px;border-radius:12px;border:1px solid var(--line);cursor:pointer}
+.checks input{accent-color:var(--primary);width:16px;height:16px;margin:0}
+.lbl-sm{font:500 .68rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px;display:block}
+.done-hero{text-align:center;padding:16px 0 4px}
+.done-hero .ok{width:72px;height:72px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:var(--primary);color:var(--on-primary);animation:popIn .5s cubic-bezier(.2,1.4,.4,1)}
+.done-hero .ok .ic{width:36px;height:36px;stroke-width:2.6}
+@keyframes popIn{from{transform:scale(.4);opacity:0}}
+.done-hero h4{font:740 1.4rem var(--f-display);margin:0}
+.done-hero p{color:var(--muted);margin:6px auto 0;max-width:40ch}
+
+.cmd{position:fixed;inset:0;z-index:60;background:var(--scrim);display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px 16px;animation:fade .15s}
+.cmd-box{width:min(620px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;animation:pop .16s ease}
+.cmd-in{display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--line);color:var(--muted)}
+.cmd-in input{width:100%;height:56px;border:0;font-size:1rem;background:transparent;color:var(--ink);outline:0}
+.cmd-in kbd{font:500 .7rem var(--f-mono);padding:2px 6px;border-radius:6px;background:var(--sunk)}
+.cmd ul{max-height:52vh;overflow:auto;list-style:none;margin:0;padding:6px}
+.cmd li.grp{font:500 .66rem var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:10px 12px 4px;cursor:default}
+.cmd li.it{display:flex;gap:12px;align-items:center;padding:9px 12px;border-radius:11px;cursor:pointer;font-size:.92rem}
+.cmd li.it .ic{color:var(--muted)}
+.cmd li.it .tile{--s:22px}
+.cmd li.it small{margin-left:auto;color:var(--muted);font-size:.78rem;max-width:45%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd li.it.on{background:var(--sunk)}
+
+.toasts{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:80;pointer-events:none;width:max-content;max-width:calc(100% - 32px)}
+.toast{background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:14px;font-size:.88rem;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;animation:toastIn .25s ease;max-width:100%}
+.toast .ic{width:17px;height:17px;color:var(--glow)}
+.toast.out{opacity:0;transform:translateY(6px);transition:all .25s}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}}
+
+/* ---------- responsive ---------- */
+@media (max-width:1499px){ .ib-profile:not(.open){display:none} }
+@media (min-width:1500px){ .view.inbox{grid-template-columns:340px minmax(0,1fr) 310px} .ib-profile{display:block} .pf-close,.pf-toggle{display:none} }
+@media (max-width:1240px){ .span-7,.span-5{grid-column:1/-1} .search-btn{min-width:0} .search-btn .lbl{display:none} }
+@media (max-width:1100px){
+  .hero{grid-template-columns:1fr}
+  .hero-viz{min-height:320px;border-top:1px solid var(--hero-line)}
+  .outcomes{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:18px}
+  .outcome:nth-child(3){border-left:0;padding-left:0}
+  .modes{grid-template-columns:1fr}
+}
+@media (max-width:1099px){
+  .view.inbox{grid-template-columns:1fr}
+  .view.inbox .ib-thread{display:none}
+  .view.inbox.show-thread .ib-list{display:none}
+  .view.inbox.show-thread .ib-thread{display:flex}
+  .th-back{display:inline-grid}
+}
+@media (max-width:899px){
+  body{font-size:14.5px}
+  .login{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .login-art{order:-1;min-height:0;height:230px;margin:12px 12px 0;border-radius:24px}
+  .float-card{display:none}
+  .login-panel{padding:18px 16px 24px}
+  .login-body{padding-block:22px}
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .main{padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+  .top{padding:10px 16px;gap:8px;min-height:60px}
+  .top .brand-sm{display:block}
+  .top .brand-sm .mark{width:30px;height:30px}
+  .top h1{font-size:1.2rem}
+  .preview-pill,.search-btn kbd,.agent-toggle .lbl{display:none}
+  .search-btn{width:38px;padding:0;justify-content:center;border-color:transparent;background:transparent}
+  .agent-toggle{padding:0 8px;border-color:transparent;background:transparent}
+  .menu{right:12px;top:56px}
+  .paused{padding:10px 16px}
+  .view{padding:16px 16px 28px}
+  .hero{border-radius:22px}
+  .hero-text{padding:22px 20px 18px}
+  .hero-stats>div:nth-child(even){padding-left:14px}
+  .hero-viz{min-height:320px}
+  .card{padding:18px 16px}
+  .att-item{grid-template-columns:auto minmax(0,1fr)}
+  .att-actions{grid-column:2;flex-direction:row;flex-wrap:wrap}
+  .chrow{grid-template-columns:auto minmax(0,6rem) minmax(0,1fr) 2.2rem;gap:10px}
+  .merge-card{grid-template-columns:1fr}
+  .merge-viz{display:none}
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:40}
+  .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;border-radius:12px;font-size:.7rem;font-weight:600;color:var(--muted);position:relative}
+  .tabbar button.on{color:var(--primary)}
+  .tabbar .count{position:absolute;top:2px;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 5px;border-radius:99px;background:var(--red);color:var(--on-red);font:600 .62rem var(--f-mono);display:grid;place-items:center}
+  .toasts{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .th-h{padding:10px 12px}
+  .th-h .mode-pill span{display:none}
+  .msg{max-width:88%}
+  .qr-wrap{grid-template-columns:1fr}
+  .qr{margin:0 auto}
+  .checks{grid-template-columns:1fr}
+  .tgs{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="mk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16A374"/><stop offset="1" stop-color="#063B2B"/></linearGradient></defs></svg>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- ================= LOGIN ================= -->
+<div class="login" id="login">
+  <div class="login-panel">
+    <div class="brand"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg><span>agento</span></div>
+    <div class="login-body">
+      <span class="eyebrow">Panel del negocio</span>
+      <h1 class="login-title">Todos tus chats.<br>Un solo agente.<br><em>Tú al mando.</em></h1>
+      <p class="lede">WhatsApp, Instagram, Messenger, TikTok y Facebook en una sola bandeja. Tu agente responde en segundos y te pasa solo lo que tú tienes que decidir.</p>
+
+      <form id="f-id" class="login-form" novalidate>
+        <div class="field">
+          <label for="login-id">Tu correo o número de WhatsApp</label>
+          <input id="login-id" name="login-id" autocomplete="username" placeholder="rosa@pasteleriarosita.pe" spellcheck="false">
+          <p class="field-err" id="login-err" hidden></p>
+        </div>
+        <button class="btn primary big" type="submit" id="send-code">Enviarme un código</button>
+        <button class="btn ghost big" type="button" id="demo-enter">Entrar con la cuenta de ejemplo</button>
+      </form>
+
+      <form id="f-code" class="login-form" novalidate hidden>
+        <p class="code-lead">Escribe el código de 6 dígitos que enviamos a <b id="code-dest"></b>.</p>
+        <div class="otp" id="otp">
+          <input id="otp-0" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Dígito 1">
+          <input id="otp-1" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
+          <input id="otp-2" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
+          <input id="otp-3" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
+          <input id="otp-4" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
+          <input id="otp-5" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+        </div>
+        <button class="btn primary big" type="submit" id="code-go">Entrar a mi panel</button>
+        <div class="code-foot"><button type="button" class="link" id="code-back">Usar otro correo o número</button><span class="mono muted" id="resend">Reenviar en 0:60</span></div>
+      </form>
+
+      <p class="fine"><svg class="ic" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg><span>Sin contraseñas: entras con tu cuenta Yaya y un código de un solo uso. En la demo cualquier código funciona.</span></p>
+    </div>
+    <div class="login-foot"><a href="/app" style="color:inherit">¿Ya tienes cuenta? Entra a tu panel →</a><a href="/" style="color:inherit">agento.ceo</a></div>
+  </div>
+  <div class="login-art" aria-hidden="true">
+    <canvas id="login-canvas"></canvas>
+    <div class="float-card fc1"><span class="tile" data-ch="instagram" style="--s:26px" id="fc-ig"></span><div><b>@andrea.eats · Instagram</b><p>¿Cuánto cuesta la torta de tres leches grande?</p></div></div>
+    <div class="float-card fc2"><span class="badge"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></span><div><b>Tu agente respondió en 3 s</b><p>S/ 95, para 16 porciones. ¿Para qué día la necesitas?</p></div></div>
+    <div class="float-card fc3"><span class="badge"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Yape recibido · S/ 180.00</b><p>María F. Quispe · pedido confirmado</p></div></div>
+    <div class="art-cap"><span class="live-dot"></span>Un día en Pastelería Rosita · ejemplo</div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="app" hidden>
+  <aside class="side" aria-label="Navegación">
+    <div class="brand"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg><span>agento</span></div>
+    <div class="biz"><span class="biz-logo">PR</span><div><b>Pastelería Rosita</b><span>Santiago de Surco, Lima</span></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div>
+      <div class="side-label"><span>Canales en vivo</span><span id="side-ch-count"></span></div>
+      <ul class="side-ch" id="side-ch"></ul>
+    </div>
+    <div class="side-foot">
+      <div class="device"><svg class="ic" viewBox="0 0 24 24"><path d="M8 3h8a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 16 21H8a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 8 3zM11 18h2"/></svg><div><b>Moto G54</b><span><i class="dot on"></i>En línea · agento 1.29.0</span></div><span class="batt">78 %</span></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <header class="top">
+      <span class="brand-sm"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg></span>
+      <div class="top-title"><h1 id="page-title">Mi panel</h1><span class="preview-pill">Demo · datos de ejemplo</span></div>
+      <div class="top-actions">
+        <button class="search-btn" id="open-cmd" aria-label="Buscar"><svg class="ic" viewBox="0 0 24 24"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg><span class="lbl">Buscar o ir a…</span><kbd>Ctrl K</kbd></button>
+        <label class="agent-toggle" for="agent-on"><span class="switch"><input type="checkbox" id="agent-on" checked><span class="track"></span></span><span class="lbl" id="agent-lbl">Agente encendido</span></label>
+        <button class="icon-btn" id="theme-btn" aria-label="Cambiar tema"><svg class="ic" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+        <button class="avatar-btn" id="me-btn" aria-label="Tu cuenta" aria-haspopup="true">RH</button>
+      </div>
+    </header>
+    <div class="menu" id="me-menu" hidden>
+      <div class="who"><b>Rosa Huamán</b><span>rosa@pasteleriarosita.pe</span></div>
+      <div class="plan"><span>Plan Pro · S/ 150 al mes</span><span class="chip green">Activo</span></div>
+      <button type="button" id="menu-theme"><svg class="ic" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>Cambiar tema</button>
+      <button type="button" id="real-panel"><svg class="ic" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Ir a mi panel real</button>
+      <button type="button" id="logout"><svg class="ic" viewBox="0 0 24 24"><path d="M15 4h3.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H15M10 16l-4-4 4-4M6 12h10"/></svg>Cerrar sesión</button>
+    </div>
+    <div class="paused" id="paused" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg><span>Tu agente está en pausa. Los mensajes nuevos te esperan en la bandeja.</span><button class="btn sm" id="resume">Encender agente</button></div>
+
+    <!-- HOME -->
+    <section class="view" id="view-home">
+      <div class="view-inner">
+        <div class="hero">
+          <div class="hero-text">
+            <div class="hero-top"><span class="hero-status" id="hero-status"><span class="live-dot"></span><span id="hero-status-text"></span></span><span class="hero-date" id="hero-date"></span></div>
+            <h2 class="hero-title" id="hero-title">Buenas tardes, Rosa.</h2>
+            <p class="hero-sub" id="hero-sub"></p>
+            <dl class="hero-stats">
+              <div><dt>Mensajes hoy</dt><dd id="st-msgs">0</dd><span>+18 % vs. el lunes pasado</span></div>
+              <div><dt>Respondió tu agente</dt><dd id="st-share">0 %</dd><span id="st-share-sub"></span></div>
+              <div><dt>Respuesta mediana</dt><dd>11 s</dd><span>antes de agento: 38 min</span></div>
+              <div><dt>Vendido por chat</dt><dd id="st-sold">S/ 0</dd><span id="st-sold-sub"></span></div>
+            </dl>
+          </div>
+          <div class="hero-viz">
+            <canvas id="hero-canvas" role="img" aria-label="Mapa en vivo: los mensajes de cada canal llegan a tu agente y él responde"></canvas>
+            <div class="viz-cap"><span class="live-dot"></span>En vivo · cada punto es un mensaje</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card span-7">
+            <div class="card-h"><h3>Necesita tu atención</h3><span class="chip red" id="att-count">0</span><span class="grow"></span><button class="link" data-go="inbox" data-filter="attention">Ver en la bandeja</button></div>
+            <p class="card-sub">Tu agente se detuvo aquí y te pasó la conversación. Lo que respondas, lo aprende.</p>
+            <ul class="att-list" id="att-list"></ul>
+          </article>
+          <article class="card span-5 feed-card">
+            <div class="card-h"><h3>En vivo</h3><span class="live-dot"></span><span class="grow"></span><span class="mono muted" style="font-size:.72rem">todos los canales</span></div>
+            <div class="feed-wrap"><ul class="feed" id="feed"></ul></div>
+          </article>
+
+          <article class="card span-7">
+            <div class="card-h"><h3>Mensajes por hora</h3><span class="grow"></span><div class="legend"><span><i></i>Tu agente</span><span><i class="you"></i>Tú</span><span id="lg-pend"><i class="pend"></i>Sin responder</span></div></div>
+            <svg class="chart" id="hourly" role="img" aria-label="Mensajes por hora de hoy"></svg>
+          </article>
+          <article class="card span-5">
+            <div class="card-h"><h3>Canales hoy</h3><span class="grow"></span><button class="link" data-go="channels">Administrar</button></div>
+            <div class="chrows" id="chrows"></div>
+          </article>
+
+          <article class="card span-12">
+            <div class="card-h"><h3>Lo que tu agente logró hoy</h3></div>
+            <div class="outcomes" id="outcomes"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- INBOX -->
+    <section class="view inbox" id="view-inbox" hidden>
+      <div class="ib-list">
+        <div class="ib-tools">
+          <label class="search" for="ib-q"><svg class="ic" viewBox="0 0 24 24"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg><input id="ib-q" placeholder="Buscar nombre, número o mensaje" autocomplete="off"></label>
+          <div class="seg" id="ib-seg" role="tablist" aria-label="Estado"></div>
+          <div class="chf" id="ib-chf" aria-label="Filtrar por canal"></div>
+        </div>
+        <ul class="ib-items" id="ib-items"></ul>
+      </div>
+      <div class="ib-thread" id="ib-thread"></div>
+      <aside class="ib-profile" id="ib-profile" aria-label="Ficha del cliente"></aside>
+    </section>
+
+    <!-- CONTACTS -->
+    <section class="view" id="view-contacts" hidden>
+      <div class="view-inner">
+        <div class="page-h"><div class="grow"><h2>Clientes</h2><p>Cada persona que le escribió a tu negocio, con todos sus canales en una sola ficha.</p></div><span class="chip" id="ct-total"></span></div>
+        <article class="card merge-card">
+          <div class="merge-viz" aria-hidden="true" id="merge-viz"></div>
+          <div><h3>Una persona, todos sus canales</h3><p>Tu agente unió 38 perfiles repetidos. Si alguien te escribe por Instagram y luego por WhatsApp con el mismo número o correo, ves una sola historia.</p></div>
+          <button class="btn sm" id="merge-review">Revisar uniones</button>
+        </article>
+        <div class="ctools">
+          <label class="search" for="ct-q"><svg class="ic" viewBox="0 0 24 24"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"/></svg><input id="ct-q" placeholder="Buscar por nombre, celular o canal" autocomplete="off"></label>
+          <div class="seg" id="ct-seg"></div>
+        </div>
+        <div class="tbl"><table><thead><tr><th>Cliente</th><th>Canales</th><th>Celular</th><th class="r">Pedidos</th><th class="r">Gastado</th><th>Último mensaje</th></tr></thead><tbody id="ct-body"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- CHANNELS -->
+    <section class="view" id="view-channels" hidden>
+      <div class="view-inner">
+        <div class="page-h">
+          <div class="grow"><h2>Tus canales</h2><p>Conecta los lugares donde te escriben tus clientes. En cada uno decides si tu agente solo lee o también responde.</p></div>
+          <div class="ring"><svg viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="32" fill="none" stroke-width="9"/><circle class="fg" id="ring-fg" cx="40" cy="40" r="32" fill="none" stroke-width="9" stroke-linecap="round"/></svg><div><b id="ring-n">0 de 9</b><span id="ring-sub">conectados</span></div></div>
+        </div>
+        <div class="modes">
+          <article class="card mode-card">
+            <span class="ill"><svg class="ic" viewBox="0 0 24 24"><path d="M8 3h8a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 16 21H8a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 8 3zM11 18h2M9.5 7.5h5M9.5 10.5h3"/></svg></span>
+            <div><h3>Desde tu celular <span class="chip green"><span class="dot on"></span>Activo</span></h3>
+              <p>Así funciona hoy. La app agento lee los mensajes que llegan a tu celular y responde desde tus propias apps, con tu número y tus cuentas.</p>
+              <div class="mode-facts"><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Moto G54 · en línea</span><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>agento 1.29.0</span><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Sin configurar nada en Meta</span></div>
+            </div>
+          </article>
+          <article class="card mode-card soon">
+            <span class="ill"><svg class="ic" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span>
+            <div><h3>Conexión oficial <span class="chip blue">Próximamente</span></h3>
+              <p>Conecta tu cuenta directo con WhatsApp Business Platform, Meta o TikTok. Sigue atendiendo aunque tu celular esté apagado y guarda todo el historial.</p>
+              <div class="mode-facts"><span><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></svg>24/7 sin celular</span><span><svg class="ic" viewBox="0 0 24 24"><path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c1.9.7 3.2 2.6 3.5 5.2"/></svg>Varias personas en la bandeja</span></div>
+            </div>
+          </article>
+        </div>
+        <div class="sec-h"><h3>Canales</h3><span id="ch-sub"></span></div>
+        <div class="chgrid" id="chgrid"></div>
+        <div class="sec-h"><h3>Vienen pronto</h3><span>Te avisamos cuando estén listos.</span></div>
+        <div class="soon-row" id="soon-row"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" id="tabbar" aria-label="Navegación"></nav>
+</div>
+
+<div id="modal-root"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ============ helpers ============ */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k){ try { return localStorage.getItem('agento-panel:' + k); } catch { return null; } },
+  set(k, v){ try { v == null ? localStorage.removeItem('agento-panel:' + k) : localStorage.setItem('agento-panel:' + k, v); } catch {} }
+};
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PEN = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' });
+const INT = new Intl.NumberFormat('es-PE');
+const rand = (a, b) => a + Math.random() * (b - a);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const hexA = (hex, a) => { const h = hex.replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+/* Demo clock: the example day is Monday 28 Sep 2026, 6:12 p. m., and it keeps ticking. */
+const DEMO_BASE = new Date(2026, 8, 28, 18, 12, 0).getTime();
+const T0 = Date.now();
+const now = () => DEMO_BASE + (Date.now() - T0);
+const ago = m => now() - m * 60000;
+function rel(ts){
+  const s = Math.round((now() - ts) / 1000);
+  if (s < 50) return 'ahora';
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60);
+  return h < 24 ? `${h} h` : 'ayer';
+}
+const hace = ts => { const r = rel(ts); return r === 'ahora' ? 'recién' : r === 'ayer' ? 'ayer' : 'hace ' + r; };
+const clock = ts => new Date(ts).toLocaleTimeString('es-PE', { hour: 'numeric', minute: '2-digit' });
+
+/* ============ icons ============ */
+const UI = {
+  home: 'M4 5.5A1.5 1.5 0 0 1 5.5 4h4A1.5 1.5 0 0 1 11 5.5v5A1.5 1.5 0 0 1 9.5 12h-4A1.5 1.5 0 0 1 4 10.5zM13 5.5A1.5 1.5 0 0 1 14.5 4h4A1.5 1.5 0 0 1 20 5.5v2A1.5 1.5 0 0 1 18.5 9h-4A1.5 1.5 0 0 1 13 7.5zM13 12.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5h-4a1.5 1.5 0 0 1-1.5-1.5zM4 15.5A1.5 1.5 0 0 1 5.5 14h4a1.5 1.5 0 0 1 1.5 1.5v3A1.5 1.5 0 0 1 9.5 20h-4A1.5 1.5 0 0 1 4 18.5z',
+  inbox: 'M4 13l2.4-7.2A1.8 1.8 0 0 1 8.1 4.5h7.8a1.8 1.8 0 0 1 1.7 1.3L20 13v5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18zM4 13h4.5l1.5 2.5h4l1.5-2.5H20',
+  users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c1.9.7 3.2 2.6 3.5 5.2',
+  plug: 'M9 7V3M15 7V3M6.5 7h11v3.5a5.5 5.5 0 0 1-11 0zM12 16v5',
+  spark: 'M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9zM18.5 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
+  send: 'M4.5 12L20 4.5 16 20l-4-6.5zM12 13.5l8-9',
+  back: 'M15 5l-7 7 7 7',
+  info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 7.6v.2',
+  close: 'M6 6l12 12M18 6L6 18',
+  camera: 'M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5zM12 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  hand: 'M8 13V6.5a1.5 1.5 0 0 1 3 0V12M11 11V5a1.5 1.5 0 0 1 3 0v6M14 11V6.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6 7-2.6 0-4-1.4-5.4-3.6L4 14.6c-.6-1 .5-2.1 1.5-1.5L8 15',
+  bag: 'M5.5 8h13l-1 12h-11zM9 8V6.5a3 3 0 0 1 6 0V8',
+  cal: 'M5 6.5A1.5 1.5 0 0 1 6.5 5h11A1.5 1.5 0 0 1 19 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5zM5 10h14M9 3.5v3M15 3.5v3',
+  coin: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM14.6 9.4c-.5-.8-1.4-1.2-2.6-1.2-1.5 0-2.5.8-2.5 1.9 0 2.6 5.3 1.4 5.3 4 0 1.1-1.1 2-2.8 2-1.2 0-2.2-.5-2.7-1.4M12 6.4v1.8M12 16.1v1.5',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  alert: 'M12 4l9 16H3zM12 10v4.5M12 17.2v.2',
+  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.5c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6',
+  link: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
+  plus: 'M12 5v14M5 12h14',
+  mail: 'M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5zM4.5 6.5l7.5 6 7.5-6',
+  globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3.5 12h17M12 3c2.5 2.5 3.6 5.5 3.6 9s-1.1 6.5-3.6 9c-2.5-2.5-3.6-5.5-3.6-9S9.5 5.5 12 3z',
+  pin: 'M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+  tag: 'M4 12.5V5.5A1.5 1.5 0 0 1 5.5 4h7l7.5 7.5-8.5 8.5zM8.5 9a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z',
+  bell: 'M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2.2 2.2 0 0 0 4 0',
+  moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
+  merge: 'M6 4v4a4 4 0 0 0 4 4h4a4 4 0 0 1 4 4v4M18 4v4a4 4 0 0 1-4 4'
+};
+const ic = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${UI[n]}"/></svg>`;
+
+/* Channel glyphs: simplified marks drawn white on the channel's tile, shared by SVG and canvas. */
+const GLYPH = {
+  wa: [{ d: 'M12 3.6a8.4 8.4 0 0 0-7.2 12.7L3.6 20.4l4.2-1.1A8.4 8.4 0 1 0 12 3.6z' }, { f: 1, d: 'M9.3 8.3c.2-.3.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.5c.1.2 0 .4-.1.6l-.4.5c-.1.1-.1.3 0 .5.6 1 1.4 1.8 2.4 2.4.2.1.4.1.5 0l.5-.5c.2-.2.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3-.1.5-.4.7-.5.4-1.3.6-2 .4-2.4-.7-4.3-2.6-5-5-.2-.7 0-1.5.4-2z' }],
+  ig: [{ d: 'M8.5 4h7A4.5 4.5 0 0 1 20 8.5v7a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 15.5v-7A4.5 4.5 0 0 1 8.5 4z' }, { d: 'M12 8.3a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 1 1 0-7.4z' }, { f: 1, d: 'M16.6 6.4a1 1 0 1 1 0 2 1 1 0 1 1 0-2z' }],
+  ms: [{ d: 'M12 3.6c-4.7 0-8.4 3.5-8.4 8 0 2.4 1 4.5 2.7 6v2.8l2.6-1.4c1 .3 2 .4 3.1.4 4.7 0 8.4-3.5 8.4-7.9s-3.7-7.9-8.4-7.9z' }, { f: 1, d: 'M7.4 13.9l3.1-3.3 1.8 1.8 3.3-1.9-3.1 3.3-1.8-1.8z' }],
+  fb: [{ f: 1, d: 'M13.4 20.5v-7h2.4l.4-2.8h-2.8V8.9c0-.8.3-1.4 1.4-1.4h1.5V5c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.6v2.2H8.4v2.8h2.3v7z' }],
+  tt: [{ d: 'M14.2 3.8v10.1a3.4 3.4 0 1 1-3.4-3.4' }, { d: 'M14.2 3.8c.4 2.3 2 3.8 4.3 4' }],
+  tg: [{ d: 'M20.3 4.4L3.9 10.8c-.8.3-.7 1.3 0 1.5l4 1.2 1.6 4.8c.2.6 1 .8 1.4.3l2.3-2.2 4.1 3c.6.4 1.3.1 1.5-.6l2.6-13.3c.1-.7-.5-1.3-1.1-1.1z' }, { d: 'M8 13.4l9.2-6-7 7.2' }],
+  sms: [{ d: 'M5.5 5h13a1.9 1.9 0 0 1 1.9 1.9v8.2a1.9 1.9 0 0 1-1.9 1.9H10l-4.4 3.3V17h-.1a1.9 1.9 0 0 1-1.9-1.9V6.9A1.9 1.9 0 0 1 5.5 5z' }, { f: 1, d: 'M8.4 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2zM12 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2zM15.6 10a1 1 0 1 1 0 2 1 1 0 1 1 0-2z' }],
+  sg: [{ d: 'M12 3.8a8 8 0 0 0-6.9 12l-1.1 4.2 4.2-1.1A8 8 0 1 0 12 3.8z', dash: 1 }]
+};
+const glyphSvg = g => `<svg viewBox="0 0 24 24" aria-hidden="true">${GLYPH[g].map(p => p.f
+  ? `<path d="${p.d}" fill="#fff"/>`
+  : `<path d="${p.d}" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"${p.dash ? ' stroke-dasharray="2.4 1.7"' : ''}/>`).join('')}</svg>`;
+
+/* ============ data (example business) ============ */
+const CH = {
+  whatsapp:   { name: 'WhatsApp Business', short: 'WhatsApp', color: '#1DA851', g: 'wa', handle: '+51 987 000 123', state: 'on', read: true, reply: true, today: 0, agent: 99, api: 'Meta · WhatsApp Business Platform' },
+  instagram:  { name: 'Instagram', short: 'Instagram', color: '#D62E78', g: 'ig', handle: '@pasteleriarosita', state: 'on', read: true, reply: true, today: 41, agent: 38, api: 'Meta' },
+  messenger:  { name: 'Messenger', short: 'Messenger', color: '#0866FF', g: 'ms', handle: 'Pastelería Rosita', state: 'on', read: true, reply: true, today: 19, agent: 17, api: 'Meta' },
+  tiktok:     { name: 'TikTok', short: 'TikTok', color: '#17191E', spark: '#3FF2EC', g: 'tt', handle: '@pasteleriarosita', state: 'on', read: true, reply: true, today: 13, agent: 13, api: 'TikTok for Business' },
+  facebook:   { name: 'Facebook', short: 'Facebook', color: '#1877F2', g: 'fb', handle: 'Página · comentarios', state: 'on', read: true, reply: true, today: 8, agent: 7, api: 'Meta' },
+  telegram:   { name: 'Telegram', short: 'Telegram', color: '#229ED9', g: 'tg', handle: '@rosita_pasteles', state: 'on', read: true, reply: false, today: 5, agent: 0, api: 'Telegram · bot' },
+  sms:        { name: 'SMS', short: 'SMS', color: '#5B6B82', g: 'sms', handle: '+51 987 000 123', state: 'on', read: true, reply: true, today: 5, agent: 5, api: null },
+  wapersonal: { name: 'WhatsApp personal', short: 'WA personal', color: '#1DA851', g: 'wa', handle: '', state: 'off', read: false, reply: false, today: 0, agent: 0, api: null, note: 'WhatsApp personal no tiene conexión oficial.' },
+  signal:     { name: 'Signal', short: 'Signal', color: '#3A76F0', g: 'sg', handle: '', state: 'off', read: false, reply: false, today: 0, agent: 0, api: null, note: 'Signal no ofrece conexión para negocios.' }
+};
+const ORDER = ['whatsapp', 'instagram', 'messenger', 'tiktok', 'facebook', 'telegram', 'sms', 'wapersonal', 'signal'];
+const TOTAL0 = 195;
+CH.whatsapp.today = TOTAL0 - ORDER.filter(k => k !== 'whatsapp').reduce((s, k) => s + CH[k].today, 0);
+
+/* Hourly: 8 a. m. … 6 p. m. (the last bar is the hour in progress). Sums match the channels. */
+const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const AG = [8, 13, 17, 19, 21, 18, 15, 16, 19, 21, 12];
+const YOU = [1, 1, 2, 2, 3, 1, 1, 1, 2, 2, 0];
+const PEND = HOURS.map(() => 0);
+const sum = a => a.reduce((s, v) => s + v, 0);
+
+const S = {
+  view: 'home', agentOn: true, filter: 'all', chf: new Set(), q: '', open: 'c1', ctq: '', ctag: 'all',
+  feed: [], tick: 0, stats: { sold: 1286.5, orders: 17, payments: 14, yape: 9, plin: 4, cash: 1, people: 71, appts: 4 }
+};
+
+function conv(id, o){
+  const c = Object.assign({ id, unread: 0, tags: [], sugs: [], next: [], note: '', mode: 'agent', ids: [], ctags: [], typing: false, pending: null }, o);
+  c.msgs = o.msgs.map(([w, t, m]) => {
+    const img = typeof t === 'string' && t.startsWith('img:');
+    return { w, t: img ? t.slice(4) : t, img, ts: ago(m) };
+  });
+  return c;
+}
+const CONVS = [
+  conv('c1', { ch: 'whatsapp', name: 'María Fernanda Quispe', handle: '+51 987 654 321', status: 'attention', reason: { label: 'Factura', kind: 'blue', text: 'Pide factura con RUC para su empresa' }, unread: 2, tags: ['Pedido', 'Pagado'], learn: 'facturas con RUC',
+    summary: 'Torta de lúcuma para 20 personas, recojo el sábado 3 a las 4 p. m. Pagó S/ 180 por Yape. Ahora pide factura para su empresa.',
+    msgs: [['c', 'Buenas tardes 😊 quería confirmar mi torta de lúcuma para el sábado', 14], ['a', '¡Hola, María Fernanda! Sí, tu torta de lúcuma para 20 personas está confirmada para el sábado 3 de octubre. Puedes recogerla desde las 4 p. m. 🎂', 14], ['c', 'Perfecto. Ya te yapeé los S/ 180', 9], ['a', 'Recibido ✅ Yape de S/ 180 a nombre de María F. Quispe. ¡Gracias!', 9], ['c', '¿Me podrían dar factura? Es para la empresa, RUC 20601234567', 6], ['a', 'Déjame confirmarlo con Rosa y te respondo en unos minutos 🙏', 6], ['n', 'Tu agente no sabe si emites factura. Respóndele tú y la próxima vez lo sabrá.', 6]],
+    sugs: ['Sí, emitimos factura 🙌 Envíame la razón social y la dirección fiscal, por favor.', 'Por ahora solo emitimos boleta electrónica. ¿Te la hago a tu nombre con DNI?'],
+    ids: [['whatsapp', '+51 987 654 321'], ['instagram', '@mafe.quispe']], merged: 'Unidas por el mismo número', since: 'marzo 2026', orders: 6, spent: 742, lastOrder: '21 sep', ctags: ['Frecuente', 'Empresa'], note: 'Prefiere recoger en tienda. Alérgica a las nueces.' }),
+  conv('c2', { ch: 'instagram', name: 'Andrea Villanueva', handle: '@andrea.eats', status: 'agent', tags: ['Cotización'], typing: true,
+    summary: 'Quiere la torta de tres leches grande (S/ 95) para el viernes 2, con delivery a San Borja.',
+    msgs: [['c', 'Vi tu reel de la torta de tres leches 😍 ¿cuánto cuesta la grande?', 4], ['a', '¡Gracias, Andrea! La grande es para 16 porciones y cuesta S/ 95. ¿Para qué día la necesitas?', 4], ['c', 'Para el viernes. ¿Hacen delivery a San Borja?', 1]],
+    pending: 'Sí 🚗 el delivery a San Borja cuesta S/ 8. ¿Te la reservo para el viernes 2 de octubre? Puedes pagar por Yape o Plin.',
+    next: [['Sí, porfa. Te yapeo ahora', 'Listo ✅ Tres leches grande reservada para el viernes 2, con delivery a San Borja. Total S/ 103. Yape al 987 000 123 a nombre de Rosa Huamán.']],
+    ids: [['instagram', '@andrea.eats']], since: 'hoy', orders: 0, spent: 0, lastOrder: '—', ctags: ['Nueva'] }),
+  conv('c3', { ch: 'whatsapp', name: 'Carlos Mendoza', handle: '+51 955 210 884', status: 'attention', reason: { label: 'Mayorista', kind: 'amber', text: 'Pedido grande: 120 alfajores en caja con logo' }, unread: 1, tags: ['Cotización', 'Evento'], learn: 'precios por mayor',
+    summary: 'Eventos Nexo pide 120 alfajores en caja individual con logo para el jueves 8. Quiere precio por volumen (unos S/ 420 a precio normal).',
+    msgs: [['c', 'Hola, buenas. Soy Carlos de Eventos Nexo. Necesitamos 120 alfajores para un evento corporativo el jueves 8', 22], ['a', '¡Hola, Carlos! Claro que sí. El alfajor está a S/ 3.50 la unidad. ¿Los quieren en caja individual o en bandejas?', 22], ['c', 'En caja individual con el logo de la empresa. ¿Hay precio por volumen?', 17], ['a', 'Buena pregunta 🙌 Le consulto a Rosa el precio por mayor y lo del logo, y te escribo hoy mismo.', 17], ['n', 'Tu agente no tiene precio por mayor para más de 100 unidades.', 17]],
+    sugs: ['Para 120 unidades te lo dejo en S/ 3.00 c/u (S/ 360). El logo impreso en la caja suma S/ 0.50 c/u.', 'Te envío la cotización formal en PDF en unos minutos.'],
+    ids: [['whatsapp', '+51 955 210 884'], ['messenger', 'Carlos Mendoza']], merged: 'Unidas por el mismo correo', since: 'agosto 2026', orders: 2, spent: 380, lastOrder: '14 ago', ctags: ['Mayorista', 'Empresa'], note: 'Eventos Nexo SAC. En agosto pidió 60 alfajores.' }),
+  conv('c4', { ch: 'instagram', name: 'Sofía Ramos', handle: '@sofi.bakes.lover', status: 'attention', reason: { label: 'Queja', kind: 'red', text: 'Su torta llegó con la cobertura derretida' }, unread: 3, tags: ['Reclamo', 'Delivery'], learn: 'reclamos de delivery',
+    summary: 'Torta de cumpleaños entregada hoy con la cobertura derretida. Es para el cumpleaños de su mamá a las 8 p. m.',
+    msgs: [['c', 'Hola, mi torta llegó con la cobertura toda derretida 😞', 35], ['c', 'img:Foto de la torta', 35], ['a', 'Lo siento mucho, Sofía. Gracias por la foto. Ya le aviso a Rosa para que lo solucione contigo ahora mismo.', 34], ['c', 'Era para el cumpleaños de mi mamá hoy a las 8 😢', 31], ['n', 'Tu agente te pasó este reclamo: las quejas siempre las atiendes tú.', 31]],
+    sugs: ['Sofía, qué pena. Te enviamos otra torta igual, sin costo, antes de las 7 p. m. 🙏', 'Te devolvemos el 100 % por Yape ahora mismo y el próximo delivery va por nuestra cuenta.'],
+    ids: [['instagram', '@sofi.bakes.lover'], ['whatsapp', '+51 944 781 302']], merged: 'Unidas por el mismo número', since: 'mayo 2026', orders: 3, spent: 265, lastOrder: 'hoy', ctags: ['Frecuente'] }),
+  conv('c9', { ch: 'whatsapp', name: '+51 912 334 870', handle: 'Número sin guardar', status: 'agent', tags: ['Cotización'],
+    summary: 'Pregunta por una torta de chocolate para 30 personas (S/ 145). Aún no dice la fecha.',
+    msgs: [['c', 'hola precio de la torta de chocolate para 30 personas', 3], ['a', '¡Hola! 😊 La torta de chocolate para 30 personas cuesta S/ 145. Puedes elegir relleno de fudge o de manjar. ¿Para qué fecha la necesitas?', 3]],
+    next: [['para el sábado 3 en la tarde', '¡Anotado! 🙌 Torta de chocolate para 30 personas, sábado 3 por la tarde: S/ 145. ¿Relleno de fudge o de manjar?'], ['fudge porfa', 'Perfecto, fudge 🍫 Para confirmarla necesito un adelanto de S/ 70 por Yape o Plin al 987 000 123.']],
+    ids: [['whatsapp', '+51 912 334 870']], since: 'hoy', orders: 0, spent: 0, lastOrder: '—', ctags: ['Nueva'] }),
+  conv('c11', { ch: 'messenger', name: 'Patricia Núñez', handle: 'Messenger', status: 'agent', tags: ['Diseño'],
+    summary: 'Torta de baby shower con diseño en fondant para 25 personas: S/ 210. Falta la fecha.',
+    msgs: [['c', '¿Pueden hacer una torta con este diseño? Es para un baby shower', 9], ['c', 'img:Foto de referencia', 9], ['a', '¡Qué lindo diseño, Patricia! 🍼 Sí lo hacemos. Para 25 personas con esa decoración en fondant sale S/ 210. ¿Para qué fecha es el baby shower?', 8]],
+    next: [['Es para el domingo 11', 'Genial, Patricia 🍼 Domingo 11 de octubre, 25 personas, diseño en fondant: S/ 210. Te la reservo con un adelanto de S/ 100. ¿Te paso los datos de Yape?']],
+    ids: [['messenger', 'Patricia Núñez'], ['facebook', 'Patricia Núñez']], merged: 'Misma cuenta de Meta', since: 'julio 2026', orders: 1, spent: 95, lastOrder: '19 jul', ctags: [] }),
+  conv('c6', { ch: 'tiktok', name: '@limafoodie', handle: 'TikTok', status: 'agent', tags: ['Ubicación'],
+    summary: 'Preguntó la dirección de la tienda. Tu agente le dio dirección y horario.',
+    msgs: [['c', '¿Dónde queda la tienda? 📍', 12], ['a', 'Estamos en Av. Caminos del Inca 1245, Santiago de Surco. Atendemos de 8 a. m. a 8 p. m. ¡Te esperamos! 🧁', 12]],
+    next: [['¿tienen estacionamiento?', 'Sí, hay estacionamiento gratis frente a la tienda 🚗']],
+    ids: [['tiktok', '@limafoodie']], since: 'hoy', orders: 0, spent: 0, lastOrder: '—', ctags: ['Nueva'] }),
+  conv('c7', { ch: 'facebook', name: 'Lucía Paredes', handle: 'Comentario en Facebook', status: 'agent', tags: ['Sin azúcar'], context: 'Comentó en tu publicación «Torta selva negra»',
+    summary: 'Preguntó por opciones sin azúcar en un comentario. Tu agente respondió y siguió por Messenger con fotos.',
+    msgs: [['c', '¿Tienen opciones sin azúcar? 🙏', 25], ['a', '¡Hola, Lucía! Sí, tenemos torta de chocolate sin azúcar, endulzada con stevia, desde S/ 70. Te escribí por Messenger con fotos 📷', 24]],
+    ids: [['facebook', 'Lucía Paredes'], ['messenger', 'Lucía Paredes']], merged: 'Misma cuenta de Meta', since: 'hoy', orders: 0, spent: 0, lastOrder: '—', ctags: ['Nueva'] }),
+  conv('c5', { ch: 'messenger', name: 'Jorge Salazar', handle: 'Messenger', status: 'resolved', tags: ['Pagado'],
+    summary: 'Pedido #1042 pagado por Plin (S/ 64). Delivery hoy a las 5 p. m. a Jesús María.',
+    msgs: [['c', 'Listo, ya te pliné los S/ 64', 44], ['a', '¡Recibido, Jorge! ✅ Plin de S/ 64. Tu pedido de 12 alfajores y un pie de manzana sale hoy a las 5 p. m. para Jesús María.', 44], ['c', 'Genial, gracias 🙌', 42]],
+    ids: [['messenger', 'Jorge Salazar']], since: 'enero 2026', orders: 4, spent: 231, lastOrder: 'hoy', ctags: ['Frecuente'] }),
+  conv('c8', { ch: 'telegram', name: 'Diego Rojas', handle: '@diegorojas', status: 'resolved', mode: 'you', tags: ['Cita'],
+    summary: 'Degustación para su torta de boda: sábado 10 a las 11 a. m. La agendaste tú.',
+    msgs: [['c', 'Hola Rosa, ¿podemos hacer la degustación para la torta de boda el sábado 10?', 70], ['o', 'Hola Diego, claro. Te espero el sábado 10 a las 11 a. m. en la tienda. Trae una foto de la decoración que les gusta 💐', 58], ['c', 'Perfecto, ahí estaremos 🙌', 58]],
+    ids: [['telegram', '@diegorojas'], ['whatsapp', '+51 981 402 776']], merged: 'Unidas por el mismo número', since: 'septiembre 2026', orders: 1, spent: 0, lastOrder: '—', ctags: ['Boda'] }),
+  conv('c10', { ch: 'sms', name: '+51 998 120 455', handle: 'SMS', status: 'resolved', tags: ['Recojo'],
+    summary: 'Confirmó su recojo de mañana martes 29 a las 10 a. m.',
+    msgs: [['c', 'Confirmo mi recojo de mañana 10am. Gracias', 95], ['a', 'Confirmado ✅ Tu pedido estará listo mañana martes 29 a las 10 a. m. ¡Hasta mañana!', 95]],
+    ids: [['sms', '+51 998 120 455']], since: 'septiembre 2026', orders: 1, spent: 72, lastOrder: 'mañana', ctags: [] }),
+  conv('c12', { ch: 'whatsapp', name: 'Renato Aguilar', handle: '+51 993 604 215', status: 'resolved', tags: ['Pagado'],
+    summary: 'Dos pies de limón (S/ 58) pagados por Yape, recojo a las 6 p. m.',
+    msgs: [['c', 'Buenas, ¿me separas 2 pies de limón para las 6?', 132], ['a', 'Listo, Renato. Dos pies de limón (S/ 58) separados para las 6 p. m. Puedes pagar al recoger o por Yape ahora.', 132], ['c', 'Ya te yapeé 👍', 128], ['a', 'Recibido ✅ S/ 58 por Yape. ¡Nos vemos a las 6!', 128]],
+    ids: [['whatsapp', '+51 993 604 215']], since: 'febrero 2026', orders: 9, spent: 522, lastOrder: 'hoy', ctags: ['Frecuente'] })
+];
+const byId = id => CONVS.find(c => c.id === id);
+const lastMsg = c => { for (let i = c.msgs.length - 1; i >= 0; i--) if (c.msgs[i].w !== 'n') return c.msgs[i]; return c.msgs[0]; };
+const lastTs = c => c.msgs[c.msgs.length - 1].ts;
+const lastCustomer = c => { for (let i = c.msgs.length - 1; i >= 0; i--) if (c.msgs[i].w === 'c' && !c.msgs[i].img) return c.msgs[i]; return lastMsg(c); };
+
+const EXTRA_CONTACTS = [
+  { name: 'Valeria Campos', chs: ['instagram', 'whatsapp', 'tiktok'], phone: '+51 962 331 870', orders: 11, spent: 1184, last: ago(60 * 26), ctags: ['Frecuente'] },
+  { name: 'Eventos Nexo SAC', chs: ['whatsapp'], phone: '+51 955 210 800', orders: 3, spent: 910, last: ago(60 * 24 * 6), ctags: ['Mayorista', 'Empresa'] },
+  { name: 'Gustavo Llerena', chs: ['whatsapp', 'messenger'], phone: '+51 987 551 204', orders: 5, spent: 388, last: ago(60 * 50), ctags: ['Frecuente'] },
+  { name: 'Camila Torres', chs: ['instagram'], phone: '—', orders: 1, spent: 95, last: ago(60 * 24 * 3), ctags: [] }
+];
+
+const POOL = [
+  { ch: 'whatsapp', who: '+51 976 402 118', t: '¿Tienen torta de maracuyá para hoy?' },
+  { ch: 'whatsapp', who: 'Luis Chávez', t: 'Quiero reservar una torta para el jueves' },
+  { ch: 'whatsapp', who: '+51 933 587 201', t: 'ya te pagué por yape 👍', pay: 45 },
+  { ch: 'whatsapp', who: 'Andrés Lozano', t: '¿Me mandas fotos de las tortas de cumpleaños?' },
+  { ch: 'whatsapp', who: 'Karen Díaz', t: '¿Hasta qué hora reciben pedidos para mañana?' },
+  { ch: 'instagram', who: '@vale.cocina', t: '¿Hacen envíos a Miraflores?' },
+  { ch: 'instagram', who: '@dulcepaola', t: '¿Tienen opciones veganas? 🌱' },
+  { ch: 'instagram', who: '@kiara.mt', t: 'Te pasé el Plin por los cupcakes', pay: 36 },
+  { ch: 'tiktok', who: '@gordito.goloso', t: 'precio de los alfajores? 🤤' },
+  { ch: 'messenger', who: 'Karina Soto', t: '¿Atienden el domingo?' },
+  { ch: 'facebook', who: 'Milagros Torres', t: '¿Aceptan Plin?' },
+  { ch: 'sms', who: '+51 961 220 734', t: 'A que hora cierran hoy' },
+  { ch: 'telegram', who: 'Gabriela M.', t: '¿Puedo cambiar mi recojo a las 5?' }
+];
+
+/* ============ constellation (canvas) ============ */
+const P2D = {};
+const glyphPaths = g => P2D[g] || (P2D[g] = GLYPH[g].map(p => ({ p: new Path2D(p.d), f: p.f, dash: p.dash })));
+function drawGlyph(x, g, cx, cy, size){
+  x.save(); x.translate(cx - size / 2, cy - size / 2); x.scale(size / 24, size / 24);
+  x.fillStyle = '#fff'; x.strokeStyle = '#fff'; x.lineWidth = 1.9; x.lineCap = 'round'; x.lineJoin = 'round';
+  for (const p of glyphPaths(g)){ if (p.dash) x.setLineDash([2.4, 1.7]); p.f ? x.fill(p.p) : x.stroke(p.p); x.setLineDash([]); }
+  x.restore();
+}
+class Constellation {
+  constructor(cv, o = {}){
+    this.cv = cv; this.x = cv.getContext('2d'); this.o = Object.assign({ cx: .5, labels: true, spin: 1, scale: 1 }, o);
+    this.nodes = []; this.parts = []; this.pulse = 0; this.paused = false; this.vis = true; this.raf = 0; this.rot = 0; this.last = 0; this.w = 0;
+    this.readColors();
+    this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(cv);
+    this.io = new IntersectionObserver(e => { this.vis = e[0].isIntersecting; this.kick(); }); this.io.observe(cv);
+  }
+  readColors(){
+    const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim();
+    this.col = { ink: g('--hero-ink') || '#EAF7F0', muted: g('--hero-muted') || '#A4CABA', line: g('--hero-line') || 'rgba(234,247,240,.13)', glow: g('--glow') || '#6CF5BF', warn: g('--hero-warn') || '#F2B35A', deep: g('--hero-b') || '#052019' };
+  }
+  setNodes(list){
+    const old = new Map(this.nodes.map(n => [n.id, n]));
+    this.nodes = list.map(n => Object.assign(old.get(n.id) || { glow: 0 }, n));
+    this.layout(); this.draw(performance.now());
+  }
+  resize(){
+    const r = this.cv.getBoundingClientRect(); if (r.width < 10 || r.height < 10) return;
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    this.w = r.width; this.h = r.height; this.cv.width = Math.round(r.width * d); this.cv.height = Math.round(r.height * d);
+    this.x.setTransform(d, 0, 0, d, 0, 0); this.layout(); this.draw(performance.now()); this.kick();
+  }
+  layout(){
+    if (!this.w) return;
+    this.cx = this.w * this.o.cx; this.cy = this.h * .5 + (this.o.labels ? 10 : 0);
+    this.rx = Math.min(this.w * .39, 290) * this.o.scale; this.ry = Math.min(this.h * .29, 160) * this.o.scale;
+    const mx = Math.max(1, ...this.nodes.map(n => n.value || 0)), N = this.nodes.length;
+    this.nodes.forEach((n, i) => { n.a0 = -Math.PI / 2 + i * 2 * Math.PI / N; n.r = n.value != null ? 12 + 9 * Math.sqrt((n.value || 0) / mx) : 17; });
+  }
+  pos(n){ const a = n.a0 + this.rot; return [this.cx + Math.cos(a) * this.rx, this.cy + Math.sin(a) * this.ry]; }
+  bez(n, p){
+    const [sx, sy] = this.pos(n), ex = this.cx, ey = this.cy, dx = ex - sx, dy = ey - sy;
+    const qx = (sx + ex) / 2 - dy * .2, qy = (sy + ey) / 2 + dx * .2, u = 1 - p;
+    return [u * u * sx + 2 * u * p * qx + p * p * ex, u * u * sy + 2 * u * p * qy + p * p * ey, qx, qy, sx, sy];
+  }
+  emit(id, back = false){
+    if (reduced) return;
+    const n = this.nodes.find(k => k.id === id); if (!n) return;
+    this.parts.push({ n, back, t0: performance.now(), dur: rand(1100, 1600), color: back ? this.col.glow : (n.spark || n.color) });
+    this.kick();
+  }
+  kick(){
+    if (this.raf || !this.vis || document.hidden || !this.w) return;
+    if (reduced){ this.draw(performance.now()); return; }
+    this.last = performance.now(); this.raf = requestAnimationFrame(t => this.loop(t));
+  }
+  loop(t){
+    this.raf = 0; if (!this.vis || document.hidden) return;
+    const dt = Math.min(64, t - this.last); this.last = t;
+    this.rot += dt * .000035 * this.o.spin; this.pulse = Math.max(0, this.pulse - dt / 700);
+    this.draw(t); this.raf = requestAnimationFrame(tt => this.loop(tt));
+  }
+  draw(t){
+    const x = this.x, c = this.col; if (!this.w) return;
+    x.clearRect(0, 0, this.w, this.h);
+    x.lineWidth = 1; x.strokeStyle = c.line;
+    for (const k of [.36, .68, 1]){ x.beginPath(); x.ellipse(this.cx, this.cy, this.rx * k, this.ry * k, 0, 0, Math.PI * 2); x.stroke(); }
+    if (!reduced && !this.paused && x.createConicGradient){
+      const sw = x.createConicGradient(t * .0005, this.cx, this.cy);
+      sw.addColorStop(0, hexA(c.glow, .15)); sw.addColorStop(.1, hexA(c.glow, 0)); sw.addColorStop(1, hexA(c.glow, 0));
+      x.fillStyle = sw; x.beginPath(); x.ellipse(this.cx, this.cy, this.rx * 1.06, this.ry * 1.06, 0, 0, Math.PI * 2); x.fill();
+    }
+    for (const n of this.nodes){
+      const [, , qx, qy, sx, sy] = this.bez(n, 0);
+      x.beginPath(); x.moveTo(sx, sy); x.quadraticCurveTo(qx, qy, this.cx, this.cy);
+      x.strokeStyle = c.line; x.lineWidth = 1; if (n.dim) x.setLineDash([3, 5]); x.stroke(); x.setLineDash([]);
+    }
+    this.parts = this.parts.filter(pt => {
+      let p = (t - pt.t0) / pt.dur;
+      if (p >= 1){ if (pt.back) pt.n.glow = 1; else this.pulse = 1; return false; }
+      p = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const q = pt.back ? 1 - p : p;
+      for (let k = 7; k >= 1; k--){
+        const qq = pt.back ? Math.min(1, q + k * .016) : Math.max(0, q - k * .016);
+        const [px, py] = this.bez(pt.n, qq);
+        x.beginPath(); x.arc(px, py, 2.8 * (1 - k / 9), 0, Math.PI * 2); x.fillStyle = hexA(pt.color, .55 * (1 - k / 8)); x.fill();
+      }
+      const [hx, hy] = this.bez(pt.n, q);
+      const gr = x.createRadialGradient(hx, hy, 0, hx, hy, 13); gr.addColorStop(0, hexA(pt.color, .6)); gr.addColorStop(1, hexA(pt.color, 0));
+      x.fillStyle = gr; x.beginPath(); x.arc(hx, hy, 13, 0, Math.PI * 2); x.fill();
+      x.beginPath(); x.arc(hx, hy, 3.4, 0, Math.PI * 2); x.fillStyle = hexA(pt.color, 1); x.fill();
+      return true;
+    });
+    const R = 25 * this.o.scale, oc = this.paused ? c.warn : c.glow, halo = R * 3.1 + this.pulse * 16;
+    const og = x.createRadialGradient(this.cx, this.cy, 0, this.cx, this.cy, halo);
+    og.addColorStop(0, hexA(oc, .45)); og.addColorStop(.35, hexA(oc, .12)); og.addColorStop(1, hexA(oc, 0));
+    x.fillStyle = og; x.beginPath(); x.arc(this.cx, this.cy, halo, 0, Math.PI * 2); x.fill();
+    x.save(); x.setLineDash([2, 6]); x.lineDashOffset = -t * .012; x.strokeStyle = hexA(oc, .55); x.lineWidth = 1.4;
+    x.beginPath(); x.arc(this.cx, this.cy, R + 11 + this.pulse * 3, 0, Math.PI * 2); x.stroke(); x.restore();
+    x.beginPath(); x.arc(this.cx, this.cy, R + this.pulse * 2.5, 0, Math.PI * 2); x.fillStyle = oc; x.fill();
+    x.beginPath(); x.arc(this.cx, this.cy, R * .44, 0, Math.PI * 2); x.strokeStyle = c.deep; x.lineWidth = R * .17; x.stroke();
+    const oa = reduced ? -.8 : t * .0018;
+    x.beginPath(); x.arc(this.cx + Math.cos(oa) * R * .72, this.cy + Math.sin(oa) * R * .72, R * .14, 0, Math.PI * 2); x.fillStyle = c.deep; x.fill();
+    if (this.o.labels){
+      x.font = '500 10.5px "Geist Mono", ui-monospace, monospace'; x.textAlign = 'center'; x.fillStyle = c.muted;
+      x.fillText(this.paused ? 'EN PAUSA' : 'TU AGENTE', this.cx, this.cy + R + 30);
+    }
+    for (const n of this.nodes){
+      const [nx, ny] = this.pos(n);
+      if (n.glow > 0){
+        const hg = x.createRadialGradient(nx, ny, n.r * .6, nx, ny, n.r * 2.4); hg.addColorStop(0, hexA(c.glow, .35 * n.glow)); hg.addColorStop(1, hexA(c.glow, 0));
+        x.fillStyle = hg; x.beginPath(); x.arc(nx, ny, n.r * 2.4, 0, Math.PI * 2); x.fill(); n.glow = Math.max(0, n.glow - .025);
+      }
+      x.globalAlpha = n.dim ? .62 : 1;
+      x.beginPath(); x.arc(nx, ny, n.r, 0, Math.PI * 2); x.fillStyle = n.color; x.fill();
+      x.lineWidth = 1.5; x.strokeStyle = hexA(c.ink, .28); if (n.dim) x.setLineDash([3, 3]); x.stroke(); x.setLineDash([]);
+      drawGlyph(x, n.g, nx, ny, n.r * 1.12);
+      x.globalAlpha = 1;
+      if (this.o.labels){
+        x.textAlign = 'center';
+        x.font = '600 12px "Instrument Sans", system-ui, sans-serif'; x.fillStyle = c.ink; x.fillText(n.label, nx, ny + n.r + 16);
+        if (n.value != null){ x.font = '500 10.5px "Geist Mono", ui-monospace, monospace'; x.fillStyle = c.muted; x.fillText(n.sub || String(n.value), nx, ny + n.r + 30); }
+      }
+    }
+  }
+}
+
+/* ============ small renderers ============ */
+const tile = (id, s = 28) => `<span class="tile" data-ch="${id}" style="--cc:${CH[id].color};--s:${s}px" title="${esc(CH[id].name)}">${glyphSvg(CH[id].g)}</span>`;
+function hue(s){ let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; }
+function initials(name){
+  if (name.startsWith('+')) return null;
+  const n = name.replace(/^@/, '').replace(/[._]/g, ' ').trim();
+  const p = n.split(/\s+/);
+  return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase();
+}
+function av(name, size = 40, ch){
+  const ini = initials(name);
+  return `<span class="av" style="--s:${size}px;--h:${hue(name)}">${ini ? esc(ini) : ic('user')}${ch ? tile(ch, Math.max(16, Math.round(size * .43))) : ''}</span>`;
+}
+const statusChip = c => c.status === 'attention' ? `<span class="chip ${c.reason.kind}">${ic('alert')}${esc(c.reason.label)}</span>`
+  : c.status === 'resolved' ? `<span class="chip">${ic('check')}Resuelta</span>`
+  : c.mode === 'you' ? `<span class="chip amber">${ic('hand')}Atiendes tú</span>`
+  : c.typing ? `<span class="chip green">${ic('spark')}Escribiendo…</span>` : `<span class="chip green">${ic('spark')}Agente</span>`;
+
+function toast(text, icon = 'check'){
+  const el = document.createElement('div'); el.className = 'toast'; el.innerHTML = ic(icon) + `<span>${esc(text)}</span>`;
+  $('#toasts').appendChild(el);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 3400);
+}
+
+/* ============ navigation ============ */
+const VIEWS = { home: 'Mi panel', inbox: 'Bandeja', contacts: 'Clientes', channels: 'Canales' };
+const NAVICON = { home: 'home', inbox: 'inbox', contacts: 'users', channels: 'plug' };
+function attCount(){ return CONVS.filter(c => c.status === 'attention').length; }
+function renderNav(){
+  const att = attCount(), on = ORDER.filter(k => CH[k].state === 'on').length;
+  const badge = { inbox: att ? `<span class="count">${att}</span>` : '', channels: `<span class="count soft">${on}/${ORDER.length}</span>` };
+  $('#nav').innerHTML = Object.keys(VIEWS).map(v => `<button type="button" data-view="${v}" class="${S.view === v ? 'on' : ''}" ${S.view === v ? 'aria-current="page"' : ''}>${ic(NAVICON[v])}<span>${VIEWS[v]}</span>${badge[v] || ''}</button>`).join('');
+  $('#tabbar').innerHTML = Object.keys(VIEWS).map(v => `<button type="button" data-view="${v}" class="${S.view === v ? 'on' : ''}">${ic(NAVICON[v])}<span>${VIEWS[v]}</span>${v === 'inbox' && att ? `<span class="count">${att}</span>` : ''}</button>`).join('');
+}
+function go(view, opt = {}){
+  S.view = view;
+  for (const v of Object.keys(VIEWS)) $('#view-' + v).hidden = v !== view;
+  $('#page-title').textContent = VIEWS[view];
+  if (opt.filter) S.filter = opt.filter;
+  if (view === 'inbox'){ if (opt.open) selectConv(opt.open); else $('#view-inbox').classList.remove('show-thread'); }
+  renderNav();
+  if (view === 'inbox') renderInbox(opt.focus);
+  if (view === 'contacts') renderContacts();
+  if (view === 'channels') renderChannels();
+  if (view === 'home') renderHome();
+  try { history.replaceState(null, '', '#' + ({ home: 'panel', inbox: 'bandeja', contacts: 'clientes', channels: 'canales' })[view]); } catch {}
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-view]'); if (b){ go(b.dataset.view); return; }
+  const g = e.target.closest('[data-go]'); if (g){ e.preventDefault(); go(g.dataset.go, { filter: g.dataset.filter, open: g.dataset.open, focus: g.dataset.focus }); }
+});
+
+/* ============ side ============ */
+function renderSide(){
+  const on = ORDER.filter(k => CH[k].state === 'on');
+  $('#side-ch-count').textContent = `${on.length}/${ORDER.length}`;
+  $('#side-ch').innerHTML = on.map(k => `<li>${tile(k, 20)}<span>${esc(CH[k].short)}</span><span class="n">${CH[k].today}</span><i class="dot ${CH[k].reply && S.agentOn ? 'on' : 'warn'}" title="${CH[k].reply ? 'Tu agente responde' : 'Solo lee'}"></i></li>`).join('')
+    + (on.length < ORDER.length ? `<li class="add" data-view="channels"><span class="plus">${ic('plus')}</span><span>Conectar otro canal</span></li>` : '');
+}
+
+/* ============ home ============ */
+let hero;
+function totals(){
+  const ag = sum(AG), you = sum(YOU), pend = sum(PEND);
+  return { ag, you, pend, total: ag + you + pend };
+}
+function greeting(){ const h = new Date(now()).getHours(); return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches'; }
+function bump(el, text){ if (el.textContent !== text){ el.textContent = text; el.classList.add('bump'); setTimeout(() => el.classList.remove('bump'), 900); } }
+function renderHeroText(){
+  const T = totals(), st = S.stats, att = attCount(), replying = ORDER.filter(k => CH[k].state === 'on' && CH[k].reply).length;
+  $('#hero-title').textContent = `${greeting()}, Rosa.`;
+  $('#hero-date').textContent = cap(new Date(now()).toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' }));
+  $('#hero-status').classList.toggle('off', !S.agentOn);
+  $('#hero-status-text').textContent = S.agentOn ? `Tu agente está atendiendo en ${replying} canales` : 'Tu agente está en pausa';
+  $('#hero-sub').innerHTML = `Hoy tu agente conversó con <b>${st.people} clientes</b> y cerró <b>${st.orders} pedidos</b>. `
+    + (att ? `<button type="button" data-go="inbox" data-filter="attention">${att === 1 ? '1 conversación te espera' : `${att} conversaciones te esperan`}</button>.` : 'No hay nada esperándote.');
+  bump($('#st-msgs'), INT.format(T.total));
+  bump($('#st-share'), `${Math.round(T.ag / T.total * 100)} %`);
+  $('#st-share-sub').textContent = `${T.ag} de ${T.total} mensajes`;
+  bump($('#st-sold'), PEN.format(st.sold));
+  $('#st-sold-sub').textContent = `${st.orders} pedidos · ${st.payments} pagos`;
+}
+function heroNodes(){
+  return ORDER.filter(k => CH[k].state === 'on' && CH[k].read).map(k => ({ id: k, g: CH[k].g, color: CH[k].color, spark: CH[k].spark, label: CH[k].short, value: CH[k].today, dim: !CH[k].reply }));
+}
+function renderAttention(){
+  const list = CONVS.filter(c => c.status === 'attention').sort((a, b) => lastTs(a) - lastTs(b));
+  $('#att-count').textContent = list.length;
+  $('#att-list').innerHTML = list.length ? list.map(c => {
+    const q = lastCustomer(c);
+    return `<li class="att-item">
+      ${av(c.name, 44, c.ch)}
+      <div style="min-width:0">
+        <div class="att-who"><b>${esc(c.name)}</b><span class="chip ${c.reason.kind}">${esc(c.reason.label)}</span><span class="t">escribió ${hace(lastTs(c))}</span></div>
+        <p class="att-reason">${esc(c.reason.text)}</p>
+        <p class="att-quote">“${esc(q.t)}”</p>
+        ${c.sugs[0] ? `<button type="button" class="att-sug" data-go="inbox" data-open="${c.id}" data-focus="0">${ic('spark')}<span>Sugerencia: ${esc(c.sugs[0])}</span></button>` : ''}
+      </div>
+      <div class="att-actions"><button type="button" class="btn primary sm" data-go="inbox" data-open="${c.id}" data-focus="1">Responder</button><button type="button" class="btn ghost sm" data-go="inbox" data-open="${c.id}">Ver chat</button></div>
+    </li>`;
+  }).join('') : `<li class="empty"><b>Todo al día</b>Tu agente pudo responder todas las preguntas de tus clientes.</li>`;
+}
+function feedStatus(f){
+  return f.state === 'typing' ? `<span class="fs typing" aria-label="Tu agente está escribiendo"><i></i><i></i><i></i></span>`
+    : f.state === 'replied' ? `<span class="fs ok">${ic('check')}${f.secs} s</span>`
+    : f.state === 'you' ? `<span class="fs warn">para ti</span>`
+    : f.state === 'owner' ? `<span class="fs mut">respondiste</span>`
+    : f.state === 'waiting' ? `<span class="fs warn">esperando</span>`
+    : `<span class="fs mut">solo lee</span>`;
+}
+function renderFeed(){
+  $('#feed').innerHTML = S.feed.slice(0, 14).map(f => `<li class="${f.fresh ? 'new' : ''}">${tile(f.ch, 30)}<div style="min-width:0"><div class="who">${esc(f.who)}<span>${rel(f.ts)}</span></div><div class="msg">${esc(f.text)}</div></div>${feedStatus(f)}</li>`).join('');
+  S.feed.forEach(f => f.fresh = false);
+}
+function renderHourly(){
+  const svg = $('#hourly'); const W = Math.max(300, Math.round(svg.getBoundingClientRect().width) || 640), H = 230, m = { l: 30, r: 6, t: 12, b: 28 };
+  const tot = HOURS.map((_, i) => AG[i] + YOU[i] + PEND[i]);
+  const top = Math.max(10, Math.ceil(Math.max(...tot) / 10) * 10);
+  const iw = W - m.l - m.r, ih = H - m.t - m.b, bw = iw / HOURS.length, y = v => m.t + ih - v / top * ih;
+  let out = '';
+  for (let v = 0; v <= top; v += 10) out += `<line class="gl" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${m.l - 8}" y="${y(v) + 3.5}" text-anchor="end">${v}</text>`;
+  HOURS.forEach((h, i) => {
+    const x = m.l + i * bw + bw * .2, w = bw * .6, cur = i === HOURS.length - 1;
+    let base = 0, rects = '';
+    for (const [arr, cls] of [[AG, 'b-agent'], [YOU, 'b-you'], [PEND, 'b-pend']]){
+      const v = arr[i]; if (!v) continue;
+      rects += `<rect class="${cls}${cur ? ' cur' : ''}" x="${x.toFixed(1)}" y="${y(base + v).toFixed(1)}" width="${w.toFixed(1)}" height="${(y(base) - y(base + v)).toFixed(1)}" rx="2.5"/>`;
+      base += v;
+    }
+    const lbl = cur ? 'ahora' : String(h);
+    out += `<g class="bar"><title>${h}:00 · ${tot[i]} mensajes (${AG[i]} tu agente, ${YOU[i]} tú${PEND[i] ? `, ${PEND[i]} sin responder` : ''})</title>${rects}<text class="ax${cur ? ' now' : ''}" x="${(x + w / 2).toFixed(1)}" y="${H - m.b + 17}" text-anchor="middle">${lbl}</text></g>`;
+  });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  $('#lg-pend').hidden = !sum(PEND);
+  svg.innerHTML = out;
+}
+function renderChRows(){
+  const on = ORDER.filter(k => CH[k].state === 'on'), mx = Math.max(...on.map(k => CH[k].today), 1);
+  $('#chrows').innerHTML = on.map(k => {
+    const c = CH[k], pct = c.today ? Math.round(c.agent / c.today * 100) : 0;
+    const sub = !c.reply ? 'solo lee · respondes tú' : `${pct} % tu agente`;
+    return `<div class="chrow" style="--cc:${c.color}">${tile(k, 30)}<div class="nm">${esc(c.short)}<span>${sub}</span></div><div class="bar" title="${c.agent} de ${c.today} respondidos por tu agente"><i style="width:${c.agent / mx * 100}%"></i><i class="rest" style="width:${(c.today - c.agent) / mx * 100}%"></i></div><span class="n">${c.today}</span></div>`;
+  }).join('');
+}
+function renderOutcomes(){
+  const st = S.stats, T = totals(), mins = Math.round(T.ag * 1);
+  $('#outcomes').innerHTML = [
+    ['bag', 'Pedidos', st.orders, `${PEN.format(st.sold)} vendidos por chat`],
+    ['cal', 'Citas agendadas', st.appts, 'La próxima: 6:30 p. m., degustación'],
+    ['coin', 'Pagos verificados', st.payments, `Yape ${st.yape} · Plin ${st.plin} · efectivo ${st.cash}`],
+    ['clock', 'Tiempo que te ahorró', `${Math.floor(mins / 60)} h ${String(mins % 60).padStart(2, '0')} min`, 'Contando 1 minuto por respuesta']
+  ].map(([i, l, v, p]) => `<div class="outcome"><div class="lbl">${ic(i)}${l}</div><div class="big">${v}</div><p>${p}</p></div>`).join('');
+}
+function renderHome(){
+  renderHeroText(); renderAttention(); renderFeed(); renderHourly(); renderChRows(); renderOutcomes();
+  if (hero){ hero.paused = !S.agentOn; hero.setNodes(heroNodes()); }
+}
+
+/* ============ inbox ============ */
+function filtered(){
+  const q = S.q.trim().toLowerCase();
+  return CONVS.filter(c =>
+    (S.filter === 'all' || c.status === S.filter) &&
+    (!S.chf.size || S.chf.has(c.ch)) &&
+    (!q || (c.name + ' ' + c.handle + ' ' + c.msgs.map(m => m.t).join(' ')).toLowerCase().includes(q))
+  ).sort((a, b) => (a.status === 'attention' ? 0 : 1) - (b.status === 'attention' ? 0 : 1) || lastTs(b) - lastTs(a));
+}
+function renderSeg(){
+  const n = st => st === 'all' ? CONVS.length : CONVS.filter(c => c.status === st).length;
+  $('#ib-seg').innerHTML = [['all', 'Todas'], ['attention', 'Para ti'], ['agent', 'Agente'], ['resolved', 'Resueltas']]
+    .map(([k, l]) => `<button type="button" role="tab" aria-selected="${S.filter === k}" data-f="${k}" class="${S.filter === k ? 'on' : ''}">${l}<span class="n">${n(k)}</span></button>`).join('');
+  const chs = [...new Set(CONVS.map(c => c.ch))].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
+  const el = $('#ib-chf'); el.classList.toggle('all', !S.chf.size);
+  el.innerHTML = chs.map(k => `<button type="button" data-chf="${k}" class="${S.chf.has(k) ? 'on' : ''}" aria-pressed="${S.chf.has(k)}" aria-label="Filtrar ${esc(CH[k].name)}">${tile(k, 28)}</button>`).join('');
+}
+function renderList(){
+  const list = filtered();
+  $('#ib-items').innerHTML = list.length ? list.map(c => {
+    const l = lastMsg(c), pre = l.w === 'a' ? 'Agente: ' : l.w === 'o' ? 'Tú: ' : '';
+    const txt = l.img ? '📷 ' + l.t : l.t;
+    return `<li class="ib-item ${c.id === S.open ? 'on' : ''} ${c.unread ? 'unread' : ''}" data-id="${c.id}" tabindex="0">
+      ${av(c.name, 44, c.ch)}
+      <div style="min-width:0"><div class="l1"><span class="name">${esc(c.name)}</span><span class="time">${rel(lastTs(c))}</span>${c.unread ? `<span class="ub">${c.unread}</span>` : ''}</div>
+      <div class="snip">${esc(pre + txt)}</div>
+      <div class="l3">${statusChip(c)}${c.tags.slice(0, 2).map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div></div>
+    </li>`;
+  }).join('') : `<li class="empty"><b>Nada por aquí</b>Prueba con otro filtro o canal.</li>`;
+}
+function renderThread(focus){
+  const el = $('#ib-thread'), c = byId(S.open);
+  if (!c){ el.innerHTML = `<div class="th-empty"><div>${ic('inbox')}<b>Elige una conversación</b>Todos tus canales llegan aquí.</div></div>`; return; }
+  const CHN = CH[c.ch];
+  let lastDay = '', body = '';
+  body += `<div class="summary"><span class="badge">${ic('spark')}</span><div style="min-width:0"><b>Resumen de tu agente</b><p>${esc(c.summary)}</p>${c.tags.length ? `<div class="tags">${c.tags.map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}</div></div>`;
+  if (c.context) body += `<div class="ctx">${ic('tag')}${esc(c.context)}</div>`;
+  c.msgs.forEach((m, i) => {
+    const day = new Date(m.ts).toDateString();
+    if (day !== lastDay){ body += `<div class="daysep">${day === new Date(now()).toDateString() ? 'Hoy' : 'Ayer'}</div>`; lastDay = day; }
+    if (m.w === 'n'){ body += `<div class="note">${ic('alert')}<span>${esc(m.t)}</span></div>`; return; }
+    const nxt = c.msgs[i + 1], grouped = nxt && nxt.w === m.w && Math.abs(nxt.ts - m.ts) < 120000;
+    const inner = m.img ? `<div class="ph">${ic('camera')}<span>${esc(m.t)}</span></div>` : esc(m.t);
+    body += `<div class="msg ${m.w}${m.img ? ' img' : ''}${m.fresh ? ' enter' : ''}">${inner}</div>`;
+    m.fresh = false;
+    if (!grouped){
+      const who = m.w === 'a' ? `${ic('spark')}tu agente · ` : m.w === 'o' ? 'tú · ' : '';
+      body += `<div class="meta ${m.w === 'c' ? 'l' : 'r'}">${who}${clock(m.ts)}</div>`;
+    }
+  });
+  if (c.typing) body += `<div class="typing" aria-label="Tu agente está escribiendo"><i></i><i></i><i></i></div>`;
+  const youMode = c.mode === 'you';
+  const first = c.name.startsWith('+') || c.name.startsWith('@') ? '' : ' a ' + c.name.split(' ')[0];
+  el.innerHTML = `
+    <header class="th-h">
+      <button type="button" class="icon-btn th-back" id="th-back" aria-label="Volver a la lista">${ic('back')}</button>
+      ${av(c.name, 42, c.ch)}
+      <div class="who"><b>${esc(c.name)}</b><span>${esc(CHN.name)} · ${esc(c.handle)}</span></div>
+      <div class="acts">
+        <span class="mode-pill ${youMode ? 'you' : ''}">${ic(youMode ? 'hand' : 'spark')}<span>${youMode ? 'Atiendes tú' : 'Agente atendiendo'}</span></span>
+        <button type="button" class="btn sm" id="th-mode">${youMode ? 'Devolver al agente' : 'Tomar el control'}</button>
+        <button type="button" class="icon-btn pf-toggle" id="pf-toggle" aria-label="Ficha del cliente">${ic('info')}</button>
+      </div>
+    </header>
+    <div class="th-body" id="th-body">${body}</div>
+    <footer class="composer">
+      ${c.sugs.length ? `<div class="sugs">${c.sugs.map((s, i) => `<button type="button" class="sug" data-sug="${i}" title="${esc(s)}">${ic('spark')}<span>${esc(s)}</span></button>`).join('')}</div>` : ''}
+      <div class="comp-row"><label class="sr" for="comp-text">Mensaje</label><textarea id="comp-text" rows="1" placeholder="${youMode || c.status === 'attention' ? `Responde${esc(first)} por ${esc(CHN.short)}…` : `Escribe para tomar el control (llega por ${esc(CHN.short)})…`}"></textarea><button type="button" class="btn primary" id="comp-send">${ic('send')}<span>Enviar</span></button></div>
+      <label class="teach" for="comp-teach"><input type="checkbox" id="comp-teach" checked>Enseñar esta respuesta a tu agente para la próxima vez</label>
+    </footer>`;
+  const tb = $('#th-body'); tb.scrollTop = tb.scrollHeight;
+  if (focus === '1') setTimeout(() => $('#comp-text')?.focus(), 30);
+  if (focus === '0' && c.sugs[0]){ const ta = $('#comp-text'); ta.value = c.sugs[0]; autoGrow(ta); setTimeout(() => ta.focus(), 30); }
+}
+function renderProfile(){
+  const c = byId(S.open), el = $('#ib-profile');
+  if (!c){ el.innerHTML = ''; return; }
+  el.innerHTML = `
+    <button type="button" class="icon-btn pf-close" id="pf-close" aria-label="Cerrar ficha">${ic('close')}</button>
+    <div class="pf-top">${av(c.name, 64)}<h3>${esc(c.name)}</h3><p>Cliente desde ${esc(c.since)}</p>${c.ctags.length ? `<div class="tags">${c.ctags.map(t => `<span class="chip ${t === 'Frecuente' ? 'green' : t === 'Nueva' ? 'blue' : 'amber'}">${esc(t)}</span>`).join('')}</div>` : ''}</div>
+    <div class="pf-sec"><h4>Sus canales</h4>${c.ids.map(([k, h]) => `<div class="pf-id">${tile(k, 24)}<span>${esc(h)}</span></div>`).join('')}${c.merged ? `<div class="pf-merge">${ic('merge')}${esc(c.merged)}</div>` : ''}</div>
+    <div class="pf-sec"><dl class="kv"><div><dt>Pedidos</dt><dd>${c.orders}</dd></div><div><dt>Gastado</dt><dd>${PEN.format(c.spent)}</dd></div><div><dt>Último pedido</dt><dd>${esc(c.lastOrder)}</dd></div><div><dt>Canal favorito</dt><dd>${esc(CH[c.ids[0][0]].short)}</dd></div></dl></div>
+    <div class="pf-sec"><h4>Nota para tu agente</h4><label class="sr" for="pf-note">Nota</label><textarea class="pf-note" id="pf-note" placeholder="Ej.: prefiere delivery, pide sin nueces…">${esc(c.note)}</textarea></div>
+    <div class="pf-sec"><h4>Acciones</h4><div class="pf-actions">
+      <button type="button" class="btn sm" data-act="Pago marcado como recibido">${ic('coin')}Marcar pagado</button>
+      <button type="button" class="btn sm" data-act="Pedido creado">${ic('bag')}Crear pedido</button>
+      <button type="button" class="btn sm" data-act="Cita agendada">${ic('cal')}Agendar cita</button></div></div>`;
+}
+function renderInbox(focus){ renderSeg(); renderList(); renderThread(focus); renderProfile(); }
+function selectConv(id){
+  const c = byId(id); if (!c) return null;
+  S.open = id; c.unread = 0;
+  $('#view-inbox').classList.add('show-thread');
+  if (c.pending && !c._pendingTimer) deliverPending(c);
+  return c;
+}
+function openConv(id, focus){ if (!selectConv(id)) return; renderSeg(); renderList(); renderThread(focus); renderProfile(); renderNav(); }
+function autoGrow(ta){ ta.style.height = 'auto'; ta.style.height = Math.min(150, ta.scrollHeight) + 'px'; }
+
+$('#view-inbox').addEventListener('click', e => {
+  const t = e.target;
+  const it = t.closest('.ib-item'); if (it){ openConv(it.dataset.id); return; }
+  const f = t.closest('[data-f]'); if (f){ S.filter = f.dataset.f; renderSeg(); renderList(); return; }
+  const cf = t.closest('[data-chf]'); if (cf){ const k = cf.dataset.chf; S.chf.has(k) ? S.chf.delete(k) : S.chf.add(k); renderSeg(); renderList(); return; }
+  if (t.closest('#th-back')){ $('#view-inbox').classList.remove('show-thread'); return; }
+  if (t.closest('#pf-toggle')){ $('#ib-profile').classList.toggle('open'); return; }
+  if (t.closest('#pf-close')){ $('#ib-profile').classList.remove('open'); return; }
+  const sg = t.closest('[data-sug]'); if (sg){ const c = byId(S.open), ta = $('#comp-text'); ta.value = c.sugs[+sg.dataset.sug]; autoGrow(ta); ta.focus(); return; }
+  if (t.closest('#comp-send')){ sendOwner(); return; }
+  if (t.closest('#th-mode')){
+    const c = byId(S.open); c.mode = c.mode === 'you' ? 'agent' : 'you';
+    if (c.mode === 'agent' && c.status === 'resolved') c.status = 'agent';
+    toast(c.mode === 'you' ? 'Tomaste el control. Tu agente no escribirá aquí hasta que se la devuelvas.' : 'Tu agente vuelve a atender esta conversación.', c.mode === 'you' ? 'hand' : 'spark');
+    renderList(); renderThread(); return;
+  }
+  const act = t.closest('[data-act]'); if (act){ toast(`${act.dataset.act} · simulado`); }
+});
+$('#view-inbox').addEventListener('keydown', e => {
+  if (e.target.id === 'comp-text' && e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendOwner(); }
+  if (e.target.classList.contains('ib-item') && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openConv(e.target.dataset.id); }
+});
+$('#view-inbox').addEventListener('input', e => {
+  if (e.target.id === 'ib-q'){ S.q = e.target.value; renderList(); }
+  if (e.target.id === 'comp-text') autoGrow(e.target);
+  if (e.target.id === 'pf-note'){ const c = byId(S.open); if (c) c.note = e.target.value; }
+});
+function sendOwner(){
+  const ta = $('#comp-text'), c = byId(S.open); if (!ta || !c) return;
+  const text = ta.value.trim(); if (!text){ ta.focus(); return; }
+  const teach = $('#comp-teach').checked;
+  c.msgs.push({ w: 'o', t: text, ts: now(), fresh: true });
+  c.typing = false;
+  if (c.status === 'attention'){ c.status = 'resolved'; c.sugs = []; }
+  else if (c.mode === 'agent'){ c.mode = 'you'; }
+  renderSeg(); renderList(); renderThread(); renderNav();
+  renderAttention(); renderHeroText();
+  pushFeed({ ch: c.ch, who: c.name, text, state: 'owner' });
+  toast(`Enviado por ${CH[c.ch].short} · simulado`, 'send');
+  if (teach && c.learn){ setTimeout(() => toast(`Tu agente aprendió cómo responder sobre ${c.learn}.`, 'spark'), 1100); c.learn = null; }
+}
+
+/* ============ contacts ============ */
+function contactRows(){
+  const fromConvs = CONVS.map(c => ({ id: c.id, name: c.name, chs: [...new Set(c.ids.map(i => i[0]))], phone: (c.ids.find(i => i[1].startsWith('+')) || [, '—'])[1], orders: c.orders, spent: c.spent, last: lastTs(c), ctags: c.ctags }));
+  return fromConvs.concat(EXTRA_CONTACTS).sort((a, b) => b.last - a.last);
+}
+function renderContacts(){
+  const rows = contactRows(), q = S.ctq.trim().toLowerCase();
+  const tags = [['all', 'Todos'], ['Frecuente', 'Frecuentes'], ['Nueva', 'Nuevos'], ['Mayorista', 'Mayoristas']];
+  $('#ct-seg').innerHTML = tags.map(([k, l]) => `<button type="button" data-ctag="${k}" class="${S.ctag === k ? 'on' : ''}">${l}</button>`).join('');
+  $('#ct-total').textContent = '412 clientes';
+  $('#merge-viz').innerHTML = `<div class="stack">${tile('instagram', 26)}${tile('whatsapp', 26)}</div><svg class="lines" viewBox="0 0 40 62"><path d="M2 14c16 0 18 17 36 17M2 48c16 0 18-17 36-17" fill="none" stroke="currentColor" stroke-width="2"/></svg>${av('María Fernanda Quispe', 48)}`;
+  const list = rows.filter(r => (S.ctag === 'all' || r.ctags.includes(S.ctag)) && (!q || (r.name + ' ' + r.phone + ' ' + r.chs.map(k => CH[k].name).join(' ')).toLowerCase().includes(q)));
+  $('#ct-body').innerHTML = list.length ? list.map(r => `<tr ${r.id ? `data-open="${r.id}"` : ''} tabindex="0">
+    <td><div class="cname">${av(r.name, 36)}<div><b>${esc(r.name)}</b><span>${r.ctags.length ? esc(r.ctags.join(' · ')) : 'Cliente'}</span></div></div></td>
+    <td><div class="tiles">${r.chs.map(k => tile(k, 24)).join('')}</div></td>
+    <td class="mono" style="font-size:.84rem">${esc(r.phone)}</td>
+    <td class="r">${r.orders}</td><td class="r">${PEN.format(r.spent)}</td>
+    <td class="muted">${cap(hace(r.last))}</td></tr>`).join('')
+    : `<tr><td colspan="6" class="empty">Nadie coincide con “${esc(S.ctq)}”.</td></tr>`;
+}
+$('#view-contacts').addEventListener('click', e => {
+  const tg = e.target.closest('[data-ctag]'); if (tg){ S.ctag = tg.dataset.ctag; renderContacts(); return; }
+  const tr = e.target.closest('tr[data-open]'); if (tr){ go('inbox', { open: tr.dataset.open }); return; }
+  if (e.target.closest('tbody tr')) toast('Ficha completa de clientes · próximamente', 'users');
+  if (e.target.closest('#merge-review')) toast('Revisión de uniones · próximamente', 'merge');
+});
+$('#view-contacts').addEventListener('keydown', e => { const tr = e.target.closest('tr[data-open]'); if (tr && e.key === 'Enter') go('inbox', { open: tr.dataset.open }); });
+$('#ct-q').addEventListener('input', e => { S.ctq = e.target.value; renderContacts(); });
+
+/* ============ channels ============ */
+const SOON = [['mail', 'Correo', 'Gmail y Outlook'], ['globe', 'Chat en tu web', 'Una burbuja en tu sitio'], ['pin', 'Google Maps', 'Mensajes y reseñas'], ['bag', 'Mercado Libre', 'Preguntas de compradores']];
+const notify = new Set();
+function renderChannels(){
+  const on = ORDER.filter(k => CH[k].state === 'on'), replying = on.filter(k => CH[k].reply).length;
+  const C = 2 * Math.PI * 32, fg = $('#ring-fg');
+  fg.setAttribute('stroke-dasharray', C.toFixed(1)); fg.setAttribute('stroke-dashoffset', (C * (1 - on.length / ORDER.length)).toFixed(1));
+  $('#ring-n').textContent = `${on.length} de ${ORDER.length}`;
+  $('#ring-sub').textContent = `conectados · responde en ${replying}`;
+  $('#ch-sub').textContent = `${sum(on.map(k => CH[k].today))} mensajes hoy entre todos`;
+  $('#chgrid').innerHTML = ORDER.map(k => {
+    const c = CH[k], isOn = c.state === 'on';
+    const status = !isOn ? `<span class="chip">Sin conectar</span>` : c.reply ? `<span class="chip green"><span class="dot on"></span>Responde</span>` : `<span class="chip amber"><span class="dot warn"></span>Solo lee</span>`;
+    const pct = c.today ? Math.round(c.agent / c.today * 100) : 0;
+    return `<article class="chcard ${isOn ? '' : 'off'}">
+      <div class="hd">${tile(k, 42)}<div><b>${esc(c.name)}</b><span>${isOn ? esc(c.handle) + ' · vía tu celular' : esc(c.note || 'Toca Conectar para empezar')}</span></div>${status}</div>
+      ${isOn ? `<div class="stat"><span>Mensajes hoy</span><b>${c.today}${c.reply ? ` · ${pct} % agente` : ''}</b></div>
+      <div class="tgs">
+        <label class="tg" for="rd-${k}"><span>Lee</span><span class="switch"><input type="checkbox" id="rd-${k}" data-read="${k}" ${c.read ? 'checked' : ''}><span class="track"></span></span></label>
+        <label class="tg ${c.read ? '' : 'dis'}" for="rp-${k}"><span>Responde</span><span class="switch"><input type="checkbox" id="rp-${k}" data-reply="${k}" ${c.reply ? 'checked' : ''} ${c.read ? '' : 'disabled'}><span class="track"></span></span></label>
+      </div>` : ''}
+      <div class="ft"><small>${c.api ? 'Conexión oficial: ' + esc(c.api.split(' · ')[0]) : 'Solo desde tu celular'}</small>${isOn ? `<button type="button" class="btn sm" data-config="${k}">Configurar</button>` : `<button type="button" class="btn primary sm" data-connect="${k}">${ic('plus')}Conectar</button>`}</div>
+    </article>`;
+  }).join('');
+  $('#soon-row').innerHTML = SOON.map(([i, n, s]) => `<div class="soon-item"><span class="gl">${ic(i)}</span><div><b>${n}</b><span>${s}</span></div><button type="button" class="btn sm ${notify.has(n) ? 'ghost' : ''}" data-notify="${n}">${notify.has(n) ? ic('check') + 'Te avisamos' : 'Avísame'}</button></div>`).join('');
+}
+function channelsChanged(){ renderChannels(); renderSide(); renderNav(); renderHeroText(); renderChRows(); if (hero) hero.setNodes(heroNodes()); }
+$('#view-channels').addEventListener('change', e => {
+  const r = e.target.dataset.read, p = e.target.dataset.reply;
+  if (r){ CH[r].read = e.target.checked; if (!CH[r].read){ CH[r].reply = false; } toast(CH[r].read ? `Tu agente vuelve a leer ${CH[r].short}.` : `Tu agente ya no lee ${CH[r].short}.`, 'info'); }
+  if (p){ CH[p].reply = e.target.checked; toast(CH[p].reply ? `Tu agente responde en ${CH[p].short}.` : `En ${CH[p].short} tu agente solo lee y te avisa.`, 'spark'); }
+  channelsChanged();
+});
+$('#view-channels').addEventListener('click', e => {
+  const c = e.target.closest('[data-connect]'); if (c){ openWizard(c.dataset.connect); return; }
+  const f = e.target.closest('[data-config]'); if (f){ openWizard(f.dataset.config, true); return; }
+  const n = e.target.closest('[data-notify]'); if (n){ notify.add(n.dataset.notify); renderChannels(); toast(`Te avisaremos cuando ${n.dataset.notify} esté listo.`, 'bell'); }
+});
+
+/* ============ connect wizard ============ */
+let W = null;
+function openWizard(id, config = false){
+  const c = CH[id];
+  W = { id, step: config ? 2 : 0, method: 'phone', linked: false, authing: false, config,
+    read: config ? c.read : true, reply: config ? c.reply : true, when: 'always', handoff: new Set(['queja', 'factura', 'grande']) };
+  renderWizard();
+}
+function closeWizard(){ W = null; $('#modal-root').innerHTML = ''; clearTimeout(closeWizard.t); }
+function drawQR(cv){
+  const N = 25, px = 6, d = Math.min(devicePixelRatio || 1, 2), x = cv.getContext('2d');
+  cv.width = N * px * d; cv.height = N * px * d; x.setTransform(d, 0, 0, d, 0, 0);
+  const cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue('--ink').trim(), bg = cs.getPropertyValue('--card').trim();
+  x.fillStyle = bg; x.fillRect(0, 0, N * px, N * px);
+  let s = 90210; const rnd = () => (s = s * 16807 % 2147483647) / 2147483647;
+  x.fillStyle = ink;
+  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++){
+    const inF = (i < 8 && j < 8) || (i > N - 9 && j < 8) || (i < 8 && j > N - 9);
+    if (!inF && rnd() < .47) x.fillRect(i * px, j * px, px, px);
+  }
+  const finder = (cx, cy) => { x.fillStyle = ink; x.fillRect(cx * px, cy * px, 7 * px, 7 * px); x.fillStyle = bg; x.fillRect((cx + 1) * px, (cy + 1) * px, 5 * px, 5 * px); x.fillStyle = ink; x.fillRect((cx + 2) * px, (cy + 2) * px, 3 * px, 3 * px); };
+  finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
+}
+function renderWizard(){
+  if (!W) return;
+  const c = CH[W.id], steps = ['Método', 'Vincular', 'Permisos', 'Listo'];
+  const stepper = `<ol class="steps">${steps.map((s, i) => `<li class="${i < W.step ? 'done' : i === W.step ? 'on' : ''}">${i + 1}. ${s}</li>`).join('')}</ol>`;
+  let body = '', foot = '';
+  if (W.step === 0){
+    body = `<h4>¿Cómo quieres conectar ${esc(c.name)}?</h4><p>Puedes empezar desde tu celular hoy y pasar a la conexión oficial cuando esté lista.</p>
+      <button type="button" class="opt ${W.method === 'phone' ? 'on' : ''}" data-method="phone"><span class="ill">${ic('user')}</span><div><b>Con tu celular <span class="chip green">Recomendado</span></b><p>La app agento lee los mensajes de ${esc(c.short)} en tu celular y responde desde ahí, con tu cuenta. Listo en un minuto.</p></div></button>
+      <button type="button" class="opt ${W.method === 'api' ? 'on' : ''} ${c.api ? '' : 'dis'}" data-method="api" ${c.api ? '' : 'disabled'}><span class="ill">${ic('link')}</span><div><b>Conexión oficial <span class="chip blue">Próximamente</span></b><p>${c.api ? `Autorizas a agento en ${esc(c.api)}. Atiende aunque tu celular esté apagado.` : esc(c.note || 'Este canal no tiene conexión oficial.')}</p></div></button>`;
+    foot = `<button type="button" class="btn ghost" data-w="close">Cancelar</button><div class="r"><button type="button" class="btn primary" data-w="next">Continuar</button></div>`;
+  } else if (W.step === 1 && W.method === 'phone'){
+    body = `<h4>Actívalo en tu celular</h4><p>Tu Moto G54 ya tiene agento. Solo falta decirle que lea ${esc(c.short)}.</p>
+      <div class="qr-wrap"><div class="qr"><canvas id="qr" width="150" height="150" aria-label="Código QR de ejemplo"></canvas><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#mk)"/><circle cx="20" cy="20" r="8.2" fill="none" stroke="#EAF7F0" stroke-width="3.2"/><circle cx="29.2" cy="11.4" r="3.2" fill="#6CF5BF"/></svg></div>
+      <ol class="howto"><li>Abre <b>agento</b> en tu celular.</li><li>Ve a <b>Ajustes → Apps conectadas</b>.</li><li>En <b>Qué lee tu agente</b>, activa <b>${esc(c.short)}</b>. O escanea este código.</li></ol></div>
+      <div class="wait ${W.linked ? 'ok' : ''}" id="wait">${W.linked ? ic('check') + `Moto G54 ya lee ${esc(c.short)}` : '<span class="spin"></span>Esperando a tu celular…'}</div>`;
+    foot = `<button type="button" class="btn ghost" data-w="back">Atrás</button><div class="r"><button type="button" class="btn primary" data-w="next" ${W.linked ? '' : 'disabled'}>Continuar</button></div>`;
+  } else if (W.step === 1){
+    body = `<h4>Autoriza a agento en ${esc(c.api.split(' · ')[0])}</h4><p>Te llevaremos a su página para que elijas la cuenta. agento pedirá solo esto:</p>
+      <ul class="perm"><li>${ic('check')}Leer los mensajes que te envían</li><li>${ic('check')}Enviar respuestas a nombre de tu negocio</li><li>${ic('check')}Ver el nombre y la foto de tu cuenta</li></ul>
+      <div class="wait ${W.linked ? 'ok' : ''}">${W.linked ? ic('check') + `Autorizado como ${esc(c.handle || '@pasteleriarosita')}` : W.authing ? '<span class="spin"></span>Esperando la autorización…' : ic('lock') + 'Nada se conecta en esta vista previa'}</div>`;
+    foot = `<button type="button" class="btn ghost" data-w="back">Atrás</button><div class="r">${W.linked ? `<button type="button" class="btn primary" data-w="next">Continuar</button>` : `<button type="button" class="btn primary" data-w="auth" ${W.authing ? 'disabled' : ''}>Autorizar · simulado</button>`}</div>`;
+  } else if (W.step === 2){
+    const HO = [['queja', 'Hay una queja'], ['factura', 'Piden factura o RUC'], ['grande', 'Pedido de más de S/ 300'], ['humano', 'Piden hablar contigo']];
+    body = `<h4>¿Qué hace tu agente en ${esc(c.short)}?</h4><p>Puedes cambiarlo cuando quieras. Lo que tu agente no sabe, siempre te lo pasa.</p>
+      <div class="rows">
+        <label class="row-sw" for="w-read"><div><b>Leer mensajes</b><span>Llegan a tu bandeja y tu agente aprende de ellos.</span></div><span class="switch"><input type="checkbox" id="w-read" ${W.read ? 'checked' : ''}><span class="track"></span></span></label>
+        <label class="row-sw" for="w-reply"><div><b>Responder por ti</b><span>Si lo apagas, tu agente solo lee y te avisa.</span></div><span class="switch"><input type="checkbox" id="w-reply" ${W.reply ? 'checked' : ''} ${W.read ? '' : 'disabled'}><span class="track"></span></span></label>
+      </div>
+      <span class="lbl-sm">Cuándo responde</span>
+      <div class="mini-seg" role="radiogroup" aria-label="Cuándo responde">${[['always', 'Siempre'], ['after', 'Fuera de horario'], ['late', 'Si tardo 5 min']].map(([k, l]) => `<button type="button" role="radio" aria-checked="${W.when === k}" data-when="${k}" class="${W.when === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+      <span class="lbl-sm">Pásame la conversación cuando</span>
+      <div class="checks">${HO.map(([k, l]) => `<label for="ho-${k}"><input type="checkbox" id="ho-${k}" data-ho="${k}" ${W.handoff.has(k) ? 'checked' : ''}>${l}</label>`).join('')}</div>`;
+    foot = W.config
+      ? `<button type="button" class="btn ghost" data-w="disconnect" style="color:var(--red)">Desconectar</button><div class="r"><button type="button" class="btn ghost" data-w="close">Cancelar</button><button type="button" class="btn primary" data-w="save">Guardar cambios</button></div>`
+      : `<button type="button" class="btn ghost" data-w="back">Atrás</button><div class="r"><button type="button" class="btn primary" data-w="finish">Conectar ${esc(c.short)}</button></div>`;
+  } else {
+    body = `<div class="done-hero"><div class="ok">${ic('check')}</div><h4>${esc(c.name)} conectado</h4><p>${W.reply ? `Tu agente ya lee y responde en ${esc(c.short)}.` : `Tu agente ya lee ${esc(c.short)} y te avisa de cada mensaje.`} Todo aparece en tu bandeja junto a los demás canales.</p></div>`;
+    foot = `<button type="button" class="btn ghost" data-w="close">Cerrar</button><div class="r"><button type="button" class="btn primary" data-w="inbox">Ir a la bandeja</button></div>`;
+  }
+  $('#modal-root').innerHTML = `<div class="scrim" id="scrim"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="w-title">
+    <div class="m-h">${tile(W.id, 40)}<h3 id="w-title">${W.config ? 'Configurar' : 'Conectar'} ${esc(c.name)}</h3><button type="button" class="icon-btn" data-w="close" aria-label="Cerrar">${ic('close')}</button></div>
+    ${W.config ? '' : stepper}<div class="m-b">${body}</div><div class="m-f">${foot}</div></div></div>`;
+  const qr = $('#qr'); if (qr) drawQR(qr);
+  if (W.step === 1 && W.method === 'phone' && !W.linked){ clearTimeout(closeWizard.t); closeWizard.t = setTimeout(() => { if (W && W.step === 1){ W.linked = true; renderWizard(); } }, 2600); }
+}
+$('#modal-root').addEventListener('click', e => {
+  if (!W) return;
+  if (e.target.id === 'scrim'){ closeWizard(); return; }
+  const m = e.target.closest('[data-method]'); if (m && !m.disabled){ W.method = m.dataset.method; renderWizard(); return; }
+  const wh = e.target.closest('[data-when]'); if (wh){ W.when = wh.dataset.when; renderWizard(); return; }
+  const b = e.target.closest('[data-w]'); if (!b) return;
+  const a = b.dataset.w, c = CH[W.id];
+  if (a === 'close') closeWizard();
+  else if (a === 'back'){ W.step--; W.linked = false; W.authing = false; renderWizard(); }
+  else if (a === 'next'){ W.step++; renderWizard(); }
+  else if (a === 'auth'){ W.authing = true; renderWizard(); setTimeout(() => { if (W){ W.authing = false; W.linked = true; renderWizard(); } }, 1600); }
+  else if (a === 'finish'){
+    Object.assign(c, { state: 'on', read: W.read, reply: W.read && W.reply, handle: c.handle || (W.id === 'wapersonal' ? '+51 987 000 456' : '+51 987 000 123') });
+    W.step = 3; renderWizard(); channelsChanged(); toast(`${c.name} conectado · simulado`);
+  }
+  else if (a === 'save'){ c.read = W.read; c.reply = W.read && W.reply; closeWizard(); channelsChanged(); toast(`Cambios guardados en ${c.short}`); }
+  else if (a === 'disconnect'){ Object.assign(c, { state: 'off', read: false, reply: false }); closeWizard(); channelsChanged(); toast(`${c.name} desconectado · simulado`, 'info'); }
+  else if (a === 'inbox'){ closeWizard(); go('inbox'); }
+});
+$('#modal-root').addEventListener('change', e => {
+  if (!W) return;
+  if (e.target.id === 'w-read'){ W.read = e.target.checked; if (!W.read) W.reply = false; renderWizard(); }
+  if (e.target.id === 'w-reply'){ W.reply = e.target.checked; }
+  if (e.target.dataset.ho){ const k = e.target.dataset.ho; e.target.checked ? W.handoff.add(k) : W.handoff.delete(k); }
+});
+
+/* ============ command palette ============ */
+let CMD = null;
+function cmdItems(){
+  return [
+    ...Object.keys(VIEWS).map(v => ({ g: 'Ir a', label: VIEWS[v], icon: NAVICON[v], run: () => go(v) })),
+    { g: 'Acciones', label: 'Ver lo que necesita tu atención', icon: 'alert', run: () => go('inbox', { filter: 'attention' }) },
+    { g: 'Acciones', label: S.agentOn ? 'Pausar a tu agente' : 'Encender a tu agente', icon: 'spark', run: () => setAgent(!S.agentOn) },
+    ...ORDER.filter(k => CH[k].state === 'off').map(k => ({ g: 'Acciones', label: `Conectar ${CH[k].name}`, ch: k, run: () => { go('channels'); openWizard(k); } })),
+    { g: 'Acciones', label: 'Cambiar tema claro u oscuro', icon: 'moon', run: toggleTheme },
+    ...CONVS.map(c => ({ g: 'Conversaciones', label: c.name, sub: lastMsg(c).t, ch: c.ch, run: () => go('inbox', { open: c.id }) }))
+  ];
+}
+function openCmd(){
+  W = null; clearTimeout(closeWizard.t);
+  $('#modal-root').innerHTML = `<div class="cmd" id="cmd"><div class="cmd-box" role="dialog" aria-modal="true" aria-label="Buscar"><div class="cmd-in">${ic('spark')}<input id="cmd-q" placeholder="Busca un cliente, un canal o una acción…" autocomplete="off"><kbd>Esc</kbd></div><ul id="cmd-list" role="listbox"></ul></div></div>`;
+  CMD = { sel: 0, items: [] }; renderCmd(); $('#cmd-q').focus();
+}
+function closeCmd(){ CMD = null; $('#modal-root').innerHTML = ''; }
+function renderCmd(){
+  const q = ($('#cmd-q')?.value || '').trim().toLowerCase();
+  CMD.items = cmdItems().filter(i => !q || (i.label + ' ' + (i.sub || '')).toLowerCase().includes(q));
+  CMD.sel = Math.min(CMD.sel, Math.max(0, CMD.items.length - 1));
+  let g = '', html = '';
+  CMD.items.forEach((it, i) => {
+    if (it.g !== g){ html += `<li class="grp">${it.g}</li>`; g = it.g; }
+    html += `<li class="it ${i === CMD.sel ? 'on' : ''}" role="option" aria-selected="${i === CMD.sel}" data-i="${i}">${it.ch ? tile(it.ch, 22) : ic(it.icon)}<span>${esc(it.label)}</span>${it.sub ? `<small>${esc(it.sub)}</small>` : ''}</li>`;
+  });
+  $('#cmd-list').innerHTML = html || `<li class="empty">Nada coincide.</li>`;
+  $('#cmd-list .it.on')?.scrollIntoView({ block: 'nearest' });
+}
+$('#modal-root').addEventListener('input', e => { if (e.target.id === 'cmd-q'){ CMD.sel = 0; renderCmd(); } });
+$('#modal-root').addEventListener('mousedown', e => {
+  if (!CMD) return;
+  if (e.target.id === 'cmd'){ closeCmd(); return; }
+  const it = e.target.closest('.it'); if (it){ e.preventDefault(); const f = CMD.items[+it.dataset.i]; closeCmd(); f.run(); }
+});
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k' && !$('#app').hidden){ e.preventDefault(); CMD ? closeCmd() : openCmd(); return; }
+  if (e.key === 'Escape'){ if (CMD) closeCmd(); else if (W) closeWizard(); else if (!$('#me-menu').hidden) $('#me-menu').hidden = true; else $('#ib-profile').classList.remove('open'); return; }
+  if (CMD){
+    if (e.key === 'ArrowDown'){ e.preventDefault(); CMD.sel = Math.min(CMD.items.length - 1, CMD.sel + 1); renderCmd(); }
+    if (e.key === 'ArrowUp'){ e.preventDefault(); CMD.sel = Math.max(0, CMD.sel - 1); renderCmd(); }
+    if (e.key === 'Enter' && CMD.items[CMD.sel]){ e.preventDefault(); const f = CMD.items[CMD.sel]; closeCmd(); f.run(); }
+  }
+});
+$('#open-cmd').addEventListener('click', openCmd);
+
+/* ============ top bar ============ */
+function setAgent(on){
+  S.agentOn = on; $('#agent-on').checked = on; $('#agent-lbl').textContent = on ? 'Agente encendido' : 'Agente en pausa';
+  $('#paused').hidden = on;
+  renderSide(); renderHeroText(); if (hero){ hero.paused = !on; hero.draw(performance.now()); hero.kick(); }
+  toast(on ? 'Tu agente volvió a atender.' : 'Tu agente está en pausa. Los mensajes te esperan en la bandeja.', on ? 'spark' : 'info');
+}
+$('#agent-on').addEventListener('change', e => setAgent(e.target.checked));
+$('#resume').addEventListener('click', () => setAgent(true));
+function effectiveDark(){ const t = document.documentElement.dataset.theme; return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+function toggleTheme(){ const next = effectiveDark() ? 'light' : 'dark'; document.documentElement.dataset.theme = next; store.set('theme', next); }
+function themeChanged(){ [hero, loginViz].forEach(v => { if (v){ v.readColors(); v.draw(performance.now()); } }); if (W) renderWizard(); }
+$('#theme-btn').addEventListener('click', toggleTheme);
+$('#menu-theme').addEventListener('click', () => { $('#me-menu').hidden = true; toggleTheme(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', themeChanged);
+new MutationObserver(themeChanged).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+$('#me-btn').addEventListener('click', e => { e.stopPropagation(); $('#me-menu').hidden = !$('#me-menu').hidden; });
+document.addEventListener('click', e => { if (!e.target.closest('#me-menu') && !e.target.closest('#me-btn')) $('#me-menu').hidden = true; });
+$('#real-panel').addEventListener('click', () => { location.href = '/app'; });
+$('#logout').addEventListener('click', () => { $('#me-menu').hidden = true; store.set('session', null); showLogin(); });
+
+/* ============ live simulation ============ */
+function pushFeed(f){ const item = Object.assign({ ts: now(), fresh: true, id: Math.random().toString(36).slice(2) }, f); S.feed.unshift(item); S.feed.length = Math.min(S.feed.length, 30); renderFeed(); return item; }
+function countIncoming(ch, answered){
+  const i = HOURS.length - 1; CH[ch].today++;
+  if (answered){ AG[i]++; CH[ch].agent++; } else PEND[i]++;
+}
+function refreshCounters(){ renderHeroText(); renderHourly(); renderChRows(); renderSide(); renderOutcomes(); if (hero) hero.setNodes(heroNodes()); }
+function deliverPending(c){
+  c.typing = true;
+  c._pendingTimer = setTimeout(() => {
+    c._pendingTimer = null; c.typing = false;
+    if (c.pending){ c.msgs.push({ w: 'a', t: c.pending, ts: now(), fresh: true }); c.pending = null; }
+    S.feed.forEach(f => { if (f.id === c.id && f.state === 'typing'){ f.state = 'replied'; f.secs = 3; } });
+    if (S.view === 'home') renderFeed();
+    if (S.view === 'inbox'){ renderList(); if (S.open === c.id) renderThread(); }
+    hero?.emit(c.ch, true);
+  }, 2600);
+}
+function bumpConversation(){
+  const cands = CONVS.filter(c => c.status === 'agent' && c.mode === 'agent' && c.next.length && !c.typing);
+  if (!cands.length) return false;
+  const c = pick(cands), [ct, at] = c.next.shift(), ch = c.ch, answer = S.agentOn && CH[ch].reply && CH[ch].read;
+  c.msgs.push({ w: 'c', t: ct, ts: now(), fresh: true });
+  if (S.open !== c.id || S.view !== 'inbox') c.unread++;
+  const f = pushFeed({ ch, who: c.name, text: ct, state: answer ? 'typing' : 'waiting' });
+  hero?.emit(ch);
+  countIncoming(ch, answer); refreshCounters();
+  if (answer){
+    c.typing = true;
+    setTimeout(() => {
+      c.typing = false; c.msgs.push({ w: 'a', t: at, ts: now(), fresh: true });
+      f.state = 'replied'; f.secs = Math.round(rand(2, 7)); renderFeed(); hero?.emit(ch, true);
+      if (S.view === 'inbox'){ renderList(); if (S.open === c.id) renderThread(); }
+    }, rand(1800, 3200));
+  }
+  if (S.view === 'inbox'){ renderSeg(); renderList(); if (S.open === c.id) renderThread(); }
+  return true;
+}
+function simEvent(){
+  S.tick++;
+  if (S.tick % 3 === 0 && bumpConversation()) return;
+  const live = ORDER.filter(k => CH[k].state === 'on' && CH[k].read);
+  if (!live.length) return;
+  const w = live.map(k => CH[k].today + 4), tot = sum(w); let r = Math.random() * tot, ch = live[0];
+  for (let i = 0; i < live.length; i++){ r -= w[i]; if (r <= 0){ ch = live[i]; break; } }
+  const pool = POOL.filter(p => p.ch === ch), item = pool.length ? pick(pool) : { ch, who: 'Cliente nuevo', t: 'Hola, ¿tienen tortas para hoy?' };
+  const answer = S.agentOn && CH[ch].reply;
+  const f = pushFeed({ ch, who: item.who, text: item.t, state: answer ? 'typing' : CH[ch].reply ? 'waiting' : 'readonly' });
+  hero?.emit(ch);
+  countIncoming(ch, answer);
+  if (Math.random() < .35) S.stats.people++;
+  refreshCounters();
+  if (answer){
+    setTimeout(() => {
+      f.state = 'replied'; f.secs = Math.round(rand(2, 8)); renderFeed(); hero?.emit(ch, true);
+      if (item.pay){ S.stats.sold += item.pay; S.stats.payments++; S.stats.orders++; ch === 'instagram' ? S.stats.plin++ : S.stats.yape++; renderHeroText(); renderOutcomes(); }
+    }, rand(1500, 2800));
+  }
+}
+let simTimer = 0;
+function scheduleSim(){ clearTimeout(simTimer); simTimer = setTimeout(() => { if (!document.hidden && !$('#app').hidden) simEvent(); scheduleSim(); }, rand(3800, 7200)); }
+setInterval(() => {
+  if ($('#app').hidden) return;
+  if (S.view === 'home'){ renderFeed(); renderAttention(); }
+  if (S.view === 'inbox') renderList();
+}, 30000);
+
+/* ============ login ============ */
+let loginViz = null, loginEmit = 0, resendT = 0;
+function showLogin(){
+  $('#app').hidden = true; clearTimeout(simTimer);
+  const L = $('#login'); L.hidden = false; L.classList.remove('leaving');
+  $('#f-id').hidden = false; $('#f-code').hidden = true; $('#send-code').disabled = false; $('#send-code').textContent = 'Enviarme un código';
+  $$('.otp input').forEach(i => i.value = '');
+  if (!loginViz){
+    loginViz = new Constellation($('#login-canvas'), { labels: false, scale: 1.12, spin: 2.2 });
+    loginViz.setNodes(ORDER.map(k => ({ id: k, g: CH[k].g, color: CH[k].color, spark: CH[k].spark, label: CH[k].short, value: null })));
+  }
+  clearInterval(loginEmit);
+  loginEmit = setInterval(() => { const k = pick(ORDER); loginViz.emit(k); setTimeout(() => loginViz.emit(k, true), 1300); }, 650);
+  $('#fc-ig').innerHTML = glyphSvg('ig'); $('#fc-ig').style.setProperty('--cc', CH.instagram.color);
+}
+function enterApp(view = 'home', open){
+  clearInterval(loginEmit); clearInterval(resendT);
+  store.set('session', '1');
+  const L = $('#login'); L.classList.add('leaving');
+  $('#app').hidden = false;
+  setTimeout(() => { L.hidden = true; }, reduced ? 0 : 450);
+  if (!hero){ hero = new Constellation($('#hero-canvas'), { cx: .5 }); }
+  hero.paused = !S.agentOn;
+  renderSide(); go(view, open ? { open } : {});
+  scheduleSim();
+  if (!enterApp.greeted){ enterApp.greeted = true; setTimeout(() => toast('Esta es la demo: los canales y los mensajes son de ejemplo. Tu panel real está en agento.ceo/app.', 'info'), 700); }
+  const c2 = byId('c2'); if (c2.pending && !c2._pendingTimer) setTimeout(() => deliverPending(c2), 2500);
+}
+$('#f-id').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('#login-id').value.trim(), err = $('#login-err');
+  const digits = v.replace(/\D/g, ''), isMail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), isPhone = !isMail && digits.length >= 9;
+  if (!isMail && !isPhone){ err.textContent = v ? 'Revisa el dato: escribe un correo como rosa@tunegocio.pe o un celular de 9 dígitos.' : 'Escribe tu correo o tu número de WhatsApp.'; err.hidden = false; $('#login-id').focus(); return; }
+  err.hidden = true;
+  const btn = $('#send-code'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Enviando…';
+  setTimeout(() => {
+    $('#code-dest').textContent = isMail ? v : `tu WhatsApp +51 ${digits.slice(-9, -6)} ${digits.slice(-6, -3)} ${digits.slice(-3)}`;
+    $('#f-id').hidden = true; $('#f-code').hidden = false; $('#otp-0').focus();
+    let s = 60; clearInterval(resendT);
+    const tick = () => { $('#resend').innerHTML = s > 0 ? `Reenviar en 0:${String(s).padStart(2, '0')}` : '<button type="button" class="link" id="resend-btn">Reenviar código</button>'; s--; if (s < -1) clearInterval(resendT); };
+    tick(); resendT = setInterval(tick, 1000);
+  }, 800);
+});
+$('#f-code').addEventListener('submit', e => { e.preventDefault(); submitCode(); });
+function submitCode(){
+  const code = $$('.otp input').map(i => i.value).join('');
+  if (code.length < 6){ $$('.otp input').find(i => !i.value)?.focus(); return; }
+  const b = $('#code-go'); b.disabled = true; b.innerHTML = '<span class="spin"></span>Entrando…';
+  setTimeout(() => { b.disabled = false; b.textContent = 'Entrar a mi panel'; enterApp(); }, 700);
+}
+$('#otp').addEventListener('input', e => {
+  const i = $$('.otp input').indexOf(e.target); if (i < 0) return;
+  const d = e.target.value.replace(/\D/g, '');
+  if (d.length > 1){ d.slice(0, 6 - i).split('').forEach((ch, k) => { $$('.otp input')[i + k].value = ch; }); }
+  else e.target.value = d;
+  const nextEmpty = $$('.otp input').find(x => !x.value);
+  if (nextEmpty && e.target.value) nextEmpty.focus();
+  if (!nextEmpty) submitCode();
+});
+$('#otp').addEventListener('keydown', e => {
+  const ins = $$('.otp input'), i = ins.indexOf(e.target);
+  if (e.key === 'Backspace' && !e.target.value && i > 0){ ins[i - 1].focus(); ins[i - 1].value = ''; e.preventDefault(); }
+});
+$('#otp').addEventListener('paste', e => {
+  const d = (e.clipboardData?.getData('text') || '').replace(/\D/g, '').slice(0, 6); if (!d) return;
+  e.preventDefault(); $$('.otp input').forEach((x, k) => x.value = d[k] || ''); if (d.length === 6) submitCode();
+});
+$('#code-back').addEventListener('click', () => { clearInterval(resendT); $('#f-code').hidden = true; $('#f-id').hidden = false; $('#send-code').disabled = false; $('#send-code').textContent = 'Enviarme un código'; $('#login-id').focus(); });
+$('#f-code').addEventListener('click', e => { if (e.target.id === 'resend-btn') toast('Te enviamos un código nuevo · simulado', 'mail'); });
+$('#demo-enter').addEventListener('click', () => enterApp());
+
+/* ============ boot ============ */
+window.addEventListener('resize', () => { if (S.view === 'home' && !$('#app').hidden) renderHourly(); });
+document.addEventListener('visibilitychange', () => { hero?.kick(); loginViz?.kick(); });
+try { const t = store.get('theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
+S.feed = CONVS.slice().sort((a, b) => lastTs(b) - lastTs(a)).slice(0, 8).map(c => {
+  const q = lastCustomer(c), l = lastMsg(c);
+  return { id: c.id, ch: c.ch, who: c.name, text: q.t, ts: q.ts, fresh: false,
+    state: c.status === 'attention' ? 'you' : l.w === 'o' ? 'owner' : c.pending ? 'typing' : 'replied', secs: 2 + (hue(c.name) % 7) };
+});
+if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) $('#open-cmd kbd').textContent = '⌘K';
+const HASH = { panel: 'home', bandeja: 'inbox', clientes: 'contacts', canales: 'channels' };
+const h = (location.hash || '').slice(1);
+if (HASH[h] || store.get('session') === '1') enterApp(HASH[h] || 'home');
+else showLogin();
+})();
+</script>
+
+</body>
+</html>

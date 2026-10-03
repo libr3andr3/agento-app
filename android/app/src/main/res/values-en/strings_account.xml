@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_title_signin">Continue with agento</string>
+    <string name="account_sub">Your identity is yours: one account for your business, your devices and your web dashboard.</string>
+    <string name="account_name_hint">Your name</string>
+    <string name="account_primary_signin">Continue with agento</string>
+    <string name="account_error_wrong">Wrong code.</string>
+    <string name="account_error_rate">Too many attempts. Wait a moment.</string>
+    <string name="account_error_offline">No connection. Check your internet.</string>
+    <string name="account_error_generic">Could not complete: %1$s</string>
+    <string name="account_restore_title">Coming from another phone?</string>
+    <string name="account_restore_body">If your account has a backup, we bring your business back just as you left it.</string>
+    <string name="account_restore">Restore my business</string>
+    <string name="account_fresh">Start fresh</string>
+    <string name="account_restore_none">There is no backup on this account. Let\'s start fresh.</string>
+    <string name="account_restored">🟢 Your business is back on this phone.</string>
+    <string name="account_signed_as">Signed in as %1$s</string>
+    <string name="account_logout">Sign out</string>
+    <string name="account_continue">Continue</string>
+    <string name="account_manage_web">Manage my account on the web</string>
+    <string name="plan_account_line">Account: %1$s</string>
+    <string name="account_phone_hint">Mobile (WhatsApp)</string>
+    <string name="account_no_password">No passwords — we send you a code by WhatsApp.</string>
+    <string name="account_error_phone">Enter your mobile number.</string>
+    <string name="account_code_sent">We sent you a code by %1$s. Valid for 10 minutes.</string>
+    <string name="account_code_sent_whatsapp">WhatsApp</string>
+    <string name="account_code_sent_email">email</string>
+    <string name="account_code_sent_both">WhatsApp and email</string>
+    <string name="account_code_hint">6-digit code</string>
+    <string name="account_code_cta">Sign in</string>
+    <string name="account_resend">Resend code</string>
+    <string name="account_resend_in">Resend in %1$ds</string>
+    <string name="account_change">Change details</string>
+    <string name="account_error_expired">The code expired. Request another.</string>
+    <string name="account_error_delivery">We couldn\'t send the code right now. Try again in a minute.</string>
+    <string name="settings_share_label">Help make agento better</string>
+    <string name="settings_share_hint">Shares how your agent reasons, without numbers, amounts or dates. Agents in your trade learn from what works.</string>
+</resources>

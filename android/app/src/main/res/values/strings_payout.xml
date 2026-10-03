@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payout_step">Paso 4 de 4</string>
+    <string name="payout_headline">¿A dónde te pagan tus clientes?</string>
+    <string name="payout_sub">Escribe la billetera y el número, llave o alias al que deben enviarte el dinero. Tu agente se lo dirá a tus clientes tal cual.</string>
+    <string name="payout_notice">📲 agento confirma los pagos leyendo las notificaciones de tu billetera. Instálalo con acceso a notificaciones en el teléfono donde llegan esos avisos — si tu Yape, Plin o billetera está en otro celular que tu WhatsApp, instálalo allí también.</string>
+    <string name="payout_holder_hint">Nombre del titular (como aparece en la billetera)</string>
+    <string name="payout_wallet_hint">Billetera o banco (Yape, Plin, Pix…)</string>
+    <string name="payout_handle_hint">Número, llave o alias al que te pagan</string>
+    <string name="payout_add">+ Agregar otra forma de cobro</string>
+    <string name="payout_remove_cd">Quitar esta forma de cobro</string>
+    <string name="payout_cash_only">Solo cobro en efectivo</string>
+    <string name="payout_save">Guardar</string>
+    <string name="payout_save_continue">Guardar y continuar</string>
+    <string name="payout_error_row">Completa la billetera y el número de la fila %1$d.</string>
+    <string name="payout_error_generic">No se pudo guardar: %1$s</string>
+    <string name="payout_saved">Listo. Tu agente ya sabe a dónde te pagan.</string>
+    <string name="payout_warning_missing">No vemos la app de %1$s en este teléfono. Si tus pagos llegan a otro celular, instala agento allí con acceso a notificaciones; si no, los pagos no se confirmarán solos.</string>
+    <string name="settings_payout">💸 Cobros</string>
+</resources>

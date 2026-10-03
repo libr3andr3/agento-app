@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Below the last app on the read screen: apps with no switch of their
+     own (installed later, or without an icon), and the privacy line. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="@dimen/space_s"
+        android:background="@color/agente_outline" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/read_later_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/touch_min"
+        android:text="@string/read_later_label"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/agente_on_surface" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/read_later_hint"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="@color/agente_on_surface_muted" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/read_privacy_note"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="@color/agente_on_surface_muted" />
+</LinearLayout>

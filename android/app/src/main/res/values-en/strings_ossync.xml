@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ossync_banner_title">Your customers stay with you</string>
+    <string name="ossync_banner_body">Save your customers to the phone\'s Contacts and your appointments to the Calendar. They are yours even if you stop using agento one day.</string>
+    <string name="ossync_banner_enable">Turn on</string>
+    <string name="ossync_banner_later">Later</string>
+    <string name="settings_ossync_header">Your data, on your phone</string>
+    <string name="settings_sync_contacts">Save customers to Contacts</string>
+    <string name="settings_sync_calendar">Save appointments to the Calendar</string>
+    <string name="settings_ossync_hint">Only customers with a phone number. WhatsApp will show their names. An “agento” calendar is created that you can see in your calendar app.</string>
+    <string name="ossync_permission_denied">Without that permission I can\'t save them. You can grant it in the phone\'s Settings.</string>
+    <string name="ossync_contact_note">Customer of %1$s · saved by agento</string>
+    <string name="ossync_calendar_name">agento · %1$s</string>
+    <string name="ossync_event_note">Booked by your agent (agento)</string>
+    <string name="crm_export">Export</string>
+    <string name="crm_export_vcf">Contacts (.vcf) — import on the phone or Google</string>
+    <string name="crm_export_csv">Table (.csv) — Excel / Sheets</string>
+    <string name="agenda_export">Export .ics</string>
+    <string name="export_nothing">Nothing to export yet.</string>
+</resources>

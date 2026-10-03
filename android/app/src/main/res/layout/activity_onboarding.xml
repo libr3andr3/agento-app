@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner ↔ business chat. adjustResize keeps the input row above the IME;
+     the RecyclerView (stackFromEnd) shrinks and stays pinned to the newest
+     message. Done-sheet overlays everything when onboarding finishes. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/agente_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Header: business-chat identity + live status. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/agente_surface_card"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            android:paddingTop="@dimen/space_s"
+            android:paddingBottom="@dimen/space_s">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_on_surface"
+                android:text="@string/onboarding_title" />
+
+            <TextView
+                android:id="@+id/chat_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_primary"
+                android:text="@string/chat_header_status" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/agente_outline" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            android:paddingTop="@dimen/space_s"
+            android:paddingBottom="@dimen/space_s"
+            android:scrollbars="vertical" />
+
+        <!-- Recording strip: red pulsing dot + live timer, visible only
+             while the mic is capturing. -->
+        <LinearLayout
+            android:id="@+id/record_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/agente_error_container"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            android:paddingTop="@dimen/space_s"
+            android:paddingBottom="@dimen/space_s"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/record_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_error"
+                android:importantForAccessibility="no"
+                android:text="@string/chat_dot" />
+
+            <TextView
+                android:id="@+id/record_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_on_surface" />
+
+            <TextView
+                android:id="@+id/record_hint"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_on_surface_muted"
+                android:text="@string/chat_slide_cancel_hint" />
+
+            <!-- Only while the recording is locked (swipe up): discard it. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/record_cancel"
+                style="@style/Widget.Agente.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_min"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:textColor="@color/agente_error"
+                android:contentDescription="@string/chat_a11y_cancel_voice"
+                android:visibility="gone"
+                android:text="@string/chat_record_cancel" />
+        </LinearLayout>
+
+        <!-- Voice-mode status strip: 🔊 Hablando / 🎙 Escuchando / 💭 Pensando.
+             Tap while the agent talks to interrupt and answer (barge-in lite).
+             Colors + pulse are driven from code per state; hidden when idle. -->
+        <LinearLayout
+            android:id="@+id/voice_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_min"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/agente_surface_card"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            android:paddingTop="@dimen/space_xs"
+            android:paddingBottom="@dimen/space_xs"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/chat_a11y_voice_status">
+
+            <TextView
+                android:id="@+id/voice_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/agente_primary"
+                android:importantForAccessibility="no"
+                android:text="@string/chat_dot" />
+
+            <TextView
+                android:id="@+id/voice_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="@color/agente_primary"
+                android:text="@string/voice_status_listening" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/agente_outline" />
+
+        <!-- Composer: voice-mode toggle · replay · camera · field · mic · send. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/agente_surface_card"
+            android:paddingStart="@dimen/space_s"
+            android:paddingEnd="@dimen/space_s"
+            android:paddingTop="@dimen/space_s"
+            android:paddingBottom="@dimen/space_s">
+
+            <!-- Voice-mode toggle: 🔊 hands-free loop on · 🔇 classic text chat.
+                 Glyph + contentDescription flip from code; hidden when the
+                 device has no speech recognition at all. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chat_voice_toggle"
+                style="@style/Widget.Agente.Button.Text"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="@dimen/space_l"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:contentDescription="@string/chat_a11y_voice_mute"
+                android:text="@string/chat_voice_on_glyph" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chat_replay"
+                style="@style/Widget.Agente.Button.Text"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="@dimen/space_l"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:contentDescription="@string/chat_a11y_replay"
+                android:visibility="gone"
+                android:text="@string/voice_replay" />
+
+            <!-- Catalog/menu photo → server extracts items+prices. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chat_camera"
+                style="@style/Widget.Agente.Button.Text"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="@dimen/space_l"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:contentDescription="@string/chat_a11y_camera"
+                android:text="@string/catalog_photo_button" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/chat_input_layout"
+                style="@style/Widget.Agente.TextInput"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_xs"
+                android:layout_marginEnd="@dimen/space_xs"
+                app:boxBackgroundColor="@color/agente_surface">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/chat_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/onboarding_input_hint"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chat_mic"
+                style="@style/Widget.Agente.Button.Tonal"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="@dimen/space_l"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:contentDescription="@string/chat_a11y_mic"
+                android:text="@string/chat_mic_glyph" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chat_send"
+                android:layout_width="@dimen/touch_min"
+                android:layout_height="@dimen/touch_min"
+                android:layout_marginStart="@dimen/space_xs"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="@dimen/space_l"
+                app:backgroundTint="@color/agente_primary"
+                android:textColor="@color/agente_on_primary"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:contentDescription="@string/chat_a11y_send"
+                android:text="@string/chat_send_glyph" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Swipe-up-to-lock affordance: floats above the mic while the owner is
+         holding it (WhatsApp-style). Visibility + position driven from code. -->
+    <LinearLayout
+        android:id="@+id/lock_pill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/space_m"
+        android:layout_marginBottom="96dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bg_lock_pill"
+        android:paddingStart="@dimen/space_s"
+        android:paddingEnd="@dimen/space_s"
+        android:paddingTop="@dimen/space_s"
+        android:paddingBottom="@dimen/space_s"
+        android:elevation="8dp"
+        android:visibility="gone"
+        android:importantForAccessibility="no">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:text="@string/chat_lock_glyph" />
+
+        <TextView
+            android:id="@+id/lock_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/agente_on_surface_muted"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:includeFontPadding="false"
+            android:text="@string/chat_lock_chevron" />
+    </LinearLayout>
+
+    <!-- "¡Todo listo!" celebration sheet — slides up when the schema is saved;
+         the agent's voice keeps playing until the owner taps through. -->
+    <LinearLayout
+        android:id="@+id/done_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bg_done_sheet"
+        android:paddingTop="@dimen/space_l"
+        android:paddingBottom="@dimen/space_xl"
+        android:paddingStart="@dimen/space_l"
+        android:paddingEnd="@dimen/space_l"
+        android:elevation="12dp"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done_title"
+            android:textColor="@color/agente_on_primary"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/done_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/done_arrow"
+            android:textColor="@color/agente_on_primary"
+            android:textAppearance="?attr/textAppearanceDisplaySmall"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/done_cta"
+            android:textColor="@color/agente_on_primary"
+            android:textAppearance="?attr/textAppearanceTitleMedium" />
+    </LinearLayout>
+</FrameLayout>
